@@ -7,7 +7,7 @@ class Mooseytest(commands.Cog):
     """moosey test"""
     def __init__(self):
         self.config = Config.get_conf(self, identifier=131213121312, force_registration=True)
-        self.config.register_member(roles = [])
+        self.config.register_member(roles = [], studyInProgess = true)
 
     @commands.command()
     async def mooseytest(self, ctx):
@@ -33,6 +33,9 @@ class Mooseytest(commands.Cog):
         
         async with self.config.member(ctx.author).roles() as roles:
             if studying in ctx.author.roles:
+                if not await self.config.member(ctx.author).studyInProgess():
+                    await ctx.send("You're not currently studying. Did something go wrong?")
+                    return
                 for r in roles:
                     try:
                         roleToAdd = discord.utils.get(ctx.guild.roles, id=r)
@@ -43,12 +46,14 @@ class Mooseytest(commands.Cog):
                 roles.clear()
                 await ctx.author.remove_roles(studying)
                 await ctx.send('{0} has finished studying!'.format(ctx.author.name))
+                await self.config.member(ctx.author).studyInProgess.set(false):
             else:
                 for r in userroles:
                     roles.append(r.id)
                 await ctx.author.edit(roles=[])
                 await ctx.author.add_roles(studying)
                 await ctx.send('{0} has been sent to study purgatory!'.format(ctx.author.name))
+                await self.config.member(ctx.author).studyInProgess.set(true):
             await ctx.tick()
 
     @commands.command()
