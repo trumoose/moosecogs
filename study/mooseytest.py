@@ -56,6 +56,8 @@ class Mooseytest(commands.Cog):
                     try:
                         roleToAdd = discord.utils.get(ctx.guild.roles, id=r)
                         roleArray.append(roleToAdd)
+                    except:
+                        await ctx.send('Could not get role {}'.format(roleToAdd.name))
                 await ctx.author.remove_roles(*roleArray)
                 await ctx.author.add_roles(studying)
                 await ctx.send('**{0}** has been sent to study purgatory!'.format(ctx.author.name))
