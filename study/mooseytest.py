@@ -33,7 +33,7 @@ class Mooseytest(commands.Cog):
                     #await ctx.author.remove_roles(*roles)
                 #await ctx.author.add_roles(studying)
                 await ctx.send('{0} has been sent to study purgatory!'.format(ctx.author.name))
-            await ctx.tick()
+            #await ctx.tick()
         
     @commands.command()
     async def printallroles(self, ctx):
