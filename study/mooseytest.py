@@ -84,14 +84,17 @@ class Mooseytest(commands.Cog):
     @commands.command()
     async def appendmyroles(self, ctx):
         await self.config.user(ctx.author).userroles.set(ctx.author.roles)
-        await ctx.send('userroles: {}.'.format(await self.config.user(ctx.author).userroles()))
+        myroles = await self.config.user(ctx.author).userroles()
+        await ctx.send('userroles: {}.'.format(myroles)
         
     @commands.command()
     async def removemyroles(self, ctx):
         emptyroles = []
         await self.config.user(ctx.author).userroles.set(emptyroles)
-        await ctx.send('userroles: {}.'.format(await self.config.user(ctx.author).userroles()))
+        myroles = await self.config.user(ctx.author).userroles()
+        await ctx.send('userroles: {}.'.format(myroles)
     
     @commands.command()
     async def printmyroles(self, ctx):
-        await ctx.send('{}'.format(await self.config.user(ctx.author).userroles()))
+        myroles = await self.config.user(ctx.author).userroles()
+        await ctx.send('{}'.format(myroles)
