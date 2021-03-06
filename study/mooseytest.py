@@ -22,7 +22,7 @@ class Mooseytest(commands.Cog):
 
         if studying in ctx.author.roles:
             async with self.config.user(ctx.author).roles() as roles:
-                await ctx.author.add_roles(*roles)
+                #await ctx.author.add_roles(*roles)
                 roles.clear()
                 await ctx.tick()
             #await ctx.author.remove_roles(studying)
@@ -31,7 +31,7 @@ class Mooseytest(commands.Cog):
             async with self.config.user(ctx.author).roles() as roles:
                 for r in ctx.author.roles:
                     roles.append(r.id)
-                await ctx.author.remove_roles(*roles)
+                #await ctx.author.remove_roles(*roles)
                 await ctx.tick()
             #await ctx.author.add_roles(studying)
             #await ctx.send('{0} has been sent to study purgatory!'.format(ctx.author.name))
