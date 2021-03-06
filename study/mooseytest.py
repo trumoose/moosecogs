@@ -33,7 +33,7 @@ class Mooseytest(commands.Cog):
 
         roleArray = []
         
-        if await self.config.member(ctx.author).studyInProgess():
+        if await self.config.member(ctx.author).timerInProgress():
             await ctx.send("Breaking timer.")
             await self.config.member(ctx.author).timerInProgress.set(False)
             await self.config.member(ctx.author).studyInProgess.set(False)
@@ -91,7 +91,6 @@ class Mooseytest(commands.Cog):
                 await ctx.tick()
                 if await self.config.member(ctx.author).timerInProgress():
                     await asyncio.sleep(seconds)
-                    await self.config.member(ctx.author).timerInProgress.set(False)
 
     @commands.command()
     async def appendmyroles(self, ctx):
@@ -99,6 +98,11 @@ class Mooseytest(commands.Cog):
             for r in ctx.author.roles:
                 roles.append(r.id)
             await ctx.tick()
+    
+    @commands.command()
+    async def removestudy(self, ctx):
+        studying = discord.utils.get(ctx.guild.roles, name='study')
+        await ctx.author.remove_roles(studying)
         
     @commands.command()
     async def removemyroles(self, ctx):
