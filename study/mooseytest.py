@@ -20,19 +20,25 @@ class Mooseytest(commands.Cog):
         
         studying = discord.utils.get(ctx.guild.roles, name='study')
 
+        everyone1 = ctx.guild.get_role(776052319271911434)
+        everyone2 = ctx.guild.get_role(766870004086865930)
+        userroles = ctx.author.roles
+        if everyone1 in userroles:
+            userroles.remove(everyone1)
+            
+        if everyone2 in userroles:
+            userroles.remove(everyone2)
+
         async with self.config.user(ctx.author).roles() as roles:
             if studying in ctx.author.roles:
                 for r in roles:
-                    if (r):
-                        await ctx.author.add_roles(r.id)
+                    await ctx.author.add_roles(r.id)
                 roles.clear()
                 await ctx.author.remove_roles(studying)
                 await ctx.send('{0} has finished studying!'.format(ctx.author.name))
             else:
-                for r in ctx.author.roles:
-                    if (r):
+                for r in userroles:
                         roles.append(r.id)
-                        
                 await ctx.author.edit(roles=[])
                 await ctx.author.add_roles(studying)
                 await ctx.send('{0} has been sent to study purgatory!'.format(ctx.author.name))
