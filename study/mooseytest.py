@@ -32,8 +32,8 @@ class Mooseytest(commands.Cog):
                 for r in ctx.author.roles:
                     if (r):
                         roles.append(r.id)
-                ctx.author.roles = []
-                await ctx.author.add_roles(studying)
+                await ctx.author.roles = []
+                #await ctx.author.add_roles(studying)
                 await ctx.send('{0} has been sent to study purgatory!'.format(ctx.author.name))
             await ctx.tick()
 
