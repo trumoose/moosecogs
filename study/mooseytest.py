@@ -57,6 +57,7 @@ class Mooseytest(commands.Cog):
                 await self.config.member(ctx.author).timerInProgress.set(True)
                 seconds = self.units[time_unit] * quantity
         
+        """
         async with self.config.member(ctx.author).roles() as roles:
             if studying in ctx.author.roles:
                 if not await self.config.member(ctx.author).studyInProgess():
@@ -90,7 +91,7 @@ class Mooseytest(commands.Cog):
                 #beanMsg.delete()
                 await ctx.tick()
                 if await self.config.member(ctx.author).timerInProgress():
-                    await asyncio.sleep(seconds)
+                    await asyncio.sleep(seconds)"""
 
     @commands.command()
     async def appendmyroles(self, ctx):
