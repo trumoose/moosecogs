@@ -36,9 +36,9 @@ class Mooseytest(commands.Cog):
                         await ctx.author.add_roles(r)
                     except:
                         await ctx.send("Couldn't add role {}(?)".format(r.name))
-                roles.clear()
-                await ctx.author.remove_roles(studying)
-                await ctx.send('{0} has finished studying!'.format(ctx.author.name))
+                #roles.clear()
+                #await ctx.author.remove_roles(studying)
+                #await ctx.send('{0} has finished studying!'.format(ctx.author.name))
             else:
                 for r in userroles:
                     roles.append(r.id)
