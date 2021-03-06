@@ -12,7 +12,7 @@ class Mooseytest(commands.Cog):
 
     @commands.command()
     @commands.cooldown(1, 10, commands.BucketType.user)
-    async def study(self, ctx, quantity = -999, time_unit = "moosey",):
+    async def study(self, ctx, quantity = -999, time_unit = "moosey"):
         """Removes all other roles for focusing."""
         
         studying = discord.utils.get(ctx.guild.roles, name='study')
@@ -32,7 +32,7 @@ class Mooseytest(commands.Cog):
             userroles.remove(serverbooster)
 
         roleArray = []
-        
+    
         if await self.config.member(ctx.author).timerInProgress():
             await ctx.send("Breaking timer.")
             await self.config.member(ctx.author).timerInProgress.set(False)
@@ -63,7 +63,6 @@ class Mooseytest(commands.Cog):
                     await ctx.react_quietly(":white_cross_mark:813147325840883723")
                 else:
                     #beanMsg = await ctx.send('Unfocusing **{0}**...'.format(ctx.user.name))
-                    await ctx.send('adding roles')
                     for r in roles:
                         try:
                             roleToAdd = discord.utils.get(ctx.guild.roles, id=r)
@@ -78,7 +77,6 @@ class Mooseytest(commands.Cog):
                     await ctx.tick()
             elif not studying in ctx.author.roles:
                 #beanMsg = await ctx.send('Focusing **{0}**...'.format(ctx.user.name))
-                await ctx.send('removing roles')
                 roles.clear()
                 for r in userroles:
                     roles.append(r.id)
