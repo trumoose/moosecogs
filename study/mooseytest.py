@@ -104,5 +104,5 @@ class Mooseytest(commands.Cog):
         store_roles = await self.config.user(ctx.author).userroles()
         out = ""
         for r in store_roles
-            out += str(r.name) + "\n"
+            out += str(r) + "\n"
         await ctx.send('{}'.format(out))
