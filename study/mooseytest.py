@@ -50,15 +50,13 @@ class Mooseytest(commands.Cog):
                     await ctx.send('**{0}** has finished studying!'.format(ctx.author.name))
                     await ctx.tick()
             else:
+                roles.clear()
                 for r in userroles:
                     roles.append(r.id)
-                for r in roles:
-                    try:
-                        roleToAdd = discord.utils.get(ctx.guild.roles, id=r)
-                        roleArray.append(roleToAdd)
-                    except:
-                        await ctx.send('Could not get role {}'.format(roleToAdd.name))
-                await ctx.author.remove_roles(*roleArray)
+                if serverbooster in ctx.author.roles:
+                    await ctx.author.edit(roles=[serverbooster])
+                else:
+                    await ctx.author.edit(roles=[])
                 await ctx.author.add_roles(studying)
                 await ctx.send('**{0}** has been sent to study purgatory!'.format(ctx.author.name))
                 await self.config.member(ctx.author).studyInProgess.set(True)
