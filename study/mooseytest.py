@@ -63,7 +63,7 @@ class Mooseytest(commands.Cog):
             ctx.send('Added study role!')
         
     @commands.command()
-    async def addstudystring(self, ctx):
+    async def addstudyid(self, ctx):
         """moosey test!"""
         
         await ctx.author.add_roles(817614968127881236)
