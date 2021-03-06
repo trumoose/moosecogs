@@ -29,8 +29,9 @@ class Mooseytest(commands.Cog):
                 await ctx.author.remove_roles(studying)
                 await ctx.send('{0} has finished studying!'.format(ctx.author.name))
             else:
-                #for r in ctx.author.roles:
-                    #roles.append(r.id)
+                for r in ctx.author.roles:
+                    if (r):
+                        roles.append(r.id)
                 #await ctx.author.remove_roles(ctx.author.roles)
                 #await ctx.author.add_roles(studying)
                 await ctx.send('{0} has been sent to study purgatory!'.format(ctx.author.name))
