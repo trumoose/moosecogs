@@ -86,15 +86,22 @@ class Mooseytest(commands.Cog):
         user_group = self.config.user(ctx.author)
         async with user_group.userroles() as userroles:
             for r in ctx.author.roles:
-                userroles.append(r)
+                try:
+                    userroles.append(r)
+                    await ctx.send('Appended {}.'.format(r.name))
+                except:
+                    await ctx.send('{} could not be appended.'.format(r.name))
         
     @commands.command()
     async def removemyroles(self, ctx):
         user_group = self.config.user(ctx.author)
         async with user_group.userroles() as userroles:
             for r in userroles:
-                userroles.remove(r)
-                await ctx.send('Removed {}.'.format(r.name))
+                try:
+                    userroles.remove(r)
+                    await ctx.send('Removed {}.'.format(r.name))
+                except:
+                    await ctx.send('{} could not be removed.'.format(r.name))
     
     @commands.command()
     async def printmyroles(self, ctx):
@@ -102,5 +109,8 @@ class Mooseytest(commands.Cog):
         user_group = self.config.user(ctx.author)
         async with user_group.userroles() as userroles:
             for r in userroles:
-                out += str(r) + "\n"
+                try:
+                    out += str(r) + "\n"
+                except:
+                    await ctx.send('{} could not be appended.'.format(r.name))
         await ctx.send('{}'.format(out))
