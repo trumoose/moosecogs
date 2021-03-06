@@ -33,9 +33,9 @@ class Mooseytest(commands.Cog):
             if studying in ctx.author.roles:
                 for r in roles:
                     try:
-                        await ctx.author.add_roles(r.id)
-                    except:
-                        await ctx.send('Could not add role {}'.format(r.name))
+                        await ctx.author.add_roles(r)
+                    #except:
+                        #await ctx.send('Could not add role {}'.format(r.name))
                 roles.clear()
                 await ctx.author.remove_roles(studying)
                 await ctx.send('{0} has finished studying!'.format(ctx.author.name))
