@@ -89,6 +89,7 @@ class Mooseytest(commands.Cog):
             for r in ctx.author.roles:
                 if(r):
                     userroles.append(r)
+                    await ctx.send('appended: {}.'.format(r.name))
             myroles = await self.config.user(ctx.author).userroles()
             await ctx.send('len: {}.'.format(str(len(myroles))))
     
