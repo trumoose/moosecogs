@@ -11,8 +11,8 @@ class Mooseytest(commands.Cog):
 
     @commands.command()
     @commands.cooldown(1, 30, commands.BucketType.user)
-    async def study(self, ctx):
-        """Removes all other roles for studying."""
+    async def focus(self, ctx):
+        """Removes all other roles for focusing."""
         
         studying = discord.utils.get(ctx.guild.roles, name='study')
 
@@ -44,10 +44,10 @@ class Mooseytest(commands.Cog):
                             roleArray.append(roleToAdd)
                         except:
                             await ctx.send('Could not get role {}'.format(roleToAdd.name))
-                    await ctx.author.add_roles(*roleArray)
-                    roles.clear()
+                    if serverbooster in ctx.author.roles:
+                        roleArray.append(serverbooster)
+                    await ctx.author.edit(roles=roleArray)
                     await ctx.author.remove_roles(studying)
-                    await ctx.send('**{0}** has finished studying!'.format(ctx.author.name))
                     await ctx.tick()
             else:
                 roles.clear()
@@ -58,7 +58,6 @@ class Mooseytest(commands.Cog):
                 else:
                     await ctx.author.edit(roles=[])
                 await ctx.author.add_roles(studying)
-                await ctx.send('**{0}** has been sent to study purgatory!'.format(ctx.author.name))
                 await self.config.member(ctx.author).studyInProgess.set(True)
                 await ctx.tick()
 
