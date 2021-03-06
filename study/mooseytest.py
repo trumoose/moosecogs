@@ -88,9 +88,10 @@ class Mooseytest(commands.Cog):
             for r in ctx.author.roles:
                 try:
                     userroles.append(r)
-                    await ctx.send('Appended {}.'.format(r.name))
+                    for r in userroles:
+                        await ctx.send('Found {} in userroles!'.format(r.name))
                 except:
-                    await ctx.send('{} could not be appended.'.format(r.name))
+                    await ctx.send("could not be appended.")
         
     @commands.command()
     async def removemyroles(self, ctx):
