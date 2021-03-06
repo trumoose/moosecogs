@@ -86,12 +86,12 @@ class Mooseytest(commands.Cog):
         user_group = self.config.user(ctx.author)
         async with user_group.userroles() as userroles:
             userroles = ctx.author.roles;
-            for r in userroles:
-                await ctx.send('userroles: {}.'.format(r.name))
-                await ctx.send('len: {}.'.format(str(len(userroles))))
-                myroles = await self.config.user(ctx.author).userroles()
+            for r in ctx.author.roles:
+                if(r):
+                    userroles.append(r)
+            myroles = await self.config.user(ctx.author).userroles()
             await ctx.send('len: {}.'.format(str(len(myroles))))
-        
+    
     @commands.command()
     async def removemyroles(self, ctx):
         myroles = []
