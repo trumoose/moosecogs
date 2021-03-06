@@ -17,6 +17,7 @@ class Mooseytest(commands.Cog):
         studying = discord.utils.get(ctx.guild.roles, name='study')
 
         everyone1 = ctx.guild.get_role(776052319271911434)
+        serverbooster = ctx.guild.get_role(767011709155672095)
         everyone2 = ctx.guild.get_role(766870004086865930)
         userroles = ctx.author.roles
         if everyone1 in userroles:
@@ -24,6 +25,9 @@ class Mooseytest(commands.Cog):
             
         if everyone2 in userroles:
             userroles.remove(everyone2)
+            
+        if serverbooster in userroles:
+            userroles.remove(serverbooster)
 
         roleArray = []
         
