@@ -53,9 +53,9 @@ class Mooseytest(commands.Cog):
                 for r in userroles:
                     roles.append(r.id)
                 for r in roles:
-                        try:
-                            roleToAdd = discord.utils.get(ctx.guild.roles, id=r)
-                            roleArray.append(roleToAdd)
+                    try:
+                        roleToAdd = discord.utils.get(ctx.guild.roles, id=r)
+                        roleArray.append(roleToAdd)
                 await ctx.author.remove_roles(*roleArray)
                 await ctx.author.add_roles(studying)
                 await ctx.send('**{0}** has been sent to study purgatory!'.format(ctx.author.name))
