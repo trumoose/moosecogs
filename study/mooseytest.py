@@ -85,7 +85,7 @@ class Mooseytest(commands.Cog):
     async def appendmyroles(self, ctx):
         user_group = self.config.user(ctx.author)
         async with user_group.userroles() as userroles:
-            userroles.append(ctx.author.roles);
+            userroles = ctx.author.roles;
             for r in userroles:
                 await ctx.send('userroles: {}.'.format(r.name))
                 await ctx.send('len: {}.'.format(str(len(userroles))))
