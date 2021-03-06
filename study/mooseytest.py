@@ -93,7 +93,7 @@ class Mooseytest(commands.Cog):
     async def removemyroles(self, ctx):
         async with self.config.user(ctx.author).roles() as roles:
             for r in roles:
-                roles.remove(r)
+                roles.clear()
             await ctx.tick()
     
     @commands.command()
