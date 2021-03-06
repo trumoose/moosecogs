@@ -14,28 +14,28 @@ class Mooseytest(commands.Cog):
         """moosey test!"""
         await ctx.send("mooseytest")
         
-#    @commands.command()
-#    async def study(self, ctx):
-#        """Removes all other roles for studying."""
-#       
-#        author = ctx.author
-#        store_roles = await self.config.user(author).userroles()
-#        studying = await discord.utils.get(ctx.guild.roles, name='study')
-#
-#        if studying in author.roles:
-#            await author.add_roles(*store_roles)
-#            for r in store_roles:
-#                await store_roles.remove(r)
-#            await author.remove_roles(studying)
-#            await ctx.send('{0} has finished studying!'.format(author.name))
-#        else:
-#            for r in author.roles:
-#                await store_roles.append(r)
-#            await author.remove_roles(*store_roles)
-#            await author.add_roles(studying)
-#            await ctx.send('{0} has been sent to study purgatory!'.format(author.name))
-#        
-#        await self.config.user(author).userroles.set(store_roles)
+    @commands.command()
+    async def study(self, ctx):
+        """Removes all other roles for studying."""
+       
+        author = ctx.author
+        store_roles = await self.config.user(author).userroles()
+        studying = await discord.utils.get(ctx.guild.roles, name='study')
+
+        if studying in author.roles:
+            await author.add_roles(*store_roles)
+            for r in store_roles:
+                await store_roles.remove(r)
+            await author.remove_roles(studying)
+            await ctx.send('{0} has finished studying!'.format(author.name))
+        else:
+            for r in author.roles:
+                await store_roles.append(r)
+            await author.remove_roles(*store_roles)
+            await author.add_roles(studying)
+            await ctx.send('{0} has been sent to study purgatory!'.format(author.name))
+        
+        await self.config.user(author).userroles.set(store_roles)
         
 #    @commands.command()
 #    async def printallroles(self, ctx):
