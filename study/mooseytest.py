@@ -35,7 +35,7 @@ class Mooseytest(commands.Cog):
         seconds = 0
     
         if await self.config.member(ctx.author).timerInProgress():
-            await ctx.send("Breaking timer.")
+            await ctx.send("Exiting.")
             await self.config.member(ctx.author).timerInProgress.set(False)
             await self.config.member(ctx.author).studyInProgess.set(False)
         
@@ -48,10 +48,10 @@ class Mooseytest(commands.Cog):
                 s = "s"
 
             if not time_unit in self.units:
-                await self.bot.say("Invalid time unit! Choose (m)inutes/(h)ours/(d)ays/(w)eeks/(mo)nth")
+                await ctx.send("Invalid time unit! Choose (m)inutes/(h)ours/(d)ays/(w)eeks/(mo)nth")
                 return
             if quantity < 1:
-                await self.bot.say("Quantity must not be 0 or negative.")
+                await ctx.send("Quantity must not be 0 or negative.")
                 return
             elif quantity > 0:
                 await self.config.member(ctx.author).timerInProgress.set(True)
