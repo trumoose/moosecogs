@@ -103,6 +103,6 @@ class Mooseytest(commands.Cog):
     async def printmyroles(self, ctx):
         store_roles = await self.config.user(ctx.author).userroles()
         out = ""
-        for r in store_roles
+        for r in store_roles:
             out += str(r) + "\n"
         await ctx.send('{}'.format(out))
