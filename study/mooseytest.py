@@ -9,7 +9,7 @@ class Mooseytest(commands.Cog):
         self.config = Config.get_conf(self, identifier=131213121312, force_registration=True)
         self.config.register_member(roles = [], studyInProgess = False)
 
-    @commands.command()
+    @commands.cooldown(1, 30, commands.BucketType.user)
     async def study(self, ctx):
         """Removes all other roles for studying."""
         
@@ -42,7 +42,6 @@ class Mooseytest(commands.Cog):
                     roles.clear()
                     await ctx.author.remove_roles(studying)
                     await ctx.send('**{0}** has finished studying!'.format(ctx.author.name))
-                    await self.config.member(ctx.author).studyInProgess.set(False)
                     await ctx.tick()
             else:
                 for r in userroles:
