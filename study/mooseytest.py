@@ -1,5 +1,6 @@
 from redbot.core import commands
 from redbot.core import Config
+import asyncio
 import discord.utils 
 import discord
 
@@ -8,7 +9,7 @@ class Mooseytest(commands.Cog):
     def __init__(self):
         self.config = Config.get_conf(self, identifier=131213121312, force_registration=True)
         self.config.register_member(roles = [], studyInProgess = False, timerInProgress = False)
-        self.units = {"m" : 60, "minute" : 60, "hour" : 3600, "h" : 3600, "day" : 86400, "d" : 86400, "week": 604800, "w" : 604800, "month": 2592000, "mo": 2592000}
+        self.units = {"s" : 1, "second" : 1, "m" : 60, "minute" : 60, "hour" : 3600, "h" : 3600, "day" : 86400, "d" : 86400, "week": 604800, "w" : 604800, "month": 2592000, "mo": 2592000}
 
     @commands.command()
     @commands.cooldown(1, 5, commands.BucketType.user)
@@ -57,14 +58,12 @@ class Mooseytest(commands.Cog):
                 await self.config.member(ctx.author).timerInProgress.set(True)
                 seconds = self.units[time_unit] * quantity
         
-        """
         async with self.config.member(ctx.author).roles() as roles:
             if studying in ctx.author.roles:
                 if not await self.config.member(ctx.author).studyInProgess():
                     await ctx.send("You're not currently studying. Did something go wrong?")
                     await ctx.react_quietly(":white_cross_mark:813147325840883723")
                 else:
-                    #beanMsg = await ctx.send('Unfocusing **{0}**...'.format(ctx.user.name))
                     for r in roles:
                         try:
                             roleToAdd = discord.utils.get(ctx.guild.roles, id=r)
@@ -75,10 +74,8 @@ class Mooseytest(commands.Cog):
                         roleArray.append(serverbooster)
                     await ctx.author.edit(roles=roleArray)
                     await ctx.author.remove_roles(studying)
-                    #beanMsg.delete()
                     await ctx.tick()
             elif not studying in ctx.author.roles:
-                #beanMsg = await ctx.send('Focusing **{0}**...'.format(ctx.user.name))
                 roles.clear()
                 for r in userroles:
                     roles.append(r.id)
@@ -88,10 +85,10 @@ class Mooseytest(commands.Cog):
                     await ctx.author.edit(roles=[])
                 await ctx.author.add_roles(studying)
                 await self.config.member(ctx.author).studyInProgess.set(True)
-                #beanMsg.delete()
                 await ctx.tick()
                 if await self.config.member(ctx.author).timerInProgress():
-                    await asyncio.sleep(seconds)"""
+                    await asyncio.sleep(seconds)
+                    await ctx.send("time!")
 
     @commands.command()
     async def appendmyroles(self, ctx):
