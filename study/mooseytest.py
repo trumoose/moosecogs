@@ -7,14 +7,14 @@ class Mooseytest(commands.Cog):
     """moosey test"""
     def __init__(self):
         self.config = Config.get_conf(self, identifier=131213121312)
-        default_user = {"userroles": []}
-        self.config.register_user(**default_user)
+        self.config.register_user(userroles = [])
 
     @commands.command()
     async def mooseytest(self, ctx):
         """moosey test!"""
         await ctx.send("mooseytest")
         
+    ###
     @commands.command()
     async def study(self, ctx):
         """Removes all other roles for studying."""
@@ -94,7 +94,7 @@ class Mooseytest(commands.Cog):
     @commands.command()
     async def removemyroles(self, ctx):
         store_roles = await self.config.user(ctx.author).userroles()
-        for r in self.config.user(ctx.author).userroles:
+        for r in store_roles:
             await self.config.user(ctx.author).userroles.remove(r)
             await ctx.send('Remove {}.'.format(r.name))
                 
