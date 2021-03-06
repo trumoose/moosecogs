@@ -7,7 +7,7 @@ class Mooseytest(commands.Cog):
     """moosey test"""
     def __init__(self):
         self.config = Config.get_conf(self, identifier=131213121312)
-        self.config.register_user(userroles = [])
+        self.config.register_user(userroles = {})
 
     @commands.command()
     async def mooseytest(self, ctx):
