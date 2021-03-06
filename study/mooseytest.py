@@ -7,7 +7,7 @@ class Mooseytest(commands.Cog):
     """moosey test"""
     def __init__(self):
         self.config = Config.get_conf(self, identifier=131213121312, force_registration=True)
-        self.config.register_user(roles = [])
+        self.config.register_member(roles = [])
 
     @commands.command()
     async def mooseytest(self, ctx):
@@ -29,7 +29,7 @@ class Mooseytest(commands.Cog):
         if everyone2 in userroles:
             userroles.remove(everyone2)
 
-        async with self.config.user(ctx.author).roles() as roles:
+        async with self.config.member(ctx.author).roles() as roles:
             if studying in ctx.author.roles:
                 await ctx.author.add_roles(roles)
                 roles.clear()
@@ -45,21 +45,21 @@ class Mooseytest(commands.Cog):
 
     @commands.command()
     async def appendmyroles(self, ctx):
-        async with self.config.user(ctx.author).roles() as roles:
+        async with self.config.member(ctx.author).roles() as roles:
             for r in ctx.author.roles:
                 roles.append(r.id)
             await ctx.tick()
         
     @commands.command()
     async def removemyroles(self, ctx):
-        async with self.config.user(ctx.author).roles() as roles:
+        async with self.config.member(ctx.author).roles() as roles:
             for r in roles:
                 roles.clear()
             await ctx.tick()
     
     @commands.command()
     async def printmyroles(self, ctx):
-        async with self.config.user(ctx.author).roles() as roles:
+        async with self.config.member(ctx.author).roles() as roles:
             for r in roles:
                 await ctx.send('roleid: {}'.format(r))
             await ctx.tick()
