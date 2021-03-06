@@ -42,23 +42,24 @@ class Mooseytest(commands.Cog):
             await self.config.member(ctx.author).studyInProgess.set(False)
             exited = True
         
-        if quantity != -999 and exited == False or time_unit != "moosey" and exited == False:
-            time_unit = time_unit.lower()
-            
-            s = ""
-            if time_unit.endswith("s"):
-                time_unit = time_unit[:-1]
-                s = "s"
+        if not await self.config.member(ctx.author).studyInProgess():
+            if quantity != -999 and exited == False or time_unit != "moosey" and exited == False:
+                time_unit = time_unit.lower()
+                
+                s = ""
+                if time_unit.endswith("s"):
+                    time_unit = time_unit[:-1]
+                    s = "s"
 
-            if not time_unit in self.units:
-                await ctx.send("Invalid time unit. Choose (**m**)inutes/(**h**)ours/(**d**)ays/(**w**)eeks/(**mo**)nth")
-                return
-            if quantity < 1:
-                await ctx.send("Quantity must not be 0 or negative.")
-                return
-            elif quantity > 0:
-                await self.config.member(ctx.author).timerInProgress.set(True)
-                seconds = self.units[time_unit] * quantity
+                if not time_unit in self.units:
+                    await ctx.send("Invalid time unit. Choose (**m**)inutes/(**h**)ours/(**d**)ays/(**w**)eeks/(**mo**)nth")
+                    return
+                if quantity < 1:
+                    await ctx.send("Quantity must not be 0 or negative.")
+                    return
+                elif quantity > 0:
+                    await self.config.member(ctx.author).timerInProgress.set(True)
+                    seconds = self.units[time_unit] * quantity
         
         async with self.config.member(ctx.author).roles() as roles:
             if studying in ctx.author.roles:
