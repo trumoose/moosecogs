@@ -17,25 +17,24 @@ class Mooseytest(commands.Cog):
     @commands.command()
     async def study(self, ctx):
         """Removes all other roles for studying."""
-       
-        author = ctx.author
-        store_roles = await self.config.user(author).roles()
+        
         studying = await discord.utils.get(ctx.guild.roles, name='study')
 
-        if studying in author.roles:
-            await author.add_roles(*store_roles)
-            for r in store_roles:
-                await store_roles.remove(r)
-            await author.remove_roles(studying)
-            await ctx.send('{0} has finished studying!'.format(author.name))
+        if studying in ctx.author.roles:
+            async with self.config.user(ctx.author).roles() as roles:
+                roles.clear()
+                await ctx.author.add_roles(*roles)
+                await ctx.tick()
+            await ctx.author.remove_roles(studying)
+            await ctx.send('{0} has finished studying!'.format(ctx.author.name))
         else:
-            for r in author.roles:
-                await store_roles.append(r)
-            await author.remove_roles(*store_roles)
-            await author.add_roles(studying)
-            await ctx.send('{0} has been sent to study purgatory!'.format(author.name))
-        
-        await self.config.user(author).roles.set(store_roles)
+            async with self.config.user(ctx.author).roles() as roles:
+                for r in ctx.author.roles:
+                    roles.append(r.id)
+                await ctx.author.remove_roles(*roles)
+                await ctx.tick()
+            await ctx.author.add_roles(studying)
+            await ctx.send('{0} has been sent to study purgatory!'.format(ctx.author.name))
         
     @commands.command()
     async def printallroles(self, ctx):
