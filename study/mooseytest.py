@@ -7,7 +7,8 @@ class Mooseytest(commands.Cog):
     """moosey test"""
     def __init__(self):
         self.config = Config.get_conf(self, identifier=131213121312)
-        self.config.register_user(userroles = [])
+        default_user = {"userroles": []}
+        self.config.register_user(**default_user)
 
     @commands.command()
     async def mooseytest(self, ctx):
@@ -19,8 +20,8 @@ class Mooseytest(commands.Cog):
         """Removes all other roles for studying."""
         
         author = ctx.author
-        store_roles = self.config.user(author).userroles
-        studying = discord.utils.get(ctx.guild.roles, name='study')
+        store_roles = await self.config.user(author).userroles()
+        studying = await discord.utils.get(ctx.guild.roles, name='study')
 
         if studying in author.roles:
             await author.add_roles(*store_roles)
@@ -35,7 +36,7 @@ class Mooseytest(commands.Cog):
             await author.add_roles(studying)
             await ctx.send('{0} has been sent to study purgatory!'.format(author.name))
         
-        self.config.user(author).userroles = store_roles
+        await self.config.user(author).userroles.set(store_roles)
         
     @commands.command()
     async def printallroles(self, ctx):
@@ -83,33 +84,26 @@ class Mooseytest(commands.Cog):
     
     @commands.command()
     async def appendmyroles(self, ctx):
-        store_roles = self.config.user(ctx.author).userroles
+        store_roles = await self.config.user(ctx.author).userroles()
         for r in author.roles:
             await store_roles.append(r)
             await ctx.send('Appended {}.'.format(r.name))
                 
-        self.config.user(author).userroles = store_roles
+        await self.config.user(author).userroles.set(store_roles)
         
     @commands.command()
     async def removemyroles(self, ctx):
+        store_roles = await self.config.user(ctx.author).userroles()
         for r in self.config.user(ctx.author).userroles:
             await self.config.user(ctx.author).userroles.remove(r)
             await ctx.send('Remove {}.'.format(r.name))
                 
-        self.config.user(author).userroles = store_roles
+        await self.config.user(author).userroles.set(store_roles)
     
     @commands.command()
     async def printmyroles(self, ctx):
+        store_roles = await self.config.user(ctx.author).userroles()
         out = ""
-        for r in self.config.user(ctx.author).userroles:
+        for r in store_roles
             out += str(r.name) + "\n"
         await ctx.send('{}'.format(out))
-        
-    @commands.command()
-    async def addstudyid(self, ctx):
-        """moosey test!"""
-        
-        await ctx.author.add_roles(817614968127881236)
-        
-        if 817614968127881236 in ctx.author.roles:
-            await ctx.send('Added study role!')
