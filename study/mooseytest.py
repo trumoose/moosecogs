@@ -9,7 +9,7 @@ class Mooseytest(commands.Cog):
         self.config = Config.get_conf(self, identifier=131213121312, force_registration=True)
         self.config.register_member(roles = [], studyInProgess = False)
 
-    @commands.cooldown(1, 30, commands.BucketType.user)
+    @commands.command()
     async def study(self, ctx):
         """Removes all other roles for studying."""
         
