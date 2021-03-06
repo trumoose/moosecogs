@@ -71,7 +71,7 @@ class Mooseytest(commands.Cog):
         studying = discord.utils.get(ctx.guild.roles, name='study')
 
         if studying in ctx.author.roles:
-            await ctx.send('{} is studying hard!'.format(ctx.author.name)))
+            await ctx.send('{} is studying hard!'.format(ctx.author.name))
             
     @commands.command()
     async def printguildname(self, ctx):
