@@ -85,16 +85,16 @@ class Mooseytest(commands.Cog):
     async def appendmyroles(self, ctx):
         async with self.config.user(ctx.author).roles() as roles:
             for r in ctx.author.roles:
-                await roles.append(r.id)
-                await ctx.tick()
+                roles.append(r.id)
+            await ctx.tick()
         
         
     @commands.command()
     async def removemyroles(self, ctx):
         async with self.config.user(ctx.author).roles() as roles:
             for r in roles:
-                await roles.remove(r)
-                await ctx.tick()
+                roles.remove(r)
+            await ctx.tick()
     
     @commands.command()
     async def printmyroles(self, ctx):
