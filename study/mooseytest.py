@@ -87,7 +87,6 @@ class Mooseytest(commands.Cog):
         async with user_group.userroles() as userroles:
             for r in ctx.author.roles:
                 userroles.append(r)
-                await ctx.send('Appended {}.'.format(r.name))
         
     @commands.command()
     async def removemyroles(self, ctx):
