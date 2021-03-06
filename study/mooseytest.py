@@ -88,8 +88,6 @@ class Mooseytest(commands.Cog):
             for r in ctx.author.roles:
                 try:
                     userroles.append(r)
-                    for r in userroles:
-                        await ctx.send('Found {} in userroles!'.format(r.name))
                 except:
                     await ctx.send("could not be appended.")
         
@@ -111,7 +109,7 @@ class Mooseytest(commands.Cog):
         async with user_group.userroles() as userroles:
             for r in userroles:
                 try:
-                    out += str(r) + "\n"
+                    out += str(r.name) + "\n"
                 except:
-                    await ctx.send('{} could not be appended.'.format(r.name))
+                    await ctx.send('could not be appended.')
         await ctx.send('{}'.format(out))
