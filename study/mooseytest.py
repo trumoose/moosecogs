@@ -29,16 +29,17 @@ class Mooseytest(commands.Cog):
         if everyone2 in userroles:
             userroles.remove(everyone2)
 
+        roleArray = []
+        
         async with self.config.member(ctx.author).roles() as roles:
             if studying in ctx.author.roles:
                 for r in roles:
                     try:
                         roleToAdd = discord.utils.get(ctx.guild.roles, id=r)
-                        roleArray = []
                         roleArray.append(roleToAdd)
                     except:
                         await ctx.send('Could not get role {}'.format(roleToAdd.name))
-                await ctx.author.add_roles(roleArray)
+                await ctx.author.add_roles(*roleArray)
                 roles.clear()
                 await ctx.author.remove_roles(studying)
                 await ctx.send('{0} has finished studying!'.format(ctx.author.name))
