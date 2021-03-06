@@ -12,24 +12,24 @@ class Mooseytest(commands.Cog):
         """moosey test!"""
         await ctx.send("mooseytest")
         
-    @commands.command
+    @commands.command()
     async def study(self, ctx):
         """Removes all other roles for studying."""
         
         author = ctx.author
-        roles = self.config.user(author).roles
+        store_roles = self.config.user(author).roles
         
         if 817614968127881236 in author.roles:
-            for r in roles:
+            for r in store_roles:
                 await author.add_roles(r)
-                await roles.remove(r)
+                await store_roles.remove(r)
             await author.remove_roles(817614968127881236)
             ctx.send('{0} has finished studying!'.format(ctx.author))
         else:
             for r in author.roles:
-                await roles.append(r)
+                await store_roles.append(r)
                 await author.remove_roles(r)
             await author.add_roles(817614968127881236)
             ctx.send('{0} has been sent to study purgatory!'.format(ctx.author))
         
-        self.config.user(author).roles = roles
+        self.config.user(author).roles = store_roles
