@@ -1,5 +1,6 @@
 from redbot.core import commands
 from redbot.core import Config
+import discord.utils 
 
 class Mooseytest(commands.Cog):
     """moosey test"""
