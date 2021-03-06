@@ -11,7 +11,7 @@ class Mooseytest(commands.Cog):
 
     @commands.command()
     @commands.cooldown(1, 20, commands.BucketType.user)
-    async def focus(self, ctx):
+    async def study(self, ctx):
         """Removes all other roles for focusing."""
         
         studying = discord.utils.get(ctx.guild.roles, name='study')
