@@ -101,3 +101,4 @@ class Mooseytest(commands.Cog):
         async with self.config.user(ctx.author).roles() as roles:
             for r in roles:
                 await ctx.send('roleid: {}'.format(r))
+            await ctx.tick()
