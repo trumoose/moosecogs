@@ -36,6 +36,7 @@ class Mooseytest(commands.Cog):
         if await self.config.member(ctx.author).studyInProgess():
             await ctx.send("Breaking timer.")
             await self.config.member(ctx.author).timerInProgress.set(False)
+            await self.config.member(ctx.author).studyInProgess.set(False)
                 
         if quantity != -999 and time_unit != "moosey" and not await self.config.member(ctx.author).studyInProgess():
             time_unit = time_unit.lower()
