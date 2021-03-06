@@ -18,7 +18,7 @@ class Mooseytest(commands.Cog):
     async def study(self, ctx):
         """Removes all other roles for studying."""
         
-        studying = await discord.utils.get(ctx.guild.roles, name='study')
+        studying = discord.utils.get(ctx.guild.roles, name='study')
 
         if studying in ctx.author.roles:
             async with self.config.user(ctx.author).roles() as roles:
