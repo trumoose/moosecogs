@@ -34,13 +34,15 @@ class Mooseytest(commands.Cog):
 
         roleArray = []
         seconds = 0
+        exited = False
     
         if await self.config.member(ctx.author).timerInProgress():
-            await ctx.send("Exiting.")
+            await ctx.send("Restoring roles.")
             await self.config.member(ctx.author).timerInProgress.set(False)
             await self.config.member(ctx.author).studyInProgess.set(False)
+            exited = True
         
-        if quantity != -999 or time_unit != "moosey":
+        if quantity != -999 and exited == False or time_unit != "moosey" and exited == False:
             time_unit = time_unit.lower()
             
             s = ""
@@ -89,6 +91,7 @@ class Mooseytest(commands.Cog):
                 if await self.config.member(ctx.author).timerInProgress():
                     await asyncio.sleep(seconds)
                     await ctx.send("time!")
+                    study(self, ctx)
 
     @commands.command()
     async def appendmyroles(self, ctx):
