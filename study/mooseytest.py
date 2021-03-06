@@ -23,7 +23,7 @@ class Mooseytest(commands.Cog):
         async with self.config.user(ctx.author).roles() as roles:
             if studying in ctx.author.roles:
                 try:
-                    await ctx.author.add_roles(roles)
+                    await ctx.author.add_roles(*roles)
                 except:
                     await ctx.send("couldnt add")
                 roles.clear()
