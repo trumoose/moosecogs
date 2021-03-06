@@ -34,16 +34,14 @@ class Mooseytest(commands.Cog):
 
         roleArray = []
         seconds = 0
-        exited = False
     
         if await self.config.member(ctx.author).timerInProgress():
             await ctx.send("Restoring roles.")
             await self.config.member(ctx.author).timerInProgress.set(False)
             await self.config.member(ctx.author).studyInProgess.set(False)
-            exited = True
         
         if not await self.config.member(ctx.author).studyInProgess():
-            if quantity != -999 and exited == False or time_unit != "moosey" and exited == False:
+            if quantity != -999 or time_unit != "moosey":
                 time_unit = time_unit.lower()
                 
                 s = ""
