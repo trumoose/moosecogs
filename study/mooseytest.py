@@ -34,9 +34,11 @@ class Mooseytest(commands.Cog):
                 for r in roles:
                     try:
                         roleToAdd = discord.utils.get(ctx.guild.roles, id=r)
-                        await ctx.author.add_roles(roleToAdd)
+                        roleArray = []
+                        roleArray.append(roleToAdd)
                     except:
-                        await ctx.send('Could not add role {}'.format(roleToAdd.name))
+                        await ctx.send('Could not get role {}'.format(roleToAdd.name))
+                await ctx.author.add_roles(roleArray)
                 roles.clear()
                 await ctx.author.remove_roles(studying)
                 await ctx.send('{0} has finished studying!'.format(ctx.author.name))
