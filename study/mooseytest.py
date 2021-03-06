@@ -18,20 +18,19 @@ class Mooseytest(commands.Cog):
         
         author = ctx.author
         store_roles = self.config.user(author).roles
-        
-        if 817614968127881236 in author.roles or 817568189461299200 in author.roles:
+        studying = discord.utils.get(guild.roles, name='study')
+
+        if studying in author.roles:
+            await author.add_roles(*store_roles)
             for r in store_roles:
-                await author.add_roles(r)
                 await store_roles.remove(r)
-            await author.remove_roles(817614968127881236)
-            await author.remove_roles(817568189461299200)
+            await author.remove_roles(studying)
             ctx.send('{0} has finished studying!'.format(ctx.author))
         else:
             for r in author.roles:
                 await store_roles.append(r)
-                await author.remove_roles(r)
-            await author.add_roles(817614968127881236)
-            await author.add_roles(817568189461299200)
+            await author.remove_roles(*store_roles)
+            await author.add_roles(studying)
             ctx.send('{0} has been sent to study purgatory!'.format(ctx.author))
         
         self.config.user(author).roles = store_roles
@@ -43,3 +42,31 @@ class Mooseytest(commands.Cog):
         for r in author.roles:
             out += str(r) + "\n"
         ctx.send('{}'.format(out))
+        
+    @commands.command()
+    async def printstudyrole(self, ctx):
+        """moosey test!"""
+        
+        studying = discord.utils.get(guild.roles, name='study')
+        
+        ctx.send('{}'.format(studying))
+        
+    @commands.command()
+    async def addstudystring(self, ctx):
+        """moosey test!"""
+        
+        studying = discord.utils.get(guild.roles, name='study')
+        
+        await ctx.author.add_roles(studying)
+        
+        if studying in ctx.author.roles:
+            ctx.send('Added study role!')
+        
+    @commands.command()
+    async def addstudystring(self, ctx):
+        """moosey test!"""
+        
+        await ctx.author.add_roles(817614968127881236)
+        
+        if 817614968127881236 in ctx.author.roles:
+            ctx.send('Added study role!')
