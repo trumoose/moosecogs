@@ -98,12 +98,7 @@ class Mooseytest(commands.Cog):
     
     @commands.command()
     async def printmyroles(self, ctx):
-        out = ""
         user_group = self.config.user(ctx.author)
         async with user_group.userroles() as userroles:
             for r in userroles:
-                try:
-                    out += str(r.name) + "\n"
-                except:
-                    await ctx.send('could not be appended.')
-        await ctx.send('{}'.format(out))
+                await ctx.send('userroles: {}.'.format(r.name))
