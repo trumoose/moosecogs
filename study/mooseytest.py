@@ -100,5 +100,4 @@ class Mooseytest(commands.Cog):
     async def printmyroles(self, ctx):
         user_group = self.config.user(ctx.author)
         async with user_group.userroles() as userroles:
-            for r in userroles:
-                await ctx.send('userroles: {}.'.format(r.name))
+            await ctx.send('len: {}.'.format(str(len(userroles))))
