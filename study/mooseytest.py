@@ -19,6 +19,7 @@ class Mooseytest(commands.Cog):
         everyone1 = ctx.guild.get_role(776052319271911434)
         serverbooster = ctx.guild.get_role(767011709155672095)
         everyone2 = ctx.guild.get_role(766870004086865930)
+        
         userroles = ctx.author.roles
         if everyone1 in userroles:
             userroles.remove(everyone1)
@@ -51,7 +52,7 @@ class Mooseytest(commands.Cog):
             else:
                 for r in userroles:
                     roles.append(r.id)
-                await ctx.author.edit(roles=[])
+                await ctx.author.remove_roles(roles)
                 await ctx.author.add_roles(studying)
                 await ctx.send('**{0}** has been sent to study purgatory!'.format(ctx.author.name))
                 await self.config.member(ctx.author).studyInProgess.set(True)
