@@ -31,7 +31,11 @@ class Mooseytest(commands.Cog):
 
         async with self.config.member(ctx.author).roles() as roles:
             if studying in ctx.author.roles:
-                await ctx.author.add_roles(roles)
+                for r in roles:
+                    try:
+                        await ctx.author.add_roles(roles)
+                    except:
+                        await ctx.send("Couldn't add role {}(?)".format(r.name))
                 roles.clear()
                 await ctx.author.remove_roles(studying)
                 await ctx.send('{0} has finished studying!'.format(ctx.author.name))
