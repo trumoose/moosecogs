@@ -52,7 +52,11 @@ class Mooseytest(commands.Cog):
             else:
                 for r in userroles:
                     roles.append(r.id)
-                await ctx.author.remove_roles(roles)
+                for r in roles:
+                        try:
+                            roleToAdd = discord.utils.get(ctx.guild.roles, id=r)
+                            roleArray.append(roleToAdd)
+                await ctx.author.remove_roles(*roleArray)
                 await ctx.author.add_roles(studying)
                 await ctx.send('**{0}** has been sent to study purgatory!'.format(ctx.author.name))
                 await self.config.member(ctx.author).studyInProgess.set(True)
