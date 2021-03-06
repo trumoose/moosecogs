@@ -7,7 +7,7 @@ class Mooseytest(commands.Cog):
     """moosey test"""
     def __init__(self):
         self.config = Config.get_conf(self, identifier=131213121312)
-        self.config.register_user(roles = [])
+        self.config.register_user(userroles = [])
 
     @commands.command()
     async def mooseytest(self, ctx):
@@ -19,7 +19,7 @@ class Mooseytest(commands.Cog):
         """Removes all other roles for studying."""
         
         author = ctx.author
-        store_roles = self.config.user(author).roles
+        store_roles = self.config.user(author).userroles
         studying = discord.utils.get(ctx.guild.roles, name='study')
 
         if studying in author.roles:
@@ -35,7 +35,7 @@ class Mooseytest(commands.Cog):
             await author.add_roles(studying)
             await ctx.send('{0} has been sent to study purgatory!'.format(author.name))
         
-        self.config.user(author).roles = store_roles
+        self.config.user(author).userroles = store_roles
         
     @commands.command()
     async def printallroles(self, ctx):
@@ -83,27 +83,25 @@ class Mooseytest(commands.Cog):
     
     @commands.command()
     async def appendmyroles(self, ctx):
-        store_roles = self.config.user(ctx.author).roles
+        store_roles = self.config.user(ctx.author).userroles
         for r in author.roles:
             await store_roles.append(r)
             await ctx.send('Appended {}.'.format(r.name))
                 
-        self.config.user(author).roles = store_roles
+        self.config.user(author).userroles = store_roles
         
     @commands.command()
     async def removemyroles(self, ctx):
-        store_roles = self.config.user(ctx.author).roles
-        for r in store_roles:
-            await store_roles.remove(r)
+        for r in self.config.user(ctx.author).userroles:
+            await self.config.user(ctx.author).userroles.remove(r)
             await ctx.send('Remove {}.'.format(r.name))
                 
-        self.config.user(author).roles = store_roles
+        self.config.user(author).userroles = store_roles
     
     @commands.command()
     async def printmyroles(self, ctx):
-        store_roles = self.config.user(ctx.author).roles
         out = ""
-        for r in store_roles:
+        for r in self.config.user(ctx.author).userroles:
             out += str(r.name) + "\n"
         await ctx.send('{}'.format(out))
         
