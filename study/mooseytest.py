@@ -27,13 +27,13 @@ class Mooseytest(commands.Cog):
             for r in store_roles:
                 await store_roles.remove(r)
             await author.remove_roles(studying)
-            ctx.send('{0} has finished studying!'.format(author))
+            await ctx.send('{0} has finished studying!'.format(author))
         else:
             for r in author.roles:
                 await store_roles.append(r)
             await author.remove_roles(*store_roles)
             await author.add_roles(studying)
-            ctx.send('{0} has been sent to study purgatory!'.format(author))
+            await ctx.send('{0} has been sent to study purgatory!'.format(author))
         
         self.config.user(author).roles = store_roles
         
@@ -43,7 +43,7 @@ class Mooseytest(commands.Cog):
         out = ""
         for r in ctx.author.roles:
             out += str(r.name) + "\n"
-        ctx.send('{}'.format(out))
+        await ctx.send('{}'.format(out))
         
     @commands.command()
     async def printstudyrolectx(self, ctx):
@@ -51,7 +51,7 @@ class Mooseytest(commands.Cog):
         
         studying = discord.utils.get(ctx.guild.roles, name='study')
         
-        ctx.send('{}'.format(studying.name))
+        await ctx.send('{}'.format(studying.name))
         
     @commands.command()
     async def printstudyrole(self, ctx):
@@ -59,7 +59,7 @@ class Mooseytest(commands.Cog):
         
         studying = discord.utils.get(guild.roles, name='study')
         
-        ctx.send('{}'.format(studying.name))
+        await ctx.send('{}'.format(studying.name))
         
     @commands.command()
     async def addstudystring(self, ctx):
@@ -70,15 +70,15 @@ class Mooseytest(commands.Cog):
         await ctx.author.add_roles(studying)
         
         if studying in ctx.author.roles:
-            ctx.send('Added study role!')
+            await ctx.send('Added study role!')
             
     @commands.command()
     async def printguildname(self, ctx):
-        ctx.send('Guild name: {}'.format(ctx.guild.name))
+        await ctx.send('Guild name: {}'.format(ctx.guild.name))
 
     @commands.command()
     async def printmyname(self, ctx):
-        ctx.send('Hi {}!'.format(ctx.author.name))
+        await ctx.send('Hi {}!'.format(ctx.author.name))
         
     @commands.command()
     async def addstudyid(self, ctx):
@@ -87,4 +87,4 @@ class Mooseytest(commands.Cog):
         await ctx.author.add_roles(817614968127881236)
         
         if 817614968127881236 in ctx.author.roles:
-            ctx.send('Added study role!')
+            await ctx.send('Added study role!')
