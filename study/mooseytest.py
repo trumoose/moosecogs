@@ -11,7 +11,7 @@ class Mooseytest(commands.Cog):
         self.units = {"m" : 60, "minute" : 60, "hour" : 3600, "h" : 3600, "day" : 86400, "d" : 86400, "week": 604800, "w" : 604800, "month": 2592000, "mo": 2592000}
 
     @commands.command()
-    @commands.cooldown(1, 10, commands.BucketType.user)
+    @commands.cooldown(1, 5, commands.BucketType.user)
     async def study(self, ctx, quantity = -999, time_unit = "moosey"):
         """Removes all other roles for focusing."""
         
@@ -48,7 +48,7 @@ class Mooseytest(commands.Cog):
                 s = "s"
 
             if not time_unit in self.units:
-                await ctx.send("Invalid time unit! Choose (m)inutes/(h)ours/(d)ays/(w)eeks/(mo)nth")
+                await ctx.send("Invalid time unit. Choose (**m**)inutes/(**h**)ours/(**d**)ays/(**w**)eeks/(**mo**)nth")
                 return
             if quantity < 1:
                 await ctx.send("Quantity must not be 0 or negative.")
