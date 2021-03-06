@@ -33,7 +33,7 @@ class Mooseytest(commands.Cog):
             if studying in ctx.author.roles:
                 for r in roles:
                     try:
-                        await ctx.author.add_roles(roles)
+                        await ctx.author.add_roles(r)
                     except:
                         await ctx.send("Couldn't add role {}(?)".format(r.name))
                 roles.clear()
