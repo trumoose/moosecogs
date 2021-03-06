@@ -46,16 +46,15 @@ class Mooseytest(commands.Cog):
                 time_unit = time_unit[:-1]
                 s = "s"
 
-            elif not time_unit in self.units:
+            if not time_unit in self.units:
                 await self.bot.say("Invalid time unit! Choose (m)inutes/(h)ours/(d)ays/(w)eeks/(mo)nth")
                 return
-            elif quantity < 1:
+            if quantity < 1:
                 await self.bot.say("Quantity must not be 0 or negative.")
                 return
             elif quantity > 0:
                 await self.config.member(ctx.author).timerInProgress.set(True)
-            
-            seconds = self.units[time_unit] * quantity
+                seconds = self.units[time_unit] * quantity
         
         async with self.config.member(ctx.author).roles() as roles:
             if studying in ctx.author.roles:
@@ -76,7 +75,7 @@ class Mooseytest(commands.Cog):
                     await ctx.author.remove_roles(studying)
                     #beanMsg.delete()
                     await ctx.tick()
-            if not studying in ctx.author.roles:
+            elif not studying in ctx.author.roles:
                 #beanMsg = await ctx.send('Focusing **{0}**...'.format(ctx.user.name))
                 roles.clear()
                 for r in userroles:
