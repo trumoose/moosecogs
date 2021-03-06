@@ -7,13 +7,8 @@ class Mooseytest(commands.Cog):
     """moosey test"""
     def __init__(self):
         self.config = Config.get_conf(self, identifier=131213121312, force_registration=True)
-        self.config.register_member(roles = [], studyInProgess = false)
+        self.config.register_member(roles = [], studyInProgess = False)
 
-    @commands.command()
-    async def mooseytest(self, ctx):
-        """moosey test!"""
-        await ctx.send("mooseytest")
-        
     @commands.command()
     async def study(self, ctx):
         """Removes all other roles for studying."""
@@ -30,10 +25,11 @@ class Mooseytest(commands.Cog):
             userroles.remove(everyone2)
 
         roleArray = []
+        studyProgress = await self.config.member(ctx.author).studyInProgess()
         
         async with self.config.member(ctx.author).roles() as roles:
             if studying in ctx.author.roles:
-                if not await self.config.member(ctx.author).studyInProgess():
+                if not studyProgress:
                     await ctx.send("You're not currently studying. Did something go wrong?")
                 else:
                     for r in roles:
@@ -46,14 +42,14 @@ class Mooseytest(commands.Cog):
                     roles.clear()
                     await ctx.author.remove_roles(studying)
                     await ctx.send('{0} has finished studying!'.format(ctx.author.name))
-                    await self.config.member(ctx.author).studyInProgess.set(false):
+                    await self.config.member(ctx.author).studyInProgess.set(False):
             else:
                 for r in userroles:
                     roles.append(r.id)
                 await ctx.author.edit(roles=[])
                 await ctx.author.add_roles(studying)
                 await ctx.send('{0} has been sent to study purgatory!'.format(ctx.author.name))
-                await self.config.member(ctx.author).studyInProgess.set(true):
+                await self.config.member(ctx.author).studyInProgess.set(True):
             await ctx.tick()
 
     @commands.command()
