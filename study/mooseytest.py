@@ -80,6 +80,32 @@ class Mooseytest(commands.Cog):
     @commands.command()
     async def printmyname(self, ctx):
         await ctx.send('Hi {}!'.format(ctx.author.name))
+    
+    @commands.command()
+    async def appendmyroles(self, ctx):
+        store_roles = self.config.user(author).roles
+        for r in author.roles:
+                await store_roles.append(r)
+                await ctx.send('Appended {}.'.format(r.name))
+                
+        self.config.user(author).roles = store_roles
+        
+    @commands.command()
+    async def removemyroles(self, ctx):
+        store_roles = self.config.user(author).roles
+        for r in store_roles:
+                await store_roles.remove(r)
+                await ctx.send('Remove {}.'.format(r.name))
+                
+        self.config.user(author).roles = store_roles
+    
+    @commands.command()
+    async def printmyroles(self, ctx):
+        store_roles = self.config.user(author).roles
+        out = ""
+        for r in store_roles:
+            out += str(r.name) + "\n"
+        await ctx.send('{}'.format(out))
         
     @commands.command()
     async def addstudyid(self, ctx):
