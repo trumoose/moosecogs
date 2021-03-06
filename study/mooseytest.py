@@ -85,7 +85,7 @@ class Mooseytest(commands.Cog):
     async def appendmyroles(self, ctx):
         async with self.config.user(ctx.author).roles() as roles:
             for r in ctx.author.roles:
-                roles.append(role.id)
+                roles.append(r.id)
                 await ctx.tick()
         
     @commands.command()
