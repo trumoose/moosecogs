@@ -38,7 +38,7 @@ class Mooseytest(commands.Cog):
                     await ctx.send("You're not currently studying. Did something go wrong?")
                     await ctx.react_quietly(":white_cross_mark:813147325840883723")
                 else:
-                    beanMsg = await ctx.send('Unfocusing **{0}**...'.format(ctx.user.name))
+                    #beanMsg = await ctx.send('Unfocusing **{0}**...'.format(ctx.user.name))
                     for r in roles:
                         try:
                             roleToAdd = discord.utils.get(ctx.guild.roles, id=r)
@@ -49,10 +49,10 @@ class Mooseytest(commands.Cog):
                         roleArray.append(serverbooster)
                     await ctx.author.edit(roles=roleArray)
                     await ctx.author.remove_roles(studying)
-                    beanMsg.delete()
+                    #beanMsg.delete()
                     await ctx.tick()
             else:
-                beanMsg = await ctx.send('Focusing **{0}**...'.format(ctx.user.name))
+                #beanMsg = await ctx.send('Focusing **{0}**...'.format(ctx.user.name))
                 roles.clear()
                 for r in userroles:
                     roles.append(r.id)
@@ -62,7 +62,7 @@ class Mooseytest(commands.Cog):
                     await ctx.author.edit(roles=[])
                 await ctx.author.add_roles(studying)
                 await self.config.member(ctx.author).studyInProgess.set(True)
-                beanMsg.delete()
+                #beanMsg.delete()
                 await ctx.tick()
 
     @commands.command()
