@@ -32,6 +32,7 @@ class Mooseytest(commands.Cog):
             userroles.remove(serverbooster)
 
         roleArray = []
+        seconds = 0
     
         if await self.config.member(ctx.author).timerInProgress():
             await ctx.send("Breaking timer.")
