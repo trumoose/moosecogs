@@ -27,13 +27,13 @@ class Mooseytest(commands.Cog):
             for r in store_roles:
                 await store_roles.remove(r)
             await author.remove_roles(studying)
-            await ctx.send('{0} has finished studying!'.format(author))
+            await ctx.send('{0} has finished studying!'.format(author.name))
         else:
             for r in author.roles:
                 await store_roles.append(r)
             await author.remove_roles(*store_roles)
             await author.add_roles(studying)
-            await ctx.send('{0} has been sent to study purgatory!'.format(author))
+            await ctx.send('{0} has been sent to study purgatory!'.format(author.name))
         
         self.config.user(author).roles = store_roles
         
@@ -46,18 +46,10 @@ class Mooseytest(commands.Cog):
         await ctx.send('{}'.format(out))
         
     @commands.command()
-    async def printstudyrolectx(self, ctx):
-        """moosey test!"""
-        
-        studying = discord.utils.get(ctx.guild.roles, name='study')
-        
-        await ctx.send('{}'.format(studying.name))
-        
-    @commands.command()
     async def printstudyrole(self, ctx):
         """moosey test!"""
         
-        studying = discord.utils.get(guild.roles, name='study')
+        studying = discord.utils.get(ctx.guild.roles, name='study')
         
         await ctx.send('{}'.format(studying.name))
         
@@ -71,6 +63,15 @@ class Mooseytest(commands.Cog):
         
         if studying in ctx.author.roles:
             await ctx.send('Added study role!')
+            
+    @commands.command()
+    async def checkstudying(self, ctx):
+        """moosey test!"""
+        
+        studying = discord.utils.get(ctx.guild.roles, name='study')
+
+        if studying in ctx.author.roles:
+            await ctx.send('{} is studying hard!'.format(ctx.author.name)))
             
     @commands.command()
     async def printguildname(self, ctx):
