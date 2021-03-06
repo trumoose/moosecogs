@@ -25,11 +25,10 @@ class Mooseytest(commands.Cog):
             userroles.remove(everyone2)
 
         roleArray = []
-        studyProgress = await self.config.member(ctx.author).studyInProgess()
         
         async with self.config.member(ctx.author).roles() as roles:
             if studying in ctx.author.roles:
-                if not studyProgress:
+                if not await self.config.member(ctx.author).studyInProgess():
                     await ctx.send("You're not currently studying. Did something go wrong?")
                 else:
                     for r in roles:
@@ -49,7 +48,7 @@ class Mooseytest(commands.Cog):
                 await ctx.author.edit(roles=[])
                 await ctx.author.add_roles(studying)
                 await ctx.send('{0} has been sent to study purgatory!'.format(ctx.author.name))
-                await self.config.member(ctx.author).studyInProgess.set(True):
+                await self.config.member(ctx.author).studyInProgess.set(True)
             await ctx.tick()
 
     @commands.command()
