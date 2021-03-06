@@ -35,18 +35,18 @@ class Mooseytest(commands.Cog):
             if studying in ctx.author.roles:
                 if not await self.config.member(ctx.author).studyInProgess():
                     await ctx.send("You're not currently studying. Did something go wrong?")
-                    return
-                for r in roles:
-                    try:
-                        roleToAdd = discord.utils.get(ctx.guild.roles, id=r)
-                        roleArray.append(roleToAdd)
-                    except:
-                        await ctx.send('Could not get role {}'.format(roleToAdd.name))
-                await ctx.author.add_roles(*roleArray)
-                roles.clear()
-                await ctx.author.remove_roles(studying)
-                await ctx.send('{0} has finished studying!'.format(ctx.author.name))
-                await self.config.member(ctx.author).studyInProgess.set(false):
+                else:
+                    for r in roles:
+                        try:
+                            roleToAdd = discord.utils.get(ctx.guild.roles, id=r)
+                            roleArray.append(roleToAdd)
+                        except:
+                            await ctx.send('Could not get role {}'.format(roleToAdd.name))
+                    await ctx.author.add_roles(*roleArray)
+                    roles.clear()
+                    await ctx.author.remove_roles(studying)
+                    await ctx.send('{0} has finished studying!'.format(ctx.author.name))
+                    await self.config.member(ctx.author).studyInProgess.set(false):
             else:
                 for r in userroles:
                     roles.append(r.id)
