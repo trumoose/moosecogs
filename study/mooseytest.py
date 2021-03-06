@@ -25,16 +25,16 @@ class Mooseytest(commands.Cog):
                 await ctx.author.add_roles(*roles)
                 roles.clear()
                 await ctx.tick()
-            await ctx.author.remove_roles(studying)
-            await ctx.send('{0} has finished studying!'.format(ctx.author.name))
+            #await ctx.author.remove_roles(studying)
+            #await ctx.send('{0} has finished studying!'.format(ctx.author.name))
         else:
             async with self.config.user(ctx.author).roles() as roles:
                 for r in ctx.author.roles:
                     roles.append(r.id)
                 await ctx.author.remove_roles(*roles)
                 await ctx.tick()
-            await ctx.author.add_roles(studying)
-            await ctx.send('{0} has been sent to study purgatory!'.format(ctx.author.name))
+            #await ctx.author.add_roles(studying)
+            #await ctx.send('{0} has been sent to study purgatory!'.format(ctx.author.name))
         
     @commands.command()
     async def printallroles(self, ctx):
