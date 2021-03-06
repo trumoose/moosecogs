@@ -32,11 +32,11 @@ class Mooseytest(commands.Cog):
         async with self.config.member(ctx.author).roles() as roles:
             if studying in ctx.author.roles:
                 for r in roles:
-                    #try:
-                    if (r):
-                        await ctx.author.add_roles(r)
-                    #except:
-                        #await ctx.send('Could not add role {}'.format(r.name))
+                    try:
+                        roleToAdd = discord.utils.get(ctx.guild.roles, id=r)
+                        await ctx.author.add_roles(roleToAdd)
+                    except:
+                        await ctx.send('Could not add role {}'.format(roleToAdd.name))
                 roles.clear()
                 await ctx.author.remove_roles(studying)
                 await ctx.send('{0} has finished studying!'.format(ctx.author.name))
