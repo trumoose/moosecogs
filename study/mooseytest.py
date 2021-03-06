@@ -41,7 +41,7 @@ class Mooseytest(commands.Cog):
                     await ctx.author.add_roles(*roleArray)
                     roles.clear()
                     await ctx.author.remove_roles(studying)
-                    await ctx.send('{0} has finished studying!'.format(ctx.author.name))
+                    await ctx.send('**{0}** has finished studying!'.format(ctx.author.name))
                     await self.config.member(ctx.author).studyInProgess.set(False)
                     await ctx.tick()
             else:
@@ -49,7 +49,7 @@ class Mooseytest(commands.Cog):
                     roles.append(r.id)
                 await ctx.author.edit(roles=[])
                 await ctx.author.add_roles(studying)
-                await ctx.send('{0} has been sent to study purgatory!'.format(ctx.author.name))
+                await ctx.send('**{0}** has been sent to study purgatory!'.format(ctx.author.name))
                 await self.config.member(ctx.author).studyInProgess.set(True)
                 await ctx.tick()
 
