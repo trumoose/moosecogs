@@ -91,14 +91,10 @@ class Mooseytest(commands.Cog):
         
     @commands.command()
     async def removemyroles(self, ctx):
+        myroles = []
         user_group = self.config.user(ctx.author)
         async with user_group.userroles() as userroles:
-            for r in userroles:
-                try:
-                    userroles.remove(r)
-                    await ctx.send('Removed {}.'.format(r.name))
-                except:
-                    await ctx.send('{} could not be removed.'.format(r.name))
+            userroles = myroles
     
     @commands.command()
     async def printmyroles(self, ctx):
