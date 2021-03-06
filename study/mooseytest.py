@@ -42,7 +42,7 @@ class Mooseytest(commands.Cog):
                     roles.clear()
                     await ctx.author.remove_roles(studying)
                     await ctx.send('{0} has finished studying!'.format(ctx.author.name))
-                    await self.config.member(ctx.author).studyInProgess.set(False):
+                    await self.config.member(ctx.author).studyInProgess.set(False)
             else:
                 for r in userroles:
                     roles.append(r.id)
