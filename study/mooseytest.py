@@ -10,12 +10,12 @@ class Mooseytest(commands.Cog):
         self.config.register_user(roles = [])
 
     @commands.command()
-    async def mooseytest(self, ctx):
+    async def mooseytest(ctx):
         """moosey test!"""
         await ctx.send("mooseytest")
         
     @commands.command()
-    async def study(self, ctx):
+    async def study(ctx):
         """Removes all other roles for studying."""
         
         author = ctx.author
@@ -27,42 +27,42 @@ class Mooseytest(commands.Cog):
             for r in store_roles:
                 await store_roles.remove(r)
             await author.remove_roles(studying)
-            ctx.send('{0} has finished studying!'.format(ctx.author))
+            ctx.send('{0} has finished studying!'.format(author))
         else:
             for r in author.roles:
                 await store_roles.append(r)
             await author.remove_roles(*store_roles)
             await author.add_roles(studying)
-            ctx.send('{0} has been sent to study purgatory!'.format(ctx.author))
+            ctx.send('{0} has been sent to study purgatory!'.format(author))
         
         self.config.user(author).roles = store_roles
         
     @commands.command()
-    async def printallroles(self, ctx):
+    async def printallroles(ctx):
         """moosey test!"""
         out = ""
         for r in ctx.author.roles:
-            out += str(r) + "\n"
+            out += str(r.name) + "\n"
         ctx.send('{}'.format(out))
         
     @commands.command()
-    async def printstudyrolectx(self, ctx):
+    async def printstudyrolectx(ctx):
         """moosey test!"""
         
         studying = discord.utils.get(ctx.guild.roles, name='study')
         
-        ctx.send('{}'.format(studying))
+        ctx.send('{}'.format(studying.name))
         
     @commands.command()
-    async def printstudyrole(self, ctx):
+    async def printstudyrole(ctx):
         """moosey test!"""
         
         studying = discord.utils.get(guild.roles, name='study')
         
-        ctx.send('{}'.format(studying))
+        ctx.send('{}'.format(studying.name))
         
     @commands.command()
-    async def addstudystring(self, ctx):
+    async def addstudystring(ctx):
         """moosey test!"""
         
         studying = discord.utils.get(ctx.guild.roles, name='study')
@@ -73,18 +73,15 @@ class Mooseytest(commands.Cog):
             ctx.send('Added study role!')
             
     @commands.command()
-    async def addstudystringctx(self, ctx):
-        """moosey test!"""
-        
-        studying = discord.utils.get(guild.roles, name='study')
-        
-        await ctx.author.add_roles(studying)
-        
-        if studying in ctx.author.roles:
-            ctx.send('Added study role!')
+    async def printguildname(ctx):
+        ctx.send('Guild name: {}'.format(ctx.guild.name))
+
+    @commands.command()
+    async def printmyname(ctx):
+        ctx.send('Hi {}!'.format(ctx.author.name))
         
     @commands.command()
-    async def addstudyid(self, ctx):
+    async def addstudyid(ctx):
         """moosey test!"""
         
         await ctx.author.add_roles(817614968127881236)
