@@ -7,11 +7,12 @@ class Mooseytest(commands.Cog):
     """moosey test"""
     def __init__(self):
         self.config = Config.get_conf(self, identifier=131213121312, force_registration=True)
-        self.config.register_member(roles = [], studyInProgess = False)
+        self.config.register_member(roles = [], studyInProgess = False, timerInProgress = False)
+        self.units = {"m" : 60, "minute" : 60, "hour" : 3600, "h" : 3600, "day" : 86400, "d" : 86400, "week": 604800, "w" : 604800, "month": 2592000, "mo": 2592000}
 
     @commands.command()
-    @commands.cooldown(1, 20, commands.BucketType.user)
-    async def study(self, ctx):
+    @commands.cooldown(1, 10, commands.BucketType.user)
+    async def study(self, ctx, quantity = -999, time_unit = "moosey",):
         """Removes all other roles for focusing."""
         
         studying = discord.utils.get(ctx.guild.roles, name='study')
@@ -32,6 +33,29 @@ class Mooseytest(commands.Cog):
 
         roleArray = []
         
+        if await self.config.member(ctx.author).studyInProgess():
+            await ctx.send("Breaking timer.")
+            await self.config.member(ctx.author).timerInProgress.set(False)
+                
+        if quantity != -999 and time_unit != "moosey" and not await self.config.member(ctx.author).studyInProgess():
+            time_unit = time_unit.lower()
+            
+            s = ""
+            if time_unit.endswith("s"):
+                time_unit = time_unit[:-1]
+                s = "s"
+
+            elif not time_unit in self.units:
+                await self.bot.say("Invalid time unit! Choose (m)inutes/(h)ours/(d)ays/(w)eeks/(mo)nth")
+                return
+            elif quantity < 1:
+                await self.bot.say("Quantity must not be 0 or negative.")
+                return
+            elif quantity > 0:
+                await self.config.member(ctx.author).timerInProgress.set(True)
+            
+            seconds = self.units[time_unit] * quantity
+        
         async with self.config.member(ctx.author).roles() as roles:
             if studying in ctx.author.roles:
                 if not await self.config.member(ctx.author).studyInProgess():
@@ -51,7 +75,7 @@ class Mooseytest(commands.Cog):
                     await ctx.author.remove_roles(studying)
                     #beanMsg.delete()
                     await ctx.tick()
-            else:
+            if not studying in ctx.author.roles:
                 #beanMsg = await ctx.send('Focusing **{0}**...'.format(ctx.user.name))
                 roles.clear()
                 for r in userroles:
@@ -64,6 +88,9 @@ class Mooseytest(commands.Cog):
                 await self.config.member(ctx.author).studyInProgess.set(True)
                 #beanMsg.delete()
                 await ctx.tick()
+                if await self.config.member(ctx.author).timerInProgress():
+                    await asyncio.sleep(seconds)
+                    await self.config.member(ctx.author).timerInProgress.set(False)
 
     @commands.command()
     async def appendmyroles(self, ctx):
