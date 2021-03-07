@@ -10,7 +10,7 @@ class Mooseytest(commands.Cog):
     """Study stuff!"""
     def __init__(self):
         self.config = Config.get_conf(self, identifier=13121312, force_registration=True)
-        self.config.register_member(roles = [], studyInProgess = False, timerInProgress = False, recursion = False, timeStudying = 0, unitStudying = "moose")
+        self.config.register_member(roles = [], studyInProgess = False, timerInProgress = False, recursion = False, timeStudying = -999, unitStudying = "moose")
         self.units = {"s" : 1, 
                       "sec" : 1, 
                       "second" : 1, 
@@ -60,7 +60,7 @@ class Mooseytest(commands.Cog):
         if unit_of_time != None:
             testunit = unit_of_time
         
-        time_spent_studying = str(await self.config.member(ctx.author).timeStudying())
+        time_spent_studying = await self.config.member(ctx.author).timeStudying()
         unit_spent_studying = await self.config.member(ctx.author).unitStudying()
         
         if await self.config.member(ctx.author).recursion() and await self.config.member(ctx.author).timerInProgress():
