@@ -64,19 +64,19 @@ class Mooseytest(commands.Cog):
         unit_spent_studying = await self.config.member(ctx.author).unitStudying()
         
         if await self.config.member(ctx.author).recursion() and await self.config.member(ctx.author).timerInProgress():
-            await ctx.send("**{}** has finished studying after {} {}s!".format(ctx.author.name, time_spent_studying, unit_spent_studying))
+            #await ctx.send("**{}** has finished studying after {} {}.".format(ctx.author.name, time_spent_studying, unit_spent_studying))
             await self.config.member(ctx.author).timerInProgress.set(False)
             await self.config.member(ctx.author).recursion.set(False)
         
         elif await self.config.member(ctx.author).recursion() and not await self.config.member(ctx.author).timerInProgress():
-            await ctx.send("Study already finished. Aborting.")
+            #await ctx.send("Study already finished. Aborting.")
             await self.config.member(ctx.author).timerInProgress.set(False)
             await self.config.member(ctx.author).recursion.set(False)
             await self.config.member(ctx.author).studyInProgess.set(False)
             return
             
         elif not await self.config.member(ctx.author).recursion() and await self.config.member(ctx.author).timerInProgress():
-            await ctx.send("Exiting study session prematurely.")
+            #await ctx.send("**{}** has finished studying.".format(ctx.author.name))
             await self.config.member(ctx.author).timerInProgress.set(False)
             
         elif not await self.config.member(ctx.author).studyInProgess():
@@ -127,7 +127,8 @@ class Mooseytest(commands.Cog):
                     await ctx.author.edit(roles=[])
                 await ctx.author.add_roles(studying)
                 await self.config.member(ctx.author).studyInProgess.set(True)
-                await ctx.tick()
+                if not self.config.member(ctx.author).timerInProgress():
+                    await ctx.tick()
                 
         if await self.config.member(ctx.author).timerInProgress():
             await ctx.react_quietly("⏱️")
@@ -136,6 +137,8 @@ class Mooseytest(commands.Cog):
             await asyncio.sleep(timeToWait)
             await self.config.member(ctx.author).recursion.set(True)
             await self.study(ctx)
+            await ctx.clear_reaction("⏱️")
+            await ctx.tick()
 
     @commands.command()
     async def appendmyroles(self, ctx):
