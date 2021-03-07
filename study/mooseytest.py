@@ -137,7 +137,7 @@ class Mooseytest(commands.Cog):
             await asyncio.sleep(timeToWait)
             await self.config.member(ctx.author).recursion.set(True)
             await self.study(ctx)
-            await ctx.clear_reaction("⏱️")
+            await ctx.clear_reactions()
             await ctx.tick()
 
     @commands.command()
