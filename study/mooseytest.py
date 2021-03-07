@@ -61,6 +61,7 @@ class Mooseytest(commands.Cog):
                 await self.config.member(ctx.author).timerInProgress.set(True)
         
         async with self.config.member(ctx.author).roles() as roles:
+            await ctx.send("Got inside loop!")
             if studying in ctx.author.roles:
                 if not await self.config.member(ctx.author).studyInProgess():
                     await ctx.send("You're not currently studying. Did something go wrong?")
