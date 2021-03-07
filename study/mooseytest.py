@@ -119,7 +119,7 @@ class Mooseytest(commands.Cog):
                 await ctx.tick()
                 
         if await self.config.member(ctx.author).timerInProgress():
-            await ctx.react_quietly(":stopwatch:")
+            await ctx.react_quietly("⏱️")
             await asyncio.sleep(timeToWait)
             await self.config.member(ctx.author).recursion.set(True)
             await self.study(ctx)
