@@ -37,12 +37,19 @@ class Mooseytest(commands.Cog):
         roleArray = []
         timeToWait = 0
     
-        if not await self.config.member(ctx.author).recursion() and await self.config.member(ctx.author).timerInProgress():
-            await ctx.send("Exiting study session prematurely.")
+        if await self.config.member(ctx.author).recursion() and await self.config.member(ctx.author).timerInProgress():
+            await ctx.send("Removing roles due to timer.")
             await self.config.member(ctx.author).timerInProgress.set(False)
             await self.config.member(ctx.author).recursion.set(False)
+        
+        elif if await self.config.member(ctx.author).recursion() and not await self.config.member(ctx.author).timerInProgress():
+            await ctx.send("Study already finished. Aborting..")
+            await self.config.member(ctx.author).timerInProgress.set(False)
+            await self.config.member(ctx.author).recursion.set(False)
+            return
             
-        elif await self.config.member(ctx.author).timerInProgress():
+        elif not await self.config.member(ctx.author).recursion() and await self.config.member(ctx.author).timerInProgress():
+            await ctx.send("Exiting study session prematurely.")
             await self.config.member(ctx.author).timerInProgress.set(False)
             
         elif not await self.config.member(ctx.author).studyInProgess():
