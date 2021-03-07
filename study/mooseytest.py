@@ -10,7 +10,7 @@ class Mooseytest(commands.Cog):
     """Study stuff!"""
     def __init__(self):
         self.config = Config.get_conf(self, identifier=13121312, force_registration=True)
-        self.config.register_member(roles = [], studyInProgess = False, timerInProgress = False, recursion = False)
+        self.config.register_member(roles = [], studyInProgess = False, timerInProgress = False, recursion = False, timeStudying = 0, unitStudying = "moose")
         self.units = {"s" : 1, 
                       "sec" : 1, 
                       "second" : 1, 
@@ -61,19 +61,19 @@ class Mooseytest(commands.Cog):
             testunit = unit_of_time
         
         if await self.config.member(ctx.author).recursion() and await self.config.member(ctx.author).timerInProgress():
-            #await ctx.send("Removing roles due to timer.")
+            await ctx.send("**{}** has finished studying after {} {}s!".format(ctx.author.name, str(await self.config.member(ctx.author).timeStudying()), str(await self.config.member(ctx.author).unitStudying())))
             await self.config.member(ctx.author).timerInProgress.set(False)
             await self.config.member(ctx.author).recursion.set(False)
         
         elif await self.config.member(ctx.author).recursion() and not await self.config.member(ctx.author).timerInProgress():
-            #await ctx.send("Study already finished. Aborting.")
+            await ctx.send("Study already finished. Aborting.")
             await self.config.member(ctx.author).timerInProgress.set(False)
             await self.config.member(ctx.author).recursion.set(False)
             await self.config.member(ctx.author).studyInProgess.set(False)
             return
             
         elif not await self.config.member(ctx.author).recursion() and await self.config.member(ctx.author).timerInProgress():
-            #await ctx.send("Exiting study session prematurely.")
+            await ctx.send("Exiting study session prematurely.")
             await self.config.member(ctx.author).timerInProgress.set(False)
             
         elif not await self.config.member(ctx.author).studyInProgess():
@@ -128,6 +128,8 @@ class Mooseytest(commands.Cog):
                 
         if await self.config.member(ctx.author).timerInProgress():
             await ctx.react_quietly("⏱️")
+            await self.config.member(ctx.author).timeStudying.set(int(testdur))
+            await self.config.member(ctx.author).unitStudying.set(str(testunit)
             await asyncio.sleep(timeToWait)
             await self.config.member(ctx.author).recursion.set(True)
             await self.study(ctx)
