@@ -51,17 +51,13 @@ class Mooseytest(commands.Cog):
 
         roleArray = []
         timeToWait = 0
-        testdur = -999
+        testdur = 999
         testunit = "moosey"
     
-        if duration is None:
-            testdur = -999
-        else:
+        if duration != None:
             testdur = duration
             
-        if unit_of_time is None:
-            testunit = "moosey"
-        else:
+        if unit_of_time != None:
             testunit = unit_of_time
         
         if await self.config.member(ctx.author).recursion() and await self.config.member(ctx.author).timerInProgress():
