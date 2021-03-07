@@ -46,22 +46,23 @@ class Mooseytest(commands.Cog):
                 time_unit = time_unit.lower()
                 
                 s = ""
-                if time_unit.endswith("s"):
+                if time_unit.endswith("s") and time_unit != "s":
                     time_unit = time_unit[:-1]
                     s = "s"
 
                 if not time_unit in self.units:
-                    await ctx.send("Invalid time unit. Choose (**m**)inutes/(**h**)ours/(**d**)ays/(**w**)eeks/(**mo**)nth")
+                    await ctx.send("Invalid time unit. Choose (**s**)econds, (**m**)inutes, (**h**)ours, (**d**)ays, (**w**)eeks, (**mo**)nth")
+                    await ctx.react_quietly(":white_cross_mark:813147325840883723")
                     return
                 if quantity < 1:
                     await ctx.send("Quantity must not be 0 or negative.")
+                    await ctx.react_quietly(":white_cross_mark:813147325840883723")
                     return
                     
                 timeToWait = self.units[time_unit] * quantity
                 await self.config.member(ctx.author).timerInProgress.set(True)
         
         async with self.config.member(ctx.author).roles() as roles:
-            await ctx.send("Got inside loop!")
             if studying in ctx.author.roles:
                 if not await self.config.member(ctx.author).studyInProgess():
                     await ctx.send("You're not currently studying. Did something go wrong?")
@@ -92,9 +93,7 @@ class Mooseytest(commands.Cog):
                 await ctx.tick()
                 
         if await self.config.member(ctx.author).timerInProgress():
-            await ctx.send("Waiting for {}...".format(str(timeToWait)))
             await asyncio.sleep(timeToWait)
-            await ctx.send("time!")
             await self.study(ctx)
 
     @commands.command()
