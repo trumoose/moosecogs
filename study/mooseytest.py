@@ -42,6 +42,12 @@ class Mooseytest(commands.Cog):
             await self.config.member(ctx.author).timerInProgress.set(False)
             await self.config.member(ctx.author).studyInProgess.set(False)
         
+        if await self.config.member(ctx.author).studyInProgess():
+            await ctx.send("Study in progress!")
+            
+        if not await self.config.member(ctx.author).studyInProgess():
+            await ctx.send("Study not in progress!")
+            
         if not await self.config.member(ctx.author).studyInProgess():
             if quantity != -999 or time_unit != "moosey":
                 time_unit = time_unit.lower()
