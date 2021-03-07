@@ -55,12 +55,12 @@ class Mooseytest(commands.Cog):
         testunit = "moosey"
     
         if duration is None:
-            duration = -999
+            testdur = -999
         else:
             testdur = duration
             
         if unit_of_time is None:
-            unit_of_time = "moosey"
+            testunit = "moosey"
         else:
             testunit = unit_of_time
         
