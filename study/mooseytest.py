@@ -90,11 +90,12 @@ class Mooseytest(commands.Cog):
                 await ctx.author.add_roles(studying)
                 await self.config.member(ctx.author).studyInProgess.set(True)
                 await ctx.tick()
-                if await self.config.member(ctx.author).timerInProgress():
-                    await ctx.send("Waiting for {}...".format(str(timeToWait)))
-                    await asyncio.sleep(timeToWait)
-                    await ctx.send("time!")
-                    await self.study(ctx)
+                
+        if await self.config.member(ctx.author).timerInProgress():
+            await ctx.send("Waiting for {}...".format(str(timeToWait)))
+            await asyncio.sleep(timeToWait)
+            await ctx.send("time!")
+            await self.study(ctx)
 
     @commands.command()
     async def appendmyroles(self, ctx):
