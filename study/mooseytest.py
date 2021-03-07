@@ -3,6 +3,8 @@ from redbot.core import Config
 import asyncio
 import discord.utils 
 import discord
+import os
+import time
 
 class Mooseytest(commands.Cog):
     """moosey test"""
@@ -86,11 +88,11 @@ class Mooseytest(commands.Cog):
                     await ctx.author.edit(roles=[])
                 await ctx.author.add_roles(studying)
                 await self.config.member(ctx.author).studyInProgess.set(True)
-                await ctx.tick()
                 if await self.config.member(ctx.author).timerInProgress():
                     await asyncio.sleep(seconds)
                     await ctx.send("time!")
-                    study(self, ctx)
+                    await study(self, ctx)
+                await ctx.tick()
 
     @commands.command()
     async def appendmyroles(self, ctx):
