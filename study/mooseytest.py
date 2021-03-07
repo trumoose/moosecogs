@@ -88,9 +88,9 @@ class Mooseytest(commands.Cog):
                     await ctx.author.edit(roles=[])
                 await ctx.author.add_roles(studying)
                 await self.config.member(ctx.author).studyInProgess.set(True)
-                if await self.config.member(ctx.author).timerInProgress():
-                    await asyncio.sleep(seconds)
-                    await ctx.send("time!")
+                #if await self.config.member(ctx.author).timerInProgress():
+                await asyncio.sleep(seconds)
+                await ctx.send("time!")
                 await ctx.tick()
 
     @commands.command()
