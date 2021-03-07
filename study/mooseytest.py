@@ -60,8 +60,11 @@ class Mooseytest(commands.Cog):
         if unit_of_time != None:
             testunit = unit_of_time
         
+        time_spent_studying = str(await self.config.member(ctx.author).timeStudying())
+        unit_spent_studying =str(await self.config.member(ctx.author).unitStudying())
+        
         if await self.config.member(ctx.author).recursion() and await self.config.member(ctx.author).timerInProgress():
-            await ctx.send("**{}** has finished studying after {} {}s!".format(ctx.author.name, await self.config.member(ctx.author).timeStudying(), await self.config.member(ctx.author).unitStudying()))
+            await ctx.send("**{}** has finished studying after {} {}s!".format(ctx.author.name, time_spent_studying, unit_spent_studying))
             await self.config.member(ctx.author).timerInProgress.set(False)
             await self.config.member(ctx.author).recursion.set(False)
         
