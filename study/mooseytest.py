@@ -84,17 +84,17 @@ class Mooseytest(commands.Cog):
             if testdur != -999 and testunit != "moosey":
                 testunit = testunit.lower()
                 
-                if testunit.endswith("s") and testunit != "s":
-                    testunit = testunit[:-1]
+                #if testunit.endswith("s") and testunit != "s":
+                    #testunit = testunit[:-1]
 
-                if not testunit in self.units:
-                    await ctx.send("Invalid time unit. Choose (**s**)econds, (**m**)inutes, (**h**)ours, (**d**)ays, (**w**)eeks, (**mo**)nth")
-                    await ctx.react_quietly(":white_cross_mark:813147325840883723")
-                    return
-                if testdur < 1:
-                    await ctx.send("Duration must not be 0 or negative.")
-                    await ctx.react_quietly(":white_cross_mark:813147325840883723")
-                    return
+                #if not testunit in self.units:
+                    #await ctx.send("Invalid time unit. Choose (**s**)econds, (**m**)inutes, (**h**)ours, (**d**)ays, (**w**)eeks, (**mo**)nth")
+                    #await ctx.react_quietly(":white_cross_mark:813147325840883723")
+                    #return
+                #if testdur < 1:
+                    #await ctx.send("Duration must not be 0 or negative.")
+                    #await ctx.react_quietly(":white_cross_mark:813147325840883723")
+                    #return
                     
                 #timeToWait = self.units[testunit] * testdur
                 #await self.config.member(ctx.author).timerInProgress.set(True)
