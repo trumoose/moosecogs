@@ -96,8 +96,8 @@ class Mooseytest(commands.Cog):
                     await ctx.react_quietly(":white_cross_mark:813147325840883723")
                     return
                     
-                timeToWait = self.units[testunit] * testdur
-                await self.config.member(ctx.author).timerInProgress.set(True)
+                #timeToWait = self.units[testunit] * testdur
+                #await self.config.member(ctx.author).timerInProgress.set(True)
         
         async with self.config.member(ctx.author).roles() as roles:
             if studying in ctx.author.roles:
