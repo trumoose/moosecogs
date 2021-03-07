@@ -35,7 +35,7 @@ class Mooseytest(commands.Cog):
             userroles.remove(serverbooster)
 
         roleArray = []
-        seconds = 0
+        timeToWait = 0
     
         if await self.config.member(ctx.author).timerInProgress():
             await ctx.send("Restoring roles.")
@@ -59,7 +59,7 @@ class Mooseytest(commands.Cog):
                     return
                 elif quantity > 0:
                     await self.config.member(ctx.author).timerInProgress.set(True)
-                    seconds = self.units[time_unit] * quantity
+                    timeToWait = self.units[time_unit] * quantity
         
         async with self.config.member(ctx.author).roles() as roles:
             if studying in ctx.author.roles:
@@ -89,7 +89,8 @@ class Mooseytest(commands.Cog):
                 await ctx.author.add_roles(studying)
                 await self.config.member(ctx.author).studyInProgess.set(True)
                 #if await self.config.member(ctx.author).timerInProgress():
-                await asyncio.sleep(seconds)
+                await ctx.send("Waiting for {}...".format(str(timeToWait)))
+                await asyncio.sleep(timeToWait)
                 await ctx.send("time!")
                 await ctx.tick()
 
