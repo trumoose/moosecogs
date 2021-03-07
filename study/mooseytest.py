@@ -91,7 +91,6 @@ class Mooseytest(commands.Cog):
                 if await self.config.member(ctx.author).timerInProgress():
                     await asyncio.sleep(seconds)
                     await ctx.send("time!")
-                    await study(self, ctx)
                 await ctx.tick()
 
     @commands.command()
