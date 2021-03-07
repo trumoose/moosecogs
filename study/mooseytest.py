@@ -51,6 +51,14 @@ class Mooseytest(commands.Cog):
 
         roleArray = []
         timeToWait = 0
+        testdur = 999
+        testunit = "moosey"
+    
+        if duration != None:
+            testdur = duration
+            
+        if unit_of_time != None:
+            testunit = unit_of_time
         
         if await self.config.member(ctx.author).recursion() and await self.config.member(ctx.author).timerInProgress():
             #await ctx.send("Removing roles due to timer.")
@@ -69,25 +77,23 @@ class Mooseytest(commands.Cog):
             await self.config.member(ctx.author).timerInProgress.set(False)
             
         elif not await self.config.member(ctx.author).studyInProgess():
-            if duration != None and unit_of_time != None:
-                duration = int(duration)
-                unit_of_time = str(duration)
-                unit_of_time = unit_of_time.lower()
+            if testdur != -999 and testunit != "moosey":
+                testunit = testunit.lower()
                 
-                if unit_of_time.endswith("s") and unit_of_time != "s":
-                    unit_of_time = unit_of_time[:-1]
+                if testunit.endswith("s") and testunit != "s":
+                    testunit = testunit[:-1]
 
-                if not unit_of_time in self.units:
+                if not testunit in self.units:
                     await ctx.send("Invalid time unit. Choose (**s**)econds, (**m**)inutes, (**h**)ours, (**d**)ays, (**w**)eeks, (**mo**)nth")
                     await ctx.react_quietly(":white_cross_mark:813147325840883723")
                     return
                     
-                if int(duration) < 1:
+                if int(testdur) < 1:
                     await ctx.send("Must not be 0 or negative.")
                     await ctx.react_quietly(":white_cross_mark:813147325840883723")
                     return
                     
-                timeToWait = self.units[unit_of_time] * duration
+                timeToWait = self.units[testunit] * testdur
                 await self.config.member(ctx.author).timerInProgress.set(True)
         
         async with self.config.member(ctx.author).roles() as roles:
