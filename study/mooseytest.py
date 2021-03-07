@@ -24,8 +24,8 @@ class Mooseytest(commands.Cog):
                       "w" : 604800, 
                       "wk" : 604800, 
                       "week": 604800, 
-                      "mo": 2592000}
-                      "month": 2592000, 
+                      "mo": 2592000,
+                      "month": 2592000}
 
     @commands.command()
     @commands.cooldown(1, 5, commands.BucketType.user)
