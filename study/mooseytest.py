@@ -7,9 +7,9 @@ import os
 import time
 
 class Mooseytest(commands.Cog):
-    """moosey test"""
+    """Study stuff!"""
     def __init__(self):
-        self.config = Config.get_conf(self, identifier=131213121312, force_registration=True)
+        self.config = Config.get_conf(self, identifier=13121312, force_registration=True)
         self.config.register_member(roles = [], studyInProgess = False, timerInProgress = False, recursion = False)
         self.units = {"s" : 1, 
                       "sec" : 1, 
@@ -18,6 +18,7 @@ class Mooseytest(commands.Cog):
                       "min" : 60, 
                       "minute" : 60, 
                       "h" : 3600, 
+                      "hr" : 3600, 
                       "hour" : 3600, 
                       "d" : 86400, 
                       "day" : 86400, 
@@ -29,8 +30,8 @@ class Mooseytest(commands.Cog):
 
     @commands.command()
     @commands.cooldown(1, 5, commands.BucketType.user)
-    async def study(self, ctx, quantity = -999, time_unit = "moosey"):
-        """Removes all other roles for focusing."""
+    async def study(self, ctx, duration = None, unit_of_time = None):
+        """Temporary time-out for those who lack self control."""
         
         studying = discord.utils.get(ctx.guild.roles, name='study')
 
@@ -57,7 +58,7 @@ class Mooseytest(commands.Cog):
             await self.config.member(ctx.author).recursion.set(False)
         
         elif await self.config.member(ctx.author).recursion() and not await self.config.member(ctx.author).timerInProgress():
-            #await ctx.send("Study already finished. Aborting..")
+            #await ctx.send("Study already finished. Aborting.")
             await self.config.member(ctx.author).timerInProgress.set(False)
             await self.config.member(ctx.author).recursion.set(False)
             await self.config.member(ctx.author).studyInProgess.set(False)
@@ -68,24 +69,24 @@ class Mooseytest(commands.Cog):
             await self.config.member(ctx.author).timerInProgress.set(False)
             
         elif not await self.config.member(ctx.author).studyInProgess():
-            if quantity != -999 or time_unit != "moosey":
-                time_unit = time_unit.lower()
+            if duration is None or unit_of_time is None:
+                unit_of_time = unit_of_time.lower()
                 
                 s = ""
-                if time_unit.endswith("s") and time_unit != "s":
-                    time_unit = time_unit[:-1]
+                if unit_of_time.endswith("s") and unit_of_time != "s":
+                    unit_of_time = unit_of_time[:-1]
                     s = "s"
 
-                if not time_unit in self.units:
+                if not unit_of_time in self.units:
                     await ctx.send("Invalid time unit. Choose (**s**)econds, (**m**)inutes, (**h**)ours, (**d**)ays, (**w**)eeks, (**mo**)nth")
                     await ctx.react_quietly(":white_cross_mark:813147325840883723")
                     return
-                if quantity < 1:
-                    await ctx.send("Quantity must not be 0 or negative.")
+                if duration < 1:
+                    await ctx.send("Duration must not be 0 or negative.")
                     await ctx.react_quietly(":white_cross_mark:813147325840883723")
                     return
                     
-                timeToWait = self.units[time_unit] * quantity
+                timeToWait = self.units[unit_of_time] * duration
                 await self.config.member(ctx.author).timerInProgress.set(True)
         
         async with self.config.member(ctx.author).roles() as roles:
