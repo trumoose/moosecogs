@@ -40,15 +40,8 @@ class Mooseytest(commands.Cog):
         if await self.config.member(ctx.author).timerInProgress():
             await ctx.send("Restoring roles.")
             await self.config.member(ctx.author).timerInProgress.set(False)
-            await self.config.member(ctx.author).studyInProgess.set(False)
-        
-        if await self.config.member(ctx.author).studyInProgess():
-            await ctx.send("Study in progress!")
             
-        if not await self.config.member(ctx.author).studyInProgess():
-            await ctx.send("Study not in progress!")
-            
-        if not await self.config.member(ctx.author).studyInProgess():
+        elif not await self.config.member(ctx.author).studyInProgess():
             if quantity != -999 or time_unit != "moosey":
                 time_unit = time_unit.lower()
                 
@@ -66,7 +59,6 @@ class Mooseytest(commands.Cog):
                     
                 timeToWait = self.units[time_unit] * quantity
                 await self.config.member(ctx.author).timerInProgress.set(True)
-                await ctx.send("#1: Waiting for {}...".format(str(timeToWait)))
         
         async with self.config.member(ctx.author).roles() as roles:
             if studying in ctx.author.roles:
@@ -96,11 +88,11 @@ class Mooseytest(commands.Cog):
                     await ctx.author.edit(roles=[])
                 await ctx.author.add_roles(studying)
                 await self.config.member(ctx.author).studyInProgess.set(True)
-                #if await self.config.member(ctx.author).timerInProgress():
-                await ctx.send("Waiting for {}...".format(str(timeToWait)))
-                await asyncio.sleep(timeToWait)
-                await ctx.send("time!")
                 await ctx.tick()
+                if await self.config.member(ctx.author).timerInProgress():
+                    await ctx.send("Waiting for {}...".format(str(timeToWait)))
+                    await asyncio.sleep(timeToWait)
+                    await ctx.send("time!")
 
     @commands.command()
     async def appendmyroles(self, ctx):
