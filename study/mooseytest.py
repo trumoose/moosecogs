@@ -10,7 +10,7 @@ class Mooseytest(commands.Cog):
     """moosey test"""
     def __init__(self):
         self.config = Config.get_conf(self, identifier=131213121312, force_registration=True)
-        self.config.register_member(roles = [], studyInProgess = False, timerInProgress = False)
+        self.config.register_member(roles = [], studyInProgess = False, timerInProgress = False, recursion = False)
         self.units = {"s" : 1, "second" : 1, "m" : 60, "minute" : 60, "hour" : 3600, "h" : 3600, "day" : 86400, "d" : 86400, "week": 604800, "w" : 604800, "month": 2592000, "mo": 2592000}
 
     @commands.command()
@@ -37,8 +37,12 @@ class Mooseytest(commands.Cog):
         roleArray = []
         timeToWait = 0
     
-        if await self.config.member(ctx.author).timerInProgress():
-            await ctx.send("Restoring roles.")
+        if not await self.config.member(ctx.author).recursion() and await self.config.member(ctx.author).timerInProgress():
+            await ctx.send("Exiting study session prematurely.")
+            await self.config.member(ctx.author).timerInProgress.set(False)
+            await self.config.member(ctx.author).recursion.set(False)
+            
+        elif await self.config.member(ctx.author).timerInProgress():
             await self.config.member(ctx.author).timerInProgress.set(False)
             
         elif not await self.config.member(ctx.author).studyInProgess():
@@ -94,6 +98,7 @@ class Mooseytest(commands.Cog):
                 
         if await self.config.member(ctx.author).timerInProgress():
             await asyncio.sleep(timeToWait)
+            await self.config.member(ctx.author).recursion.set(True)
             await self.study(ctx)
 
     @commands.command()
