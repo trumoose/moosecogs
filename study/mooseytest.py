@@ -64,9 +64,6 @@ class Mooseytest(commands.Cog):
         else:
             testunit = unit_of_time
         
-        await ctx.send("duration: {}".format(str(testdur)))
-        await ctx.send("unit_of_time: {}".format(str(testunit)))
-        
         if await self.config.member(ctx.author).recursion() and await self.config.member(ctx.author).timerInProgress():
             #await ctx.send("Removing roles due to timer.")
             await self.config.member(ctx.author).timerInProgress.set(False)
