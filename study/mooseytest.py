@@ -87,10 +87,8 @@ class Mooseytest(commands.Cog):
             if testdur != -999 and testunit != "moosey":
                 testunit = testunit.lower()
                 
-                s = ""
                 if testunit.endswith("s") and testunit != "s":
                     testunit = testunit[:-1]
-                    s = "s"
 
                 if not testunit in self.units:
                     await ctx.send("Invalid time unit. Choose (**s**)econds, (**m**)inutes, (**h**)ours, (**d**)ays, (**w**)eeks, (**mo**)nth")
