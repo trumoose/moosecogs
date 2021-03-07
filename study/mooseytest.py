@@ -92,10 +92,10 @@ class Mooseytest(commands.Cog):
                     await ctx.react_quietly(":white_cross_mark:813147325840883723")
                     return
                     
-                #if testdur < 1:
-                    #await ctx.send("Duration must not be 0 or negative.")
-                    #await ctx.react_quietly(":white_cross_mark:813147325840883723")
-                    #return
+                if testdur < 1:
+                    await ctx.send("Duration must not be 0 or negative.")
+                    await ctx.react_quietly(":white_cross_mark:813147325840883723")
+                    return
                     
                 #timeToWait = self.units[testunit] * testdur
                 #await self.config.member(ctx.author).timerInProgress.set(True)
