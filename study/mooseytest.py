@@ -119,10 +119,10 @@ class Mooseytest(commands.Cog):
                 await ctx.tick()
                 
         if await self.config.member(ctx.author).timerInProgress():
+            await ctx.react_quietly(":stopwatch:")
             await asyncio.sleep(timeToWait)
             await self.config.member(ctx.author).recursion.set(True)
             await self.study(ctx)
-            await ctx.react_quietly(":stopwatch:")
 
     @commands.command()
     async def appendmyroles(self, ctx):
