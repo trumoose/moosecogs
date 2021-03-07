@@ -37,6 +37,7 @@ class Mooseytest(commands.Cog):
 
         everyone1 = ctx.guild.get_role(776052319271911434)
         serverbooster = ctx.guild.get_role(767011709155672095)
+        botwrangler = ctx.guild.get_role(801850754565537874)
         everyone2 = ctx.guild.get_role(766870004086865930)
         
         userroles = ctx.author.roles
@@ -48,6 +49,9 @@ class Mooseytest(commands.Cog):
             
         if serverbooster in userroles:
             userroles.remove(serverbooster)
+            
+        if botwrangler in userroles:
+            userroles.remove(botwrangler)
 
         roleArray = []
         timeToWait = 0
@@ -123,6 +127,8 @@ class Mooseytest(commands.Cog):
                     roles.append(r.id)
                 if serverbooster in ctx.author.roles:
                     await ctx.author.edit(roles=[serverbooster])
+                elif botwrangler in ctx.author.roles:
+                    await ctx.author.edit(roles=[botwrangler])
                 else:
                     await ctx.author.edit(roles=[])
                 await ctx.author.add_roles(studying)
