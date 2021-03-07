@@ -57,9 +57,9 @@ class Mooseytest(commands.Cog):
                 if quantity < 1:
                     await ctx.send("Quantity must not be 0 or negative.")
                     return
-                elif quantity > 0:
-                    await self.config.member(ctx.author).timerInProgress.set(True)
+                if quantity > 0:
                     timeToWait = self.units[time_unit] * quantity
+                    await self.config.member(ctx.author).timerInProgress.set(True)
         
         async with self.config.member(ctx.author).roles() as roles:
             if studying in ctx.author.roles:
