@@ -60,6 +60,7 @@ class Mooseytest(commands.Cog):
                     
                 timeToWait = self.units[time_unit] * quantity
                 await self.config.member(ctx.author).timerInProgress.set(True)
+                await ctx.send("#1: Waiting for {}...".format(str(timeToWait)))
         
         async with self.config.member(ctx.author).roles() as roles:
             if studying in ctx.author.roles:
