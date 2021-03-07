@@ -69,7 +69,7 @@ class Mooseytest(commands.Cog):
             await self.config.member(ctx.author).timerInProgress.set(False)
             
         elif not await self.config.member(ctx.author).studyInProgess():
-            if duration != None and unit_of_time != None:
+            if duration != None or unit_of_time != None:
                 unit_of_time = unit_of_time.lower()
                 
                 s = ""
