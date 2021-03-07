@@ -93,7 +93,7 @@ class Mooseytest(commands.Cog):
                     await ctx.send("Waiting for {}...".format(str(timeToWait)))
                     await asyncio.sleep(timeToWait)
                     await ctx.send("time!")
-                    await self.study(self, ctx)
+                    await self.study(ctx)
 
     @commands.command()
     async def appendmyroles(self, ctx):
