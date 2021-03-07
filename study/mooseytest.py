@@ -30,7 +30,7 @@ class Mooseytest(commands.Cog):
 
     @commands.command()
     @commands.cooldown(1, 5, commands.BucketType.user)
-    async def study(self, ctx, duration = None, unit_of_time = ""):
+    async def study(self, ctx, duration = None, unit_of_time = None):
         """Temporary time-out for those who lack self control."""
         
         studying = discord.utils.get(ctx.guild.roles, name='study')
@@ -52,6 +52,12 @@ class Mooseytest(commands.Cog):
         roleArray = []
         timeToWait = 0
     
+        if duration is None:
+            duration = -999
+            
+        if unit_of_time is None:
+            unit_of_time = "moosey"
+        
         if await self.config.member(ctx.author).recursion() and await self.config.member(ctx.author).timerInProgress():
             #await ctx.send("Removing roles due to timer.")
             await self.config.member(ctx.author).timerInProgress.set(False)
@@ -69,7 +75,7 @@ class Mooseytest(commands.Cog):
             await self.config.member(ctx.author).timerInProgress.set(False)
             
         elif not await self.config.member(ctx.author).studyInProgess():
-            if duration != None or unit_of_time != "":
+            if duration != -999 and unit_of_time != "moosey":
                 unit_of_time = unit_of_time.lower()
                 
                 s = ""
