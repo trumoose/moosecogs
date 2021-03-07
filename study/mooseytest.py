@@ -84,6 +84,7 @@ class Mooseytest(commands.Cog):
                         roleArray.append(serverbooster)
                     await ctx.author.edit(roles=roleArray)
                     await ctx.author.remove_roles(studying)
+                    await self.config.member(ctx.author).studyInProgess.set(False)
                     await ctx.tick()
             elif not studying in ctx.author.roles:
                 roles.clear()
