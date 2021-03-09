@@ -20,7 +20,7 @@ class Countchart(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.config = Config.get_conf(self, identifier=1312131213121312, force_registration=True)
-        self.config.register_guild(guild_messages = [])
+        self.config.register_guild(guild_messages = [], guild_authors = [])
 
     @staticmethod
     async def create_chart(top, others, channel):
@@ -85,25 +85,27 @@ class Countchart(commands.Cog):
         
         await ctx.send("Gathering messages...")
         
-        msg_data = {"total count": 0, "users": {}}
+        
         
         async with self.config.guild(ctx.guild).guild_messages() as message_history:
-            async for msg in channel.history(limit=1000000):
-                if msg:
-                    if not msg in message_history:
-                        message_history.append(str(msg.author))
+            async with self.config.guild(ctx.guild).guild_authors() as authors:
+                async for msg in channel.history(limit=1000000):
+                    text = msg.content
+                    if not text in message_history:
+                        message_history.append(str(msg.content))
+                        authors.append(str(msg.author))
                         await asyncio.sleep(0.005)
 
-            await ctx.send("All messages gathered!")
+                await ctx.send("All messages gathered!")
 
-            for author in message_history:
-                if author in msg_data["users"]:
-                    msg_data["users"][author]["msgcount"] += 1
-                    msg_data["total count"] += 1
-                else:
-                    msg_data["users"][author] = {}
-                    msg_data["users"][author]["msgcount"] = 1
-                    msg_data["total count"] += 1
+                for author in authors:
+                    if author in msg_data["users"]:
+                        msg_data["users"][author]["msgcount"] += 1
+                        msg_data["total count"] += 1
+                    else:
+                        msg_data["users"][author] = {}
+                        msg_data["users"][author]["msgcount"] = 1
+                        msg_data["total count"] += 1
 
         for usr in msg_data["users"]:
             pd = float(msg_data["users"][usr]["msgcount"]) / float(msg_data["total count"])
@@ -132,5 +134,8 @@ class Countchart(commands.Cog):
     async def emptycountchart(self, ctx):
         empty = []
         await self.config.guild(ctx.guild).guild_messages.set(empty)
+        await self.config.guild(ctx.guild).guild_authors.set(empty)
+        
+    
 		
 		
