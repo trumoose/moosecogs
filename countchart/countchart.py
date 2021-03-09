@@ -93,7 +93,7 @@ class Countchart(commands.Cog):
 
         await ctx.send("All messages gathered!")
         
-        #await self.config.guild(ctx.guild).guild_messages.set(message_history)
+        await self.config.guild(ctx.guild).guild_messages.set(message_history)
 
     @commands.command()
     async def sendcountchart(self, ctx):
