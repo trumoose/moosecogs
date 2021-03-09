@@ -1,4 +1,4 @@
-from .countchart import Countchart
+from .approvalchart import Approvalchart
 
 def setup(bot):
-    bot.add_cog(Countchart(bot))
+    bot.add_cog(Approvalchart(bot))
