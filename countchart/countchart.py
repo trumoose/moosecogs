@@ -85,17 +85,17 @@ class Countchart(commands.Cog):
         """Generates a pie chart, representing all the messages in the countchart channel."""
         
         channel = ctx.guild.get_channel(771829982158389258)
-        message_history = await self.config.guild(ctx.guild).guild_messages()
+        #message_history = await self.config.guild(ctx.guild).guild_messages()
 
-        async for msg in channel.history():
-            if not msg in message_history:
-                message_history.append(msg)
-                await asyncio.sleep(0.005)
+        #async for msg in channel.history():
+            #if not msg in message_history:
+                #message_history.append(msg)
+                #await asyncio.sleep(0.005)
 
-        await self.config.guild(ctx.guild).guild_messages.set(message_history)
+        #await self.config.guild(ctx.guild).guild_messages.set(message_history)
         
-        async for msg in message_history:
-            await send ctx.send("{}".format(msg))
+        #async for msg in message_history:
+            #await send ctx.send("{}".format(msg))
     
     @commands.command()
     async def sendcountchart(self, ctx):
