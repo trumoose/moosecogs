@@ -125,8 +125,7 @@ class Countchart(commands.Cog):
 
     @commands.command()
     async def sendcountchart(self, ctx):
-        message_history = await self.config.guild(ctx.guild).guild_messages()
-        await ctx.send("Total messages: {}".format(message_history.len()))
+        await ctx.send("Total messages: {}".format(await self.config.guild(ctx.guild).guild_messages().len())
         
     @commands.command()
     async def emptycountchart(self, ctx):
