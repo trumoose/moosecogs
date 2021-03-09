@@ -31,7 +31,7 @@ class Countchart(commands.Cog):
         if len(top) >= 20:
             sizes = sizes + [others]
             labels = labels + ["Others {:g}%".format(others)]
-        title = plt.title("Counting Stats", color="white", fontsize=15)
+        title = plt.title("Counting  ", color="white", fontsize=15)
         title.set_va("top")
         title.set_ha("center")
         plt.gca().axis("equal")
