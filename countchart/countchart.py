@@ -27,7 +27,7 @@ class Countchart(commands.Cog):
     @commands.command()
     @commands.cooldown(1, 10, commands.BucketType.channel)
     @commands.max_concurrency(1, commands.BucketType.channel)
-    async def countchart2(self, ctx):
+    async def counting(self, ctx):
         """Generates a pie chart, representing all the messages in the countchart channel."""
         
         ctx.send("hi")
