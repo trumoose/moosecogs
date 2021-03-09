@@ -48,7 +48,7 @@ class Countchart(commands.Cog):
             facecolor="#ffffff",
         )
         plt.subplots(figsize=(10,10))
-        plt.subplots_adjust(left=0.0, bottom=0.1, right=0.90)
+        plt.subplots_adjust(left=0.0, bottom=0.1, right=0.45)
         image_object = BytesIO()
         plt.savefig(image_object, format="PNG", facecolor="#36393E")
         image_object.seek(0)
