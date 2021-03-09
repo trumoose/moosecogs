@@ -20,10 +20,7 @@ class Countchart(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.config = Config.get_conf(self, 1312131213121312, force_registration=True)
-
-        default_guild = {"guild_messages": []}
-
-        self.config.register_guild(**default_guild)
+        self.config.register_guild(guild_messages = [])
     """
     @staticmethod
     async def create_chart(top, others):
@@ -92,15 +89,13 @@ class Countchart(commands.Cog):
         messages = 1000000
 
         message_history = await self.config.guild(ctx.guild).guild_messages()
-        history_counter = 0
 
-        async for msg in channel.history(limit=messages):
-            if not msg in message_history:
-                message_history.append(msg)
-                history_counter += 1
-                await asyncio.sleep(0.005)
+        #async for msg in channel.history(limit=messages):
+            #if not msg in message_history:
+                #message_history.append(msg)
+                #await asyncio.sleep(0.005)
 
-        await self.config.guild(ctx.guild).guild_messages.set(message_history)
+        #await self.config.guild(ctx.guild).guild_messages.set(message_history)
         """
         msg_data = {"total count": 0, "users": {}}
         for msg in message_history:
