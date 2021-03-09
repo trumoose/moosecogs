@@ -30,7 +30,7 @@ class Countchart(commands.Cog):
         
         channel = discord.get_channel("771829982158389258")
         #messages = 1000000
-        await ctx.send("{}".format(channel))
+        await ctx.send("{}".format(channel.name))
         #message_history = await self.config.guild(ctx.guild).guild_messages()
 
         #async for msg in channel.history(limit=messages):
