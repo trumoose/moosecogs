@@ -24,7 +24,7 @@ class Countchart(commands.Cog):
 
 	@staticmethod
     async def create_chart(top, others):
-        channel = discord.get_channel(id=771829982158389258)
+        channel = ctx.guild.get_channel(771829982158389258)
         plt.clf()
         sizes = [x[1] for x in top]
         labels = ["{} {:g}%".format(x[0], x[1]) for x in top]
@@ -86,7 +86,6 @@ class Countchart(commands.Cog):
         
         channel = ctx.guild.get_channel(771829982158389258)
         messages = 1000000
-        await ctx.send("{}".format(channel.name))
         message_history = await self.config.guild(ctx.guild).guild_messages()
 
         async for msg in channel.history(limit=messages):
@@ -135,8 +134,3 @@ class Countchart(commands.Cog):
         except discord.NotFound:
             pass
         await ctx.send(file=discord.File(chart, "chart.png"))
-        
-    @commands.command()
-    async def emptycountchart(self, ctx):
-        empty = []
-        await self.config.guild(ctx.guild).guild_messages.set(empty)
