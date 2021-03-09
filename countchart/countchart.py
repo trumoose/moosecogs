@@ -39,8 +39,8 @@ class Countchart(commands.Cog):
         title.set_va("top")
         title.set_ha("center")
         plt.gca().axis("equal")
-        cmap = plt.cm.twilight
-        colors = cmap(np.linspace(0., 1., 20))
+        cmap = plt.cm.hsv
+        colors = cmap(np.linspace(0., 1., 21))
         pie = plt.pie(sizes, colors=colors, startangle=0)
         plt.legend(
             pie[0],
