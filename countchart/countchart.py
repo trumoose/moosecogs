@@ -45,7 +45,7 @@ class Countchart(commands.Cog):
             "lightpink",
         ]
         cmap = plt.cm.prism
-        colors = cmap(np.linspace(0., 1., len(slices)))
+        colors = cmap(np.linspace(0., 1., len(sizes)))
         pie = plt.pie(sizes, colors=colors, startangle=0)
         plt.legend(
             pie[0],
