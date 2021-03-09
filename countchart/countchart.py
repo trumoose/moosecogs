@@ -90,23 +90,20 @@ class Countchart(commands.Cog):
                 if msg:
                     if not msg in message_history:
                         try:
-                            message_history.append(msg)
+                            message_history.append(msg.author)
                         except:
                             print("couldn't add to array, moosey is bad at coding!")
                         await asyncio.sleep(0.005)
 
         await ctx.send("All messages gathered!")
         
-        """
         msg_data = {"total count": 0, "users": {}}
         for msg in self.config.guild(ctx.guild).guild_messages():
-            if len(msg.author.display_name) >= 20:
+            if len(msg) >= 20:
                 short_name = "{}...".format(msg.author.display_name[:20]).replace("$", "\\$")
             else:
                 short_name = msg.author.display_name.replace("$", "\\$").replace("_", "\\_ ").replace("*", "\\*")
             whole_name = "{}#{}".format(short_name, msg.author.discriminator)
-            if msg.author.bot:
-                pass
             elif whole_name in msg_data["users"]:
                 msg_data["users"][whole_name]["msgcount"] += 1
                 msg_data["total count"] += 1
@@ -132,7 +129,6 @@ class Countchart(commands.Cog):
         others = 100 - sum(x[1] for x in top_ten)
         chart = await self.create_chart(top_ten, others, channel)
         await ctx.send(file=discord.File(chart, "chart.png"))
-        """
 
     @commands.command()
     async def sendcountchart(self, ctx):
