@@ -82,19 +82,19 @@ class Countchart(commands.Cog):
         """Generates a pie chart, representing all the messages in the countchart channel."""
         
         channel = ctx.guild.get_channel(771829982158389258)
-        
+        messages = channel.history(limit = 1000000)
+  
         await ctx.send("Gathering messages...")
         
         msg_data = {"total count": 0, "users": {}}
         async with self.config.guild(ctx.guild).guild_messages() as message_history:
             async with self.config.guild(ctx.guild).guild_authors() as authors:
-                messages = channel.history(limit = 1000000)
                 last_known_element = message_history[0]
-                await ctx.send("First message: {}".format(str(message_history[0])))
                 await ctx.send("Last message: {}".format(str(last_known_element)))
                 async for msg in messages:
                     text = msg.content
-                    if last_known_element != str(msg.content):
+                    if last_known_element != text:
+                        await ctx.send("Found a new number: {}".format(text))
                         message_history.append(str(msg.content))
                         authors.append(str(msg.author))
                         await asyncio.sleep(0.005)
