@@ -86,7 +86,7 @@ class Countchart(commands.Cog):
 
         await ctx.send("Gathering messages...")
         
-        async for msg in channel.history():
+        async for msg in channel.history(limit=1000000):
             if not msg in message_history:
                 message_history.append(msg)
                 await asyncio.sleep(0.005)
