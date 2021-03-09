@@ -31,7 +31,7 @@ class Countchart(commands.Cog):
         if len(top) >= 20:
             sizes = sizes + [others]
             labels = labels + ["Others {:g}%".format(others)]
-        title = plt.title("Counting Stats", color="white")
+        title = plt.title("Counting Stats", color="white", fontsize=20)
         title.set_va("top")
         title.set_ha("center")
         plt.gca().axis("equal")
@@ -47,7 +47,6 @@ class Countchart(commands.Cog):
             bbox_transform=plt.gcf().transFigure,
             facecolor="#ffffff",
         )
-        plt.subplots(figsize=(1,1))
         plt.subplots_adjust(left=0.0, bottom=0.1, right=0.45)
         image_object = BytesIO()
         plt.savefig(image_object, format="PNG", facecolor="#36393E")
