@@ -6,7 +6,7 @@ import discord
 import os
 import time
 
-class Mooseytest(commands.Cog):
+class Study(commands.Cog):
     """Study stuff!"""
     def __init__(self):
         self.config = Config.get_conf(self, identifier=13121312, force_registration=True)

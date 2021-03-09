@@ -1,6 +1,4 @@
-from .mooseytest import Mooseytest
-from .mooseytest import Countchart
+from .study import Study
 
 def setup(bot):
-    bot.add_cog(Mooseytest())
-    bot.add_cog(Countchart())
+    bot.add_cog(Study())
