@@ -100,10 +100,10 @@ class Countchart(commands.Cog):
         msg_data = {"total count": 0, "users": {}}
         for msg in self.config.guild(ctx.guild).guild_messages():
             if len(msg) >= 20:
-                short_name = "{}...".format(msg.author.display_name[:20]).replace("$", "\\$")
+                short_name = "{}...".format(msg[:20]).replace("$", "\\$")
             else:
-                short_name = msg.author.display_name.replace("$", "\\$").replace("_", "\\_ ").replace("*", "\\*")
-            whole_name = "{}#{}".format(short_name, msg.author.discriminator)
+                short_name = msg.replace("$", "\\$").replace("_", "\\_ ").replace("*", "\\*")
+            whole_name = "{}#{}".format(short_name, msg)
             elif whole_name in msg_data["users"]:
                 msg_data["users"][whole_name]["msgcount"] += 1
                 msg_data["total count"] += 1
