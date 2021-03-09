@@ -3,7 +3,7 @@ import discord
 import heapq
 from io import BytesIO
 from typing import Optional
-from random import shuffle
+import numpy as np
 
 import matplotlib
 
