@@ -3,6 +3,7 @@ import discord
 import heapq
 from io import BytesIO
 from typing import Optional
+from random import shuffle
 
 import matplotlib
 
@@ -38,14 +39,8 @@ class Countchart(commands.Cog):
         title.set_va("top")
         title.set_ha("center")
         plt.gca().axis("equal")
-        colors = [
-            "lightskyblue",
-            "lightpink",
-            "snow",
-            "lightpink",
-        ]
         cmap = plt.cm.prism
-        colors = cmap(np.linspace(0., 1., len(sizes)))
+        colors = cmap(np.linspace(0., 1., 20))
         pie = plt.pie(sizes, colors=colors, startangle=0)
         plt.legend(
             pie[0],
