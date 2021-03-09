@@ -39,27 +39,11 @@ class Countchart(commands.Cog):
         title.set_ha("center")
         plt.gca().axis("equal")
         colors = [
-            "r",
-            "darkorange",
-            "gold",
-            "y",
-            "olivedrab",
-            "green",
-            "darkcyan",
-            "mediumblue",
-            "darkblue",
-            "blueviolet",
-            "indigo",
-            "orchid",
-            "mediumvioletred",
-            "crimson",
-            "chocolate",
-            "yellow",
-            "limegreen",
-            "forestgreen",
-            "dodgerblue",
-            "slateblue",
-            "gray",
+            "lightskyblue",
+            "lightpink",
+            "snow",
+            "lightpink",
+            "lightskyblue",
         ]
         pie = plt.pie(sizes, colors=colors, startangle=0)
         plt.legend(
