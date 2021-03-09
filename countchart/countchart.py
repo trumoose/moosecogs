@@ -86,14 +86,14 @@ class Countchart(commands.Cog):
 
         ctx.send("Gathering messages...")
         
-        async for msg in channel.history():
-            if not msg in message_history:
-                message_history.append(msg)
-                await asyncio.sleep(0.005)
+        #async for msg in channel.history():
+            #if not msg in message_history:
+                #message_history.append(msg)
+                #await asyncio.sleep(0.005)
 
         ctx.send("All messages gathered!")
         
-        await self.config.guild(ctx.guild).guild_messages.set(message_history)
+        #await self.config.guild(ctx.guild).guild_messages.set(message_history)
 
     @commands.command()
     async def sendcountchart(self, ctx):
