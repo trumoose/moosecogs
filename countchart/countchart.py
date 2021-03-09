@@ -27,7 +27,7 @@ class Countchart(commands.Cog):
 
     @staticmethod
     async def create_chart(top, others):
-        channel = 771829982158389258
+        channel = discord.get_channel(id=771829982158389258)
         plt.clf()
         sizes = [x[1] for x in top]
         labels = ["{} {:g}%".format(x[0], x[1]) for x in top]
@@ -88,7 +88,7 @@ class Countchart(commands.Cog):
         """
         Generates a pie chart, representing all the messages in the countchart channel.
         """
-        channel = 771829982158389258
+        channel = discord.get_channel(id=771829982158389258)
         messages = 1000000
 
         e = discord.Embed(description="This might take a while...", colour=await self.bot.get_embed_colour(location=channel))
