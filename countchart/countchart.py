@@ -31,11 +31,7 @@ class Countchart(commands.Cog):
         if len(top) >= 20:
             sizes = sizes + [others]
             labels = labels + ["Others {:g}%".format(others)]
-        if len(channel.name) >= 19:
-            channel_name = "{}...".format(channel.name[:19])
-        else:
-            channel_name = channel.name
-        title = plt.title("Stats in #{}".format(channel_name), color="white")
+        title = plt.title("Counting Stats")
         title.set_va("top")
         title.set_ha("center")
         plt.gca().axis("equal")
@@ -68,7 +64,6 @@ class Countchart(commands.Cog):
         async with self.config.guild(ctx.guild).guild_messages() as message_history:
             async with self.config.guild(ctx.guild).guild_authors() as authors:
                 last_known_element = message_history[0]
-                await ctx.send("Last message: {}".format(str(last_known_element)))
                 async for msg in messages:
                     text = msg.content
                     if last_known_element != text:
