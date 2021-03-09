@@ -35,7 +35,7 @@ class Countchart(commands.Cog):
         title.set_va("top")
         title.set_ha("center")
         plt.gca().axis("equal")
-        fig1, ax1 = plt.subplots(figsize=(6, 5))
+        fig1, ax1 = plt.subplots(figsize=(10, 10))
         fig1.subplots_adjust(0.3,0,1,1)
         cmap = plt.cm.terrain
         colors = cmap(np.linspace(0., 1., 21))
