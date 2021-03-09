@@ -63,7 +63,9 @@ class Countchart(commands.Cog):
         msg_data = {"total count": 0, "users": {}}
         async with self.config.guild(ctx.guild).guild_messages() as message_history:
             async with self.config.guild(ctx.guild).guild_authors() as authors:
-                last_known_element = message_history[0]
+                last_known_element = "blank"
+                if message_history:
+                    last_known_element = message_history[0]
                 async for msg in messages:
                     text = msg.content
                     if last_known_element != text:
@@ -101,11 +103,13 @@ class Countchart(commands.Cog):
         chart = await self.create_chart(top_ten, others, channel)
         await ctx.send(file=discord.File(chart, "chart.png"))
 
+    @checks.mod_or_permissions(manage_channels=True)
     @commands.command()
     async def sendcountchart(self, ctx):
         async with self.config.guild(ctx.guild).guild_messages() as message_history:
             await ctx.send("Total messages: {}".format(str(len(message_history))))
         
+    @checks.mod_or_permissions(manage_channels=True)
     @commands.command()
     async def emptycountchart(self, ctx):
         empty = []
