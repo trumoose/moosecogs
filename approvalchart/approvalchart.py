@@ -72,14 +72,13 @@ class Approvalchart(commands.Cog):
                 msg_data["users"][author]["msgcount"] = 1
                 msg_data["total count"] += 1
 
-        top_ten = heapq.nlargest(
-            20,
-            [
-                (x, msg_data["users"][x][y])
-                for x in msg_data["users"]
-                for y in msg_data["users"][x]
-                if (y == "msgcount" and msg_data["users"][x][y] > 0)
-            ]
-        )
-        chart = await self.create_chart(top_ten, channel)
-        await ctx.send(file=discord.File(chart, "chart.png"))
+        #top_ten = heapq.nlargest(20,
+        #    [
+        #        (x, msg_data["users"][x][y])
+        #        for x in msg_data["users"]
+        #        for y in msg_data["users"][x]
+       #         if (y == "msgcount" and msg_data["users"][x][y] > 0)
+        #    ]
+        #)
+        #chart = await self.create_chart(top_ten, channel)
+        #await ctx.send(file=discord.File(chart, "chart.png"))
