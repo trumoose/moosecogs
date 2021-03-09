@@ -135,7 +135,7 @@ class Study(commands.Cog):
                     await ctx.author.edit(roles=[])
                 await ctx.author.add_roles(studying)
                 await self.config.member(ctx.author).studyInProgess.set(True)
-                if not self.config.member(ctx.author).timerInProgress():
+                if not await self.config.member(ctx.author).timerInProgress():
                     await ctx.tick()
                 
         if await self.config.member(ctx.author).timerInProgress():
