@@ -42,5 +42,3 @@ class Countchart(commands.Cog):
                 #await asyncio.sleep(0.005)
 
         #await self.config.guild(ctx.guild).guild_messages.set(message_history)
-
-        
