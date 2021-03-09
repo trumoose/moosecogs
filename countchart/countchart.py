@@ -125,7 +125,7 @@ class Countchart(commands.Cog):
             key=lambda x: x[1],
         )
         others = 100 - sum(x[1] for x in top_ten)
-        chart = await self.create_chart(top_ten, others)
+        chart = await self.create_chart(top_ten, others, channel)
         await ctx.send(file=discord.File(chart, "chart.png"))
         
 
