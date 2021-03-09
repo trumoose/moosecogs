@@ -35,8 +35,6 @@ class Countchart(commands.Cog):
         title.set_va("top")
         title.set_ha("center")
         plt.gca().axis("equal")
-        fig1, ax1 = plt.subplots(figsize=(10, 10))
-        fig1.subplots_adjust(0.3,0,1,1)
         cmap = plt.cm.terrain
         colors = cmap(np.linspace(0., 1., 21))
         pie = plt.pie(sizes, colors=colors, startangle=0)
@@ -46,10 +44,11 @@ class Countchart(commands.Cog):
             bbox_to_anchor=(0.7, 0.5),
             loc="center",
             fontsize=10,
-            bbox_transform=fig1.transFigure,
+            bbox_transform=plt.gcf().transFigure,
             facecolor="#ffffff",
         )
-        plt.subplots_adjust(left=0.0, bottom=0.1, right=0.45)
+        plt.subplots(figsize=(10,10))
+        plt.subplots_adjust(left=0.0, bottom=0.1, right=0.90)
         image_object = BytesIO()
         plt.savefig(image_object, format="PNG", facecolor="#36393E")
         image_object.seek(0)
