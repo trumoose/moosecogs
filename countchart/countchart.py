@@ -128,9 +128,10 @@ class Countchart(commands.Cog):
         )
         others = 100 - sum(x[1] for x in top_ten)
         chart = await self.create_chart(top_ten, others, channel)
-
-        try:
-            await em.delete()
-        except discord.NotFound:
-            pass
         await ctx.send(file=discord.File(chart, "chart.png"))
+        
+        
+    @commands.command()
+    async def emptycountchart(self, ctx):
+        empty = []
+        await self.config.guild(ctx.guild).guild_messages.set(empty)
