@@ -21,62 +21,6 @@ class Countchart(commands.Cog):
         self.bot = bot
         self.config = Config.get_conf(self, identifier=1312131213121312, force_registration=True)
         self.config.register_guild(guild_messages = [])
-
-	@staticmethod
-    async def create_chart(top, others):
-        channel = ctx.guild.get_channel(771829982158389258)
-        plt.clf()
-        sizes = [x[1] for x in top]
-        labels = ["{} {:g}%".format(x[0], x[1]) for x in top]
-        if len(top) >= 20:
-            sizes = sizes + [others]
-            labels = labels + ["Others {:g}%".format(others)]
-        if len(channel.name) >= 19:
-            channel_name = "{}...".format(channel.name[:19])
-        else:
-            channel_name = channel.name
-        title = plt.title("Stats in #{}".format(channel_name), color="white")
-        title.set_va("top")
-        title.set_ha("center")
-        plt.gca().axis("equal")
-        colors = [
-            "r",
-            "darkorange",
-            "gold",
-            "y",
-            "olivedrab",
-            "green",
-            "darkcyan",
-            "mediumblue",
-            "darkblue",
-            "blueviolet",
-            "indigo",
-            "orchid",
-            "mediumvioletred",
-            "crimson",
-            "chocolate",
-            "yellow",
-            "limegreen",
-            "forestgreen",
-            "dodgerblue",
-            "slateblue",
-            "gray",
-        ]
-        pie = plt.pie(sizes, colors=colors, startangle=0)
-        plt.legend(
-            pie[0],
-            labels,
-            bbox_to_anchor=(0.7, 0.5),
-            loc="center",
-            fontsize=10,
-            bbox_transform=plt.gcf().transFigure,
-            facecolor="#ffffff",
-        )
-        plt.subplots_adjust(left=0.0, bottom=0.1, right=0.45)
-        image_object = BytesIO()
-        plt.savefig(image_object, format="PNG", facecolor="#36393E")
-        image_object.seek(0)
-        return image_object
 		
         
         
