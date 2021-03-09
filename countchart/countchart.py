@@ -24,7 +24,7 @@ class Countchart(commands.Cog):
         default_guild = {"guild_messages": []}
 
         self.config.register_guild(**default_guild)
-"""
+    """
     @staticmethod
     async def create_chart(top, others):
         channel = discord.get_channel(id=771829982158389258)
@@ -80,7 +80,7 @@ class Countchart(commands.Cog):
         plt.savefig(image_object, format="PNG", facecolor="#36393E")
         image_object.seek(0)
         return image_object
-"""
+    """
     @commands.command()
     @commands.cooldown(1, 10, commands.BucketType.channel)
     @commands.max_concurrency(1, commands.BucketType.channel)
@@ -91,9 +91,6 @@ class Countchart(commands.Cog):
         channel = discord.get_channel(id=771829982158389258)
         messages = 1000000
 
-        e = discord.Embed(description="This might take a while...", colour=await self.bot.get_embed_colour(location=channel))
-        em = await ctx.send(embed=e)
-
         message_history = await self.config.guild(ctx.guild).guild_messages()
         history_counter = 0
 
@@ -102,18 +99,9 @@ class Countchart(commands.Cog):
                 message_history.append(msg)
                 history_counter += 1
                 await asyncio.sleep(0.005)
-                if history_counter % 250 == 0:
-                    new_embed = discord.Embed(
-                        description=f"This might take a while...\n{history_counter}/{messages} messages gathered",
-                        colour=await self.bot.get_embed_colour(location=channel),
-                    )
-                    try:
-                        await em.edit(embed=new_embed)
-                    except discord.NotFound:
-                        pass # for cases where the embed was deleted preventing the edit
-                        
+
         await self.config.guild(ctx.guild).guild_messages.set(message_history)
-"""
+        """
         msg_data = {"total count": 0, "users": {}}
         for msg in message_history:
             if len(msg.author.display_name) >= 20:
@@ -152,4 +140,5 @@ class Countchart(commands.Cog):
             await em.delete()
         except discord.NotFound:
             pass
-        await ctx.send(file=discord.File(chart, "chart.png"))"""
+        await ctx.send(file=discord.File(chart, "chart.png"))
+        """
