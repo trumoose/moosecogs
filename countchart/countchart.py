@@ -84,14 +84,14 @@ class Countchart(commands.Cog):
         channel = ctx.guild.get_channel(771829982158389258)
         message_history = await self.config.guild(ctx.guild).guild_messages()
 
-        ctx.send("Gathering messages...")
+        await ctx.send("Gathering messages...")
         
         #async for msg in channel.history():
             #if not msg in message_history:
                 #message_history.append(msg)
                 #await asyncio.sleep(0.005)
 
-        ctx.send("All messages gathered!")
+        await ctx.send("All messages gathered!")
         
         #await self.config.guild(ctx.guild).guild_messages.set(message_history)
 
