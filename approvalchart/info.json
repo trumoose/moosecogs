@@ -1,0 +1,10 @@
+{
+    "author" : ["moosey"],
+    "install_msg" : "moose!",
+    "name" : "counting",
+    "short" : "countchart for stuff",
+    "description" : "test",
+    "tags" : ["fun"],
+    "requirements" : [],
+    "hidden" : false
+}
