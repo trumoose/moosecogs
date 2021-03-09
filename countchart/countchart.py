@@ -28,7 +28,7 @@ class Countchart(commands.Cog):
     async def countchart(self, ctx):
         """Generates a pie chart, representing all the messages in the countchart channel."""
         
-        ctx.send("hi")
+        await ctx.send("hi")
         #channel = discord.get_channel(id=771829982158389258)
         #messages = 1000000
 
