@@ -36,3 +36,16 @@ class Countchart(commands.Cog):
                 await asyncio.sleep(0.005)
 
         await self.config.guild(ctx.guild).guild_messages.set(message_history)
+
+    @commands.command()
+    async def sendcountchart(self, ctx):
+        message_history = await self.config.guild(ctx.guild).guild_messages()
+        async for msg in message_history:
+            await ctx.send("{}".format(msg))
+        
+    @commands.command()
+    async def emptycountchart(self, ctx):
+        empty = []
+        await self.config.guild(ctx.guild).guild_messages.set(empty)
+		
+		
