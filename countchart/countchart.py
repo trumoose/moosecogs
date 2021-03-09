@@ -43,9 +43,8 @@ class Countchart(commands.Cog):
             "lightpink",
             "snow",
             "lightpink",
-            "lightskyblue",
         ]
-        pie = plt.pie(sizes, colors=colors, startangle=0)
+        pie = plt.pie(sizes, colors=colors, startangle=0, autopct='%1.1f%%')
         plt.legend(
             pie[0],
             labels,
