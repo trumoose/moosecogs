@@ -98,7 +98,7 @@ class Countchart(commands.Cog):
 
                 await ctx.send("All messages gathered!")
 
-                for author in message_history:
+                for author in authors:
                     if author in msg_data["users"]:
                         msg_data["users"][author]["msgcount"] += 1
                         msg_data["total count"] += 1
