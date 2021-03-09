@@ -91,12 +91,12 @@ class Countchart(commands.Cog):
             async with self.config.guild(ctx.guild).guild_authors() as authors:
                 messages = channel.history().flatten()
                 await ctx.send("Last message: {}".format(messages[len(messages - 1)]))
-                async for msg in messages:
-                    text = msg.content
-                    if not text in message_history:
-                        message_history.append(str(msg.content))
-                        authors.append(str(msg.author))
-                        await asyncio.sleep(0.005)
+                #async for msg in messages:
+                    #text = msg.content
+                    #if not text in message_history:
+                        #message_history.append(str(msg.content))
+                        #authors.append(str(msg.author))
+                        #await asyncio.sleep(0.005)
 
                 await ctx.send("All messages gathered!")
 
