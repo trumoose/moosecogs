@@ -36,7 +36,7 @@ class Countchart(commands.Cog):
         title.set_ha("center")
         plt.gca().axis("equal")
         cmap = plt.cm.terrain
-        colors = cmap(np.linspace(0., 1., 16))
+        colors = cmap(np.linspace(0., 1., 21))
         pie = plt.pie(sizes, colors=colors, startangle=0)
         plt.legend(
             pie[0],
@@ -47,7 +47,7 @@ class Countchart(commands.Cog):
             bbox_transform=plt.gcf().transFigure,
             facecolor="#ffffff",
         )
-        #plt.subplots_adjust(left=0.0, bottom=0.1, right=0.45)
+        plt.subplots_adjust(left=0.0, bottom=0.0, right=0.25)
         image_object = BytesIO()
         plt.savefig(image_object, format="PNG", facecolor="#36393E")
         image_object.seek(0)
@@ -88,7 +88,7 @@ class Countchart(commands.Cog):
             msg_data["users"][usr]["percent"] = round(pd * 100, 1)
 
         top_ten = heapq.nlargest(
-            15,
+            20,
             [
                 (x, msg_data["users"][x][y])
                 for x in msg_data["users"]
