@@ -28,9 +28,8 @@ class Countchart(commands.Cog):
     @commands.cooldown(1, 10, commands.BucketType.channel)
     @commands.max_concurrency(1, commands.BucketType.channel)
     async def countchart2(self, ctx):
-        """
-        Generates a pie chart, representing all the messages in the countchart channel.
-        """
+        """Generates a pie chart, representing all the messages in the countchart channel."""
+        
         ctx.send("hi")
         #channel = discord.get_channel(id=771829982158389258)
         #messages = 1000000
