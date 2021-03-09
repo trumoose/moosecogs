@@ -85,7 +85,7 @@ class Countchart(commands.Cog):
         
         await ctx.send("Gathering messages...")
         
-        
+        msg_data = {"total count": 0, "users": {}}
         
         async with self.config.guild(ctx.guild).guild_messages() as message_history:
             async with self.config.guild(ctx.guild).guild_authors() as authors:
@@ -98,7 +98,7 @@ class Countchart(commands.Cog):
 
                 await ctx.send("All messages gathered!")
 
-                for author in authors:
+                for author in message_history:
                     if author in msg_data["users"]:
                         msg_data["users"][author]["msgcount"] += 1
                         msg_data["total count"] += 1
