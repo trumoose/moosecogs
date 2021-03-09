@@ -49,7 +49,7 @@ class Approvalchart(commands.Cog):
         image_object.seek(0)
         return image_object
         
-    @commands.command()
+    @commands.approvalchart()
     async def countchart(self, ctx):
         """Generates a pie chart, representing all the approvals in the approvals channel."""
         
