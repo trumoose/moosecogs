@@ -19,7 +19,7 @@ class Countchart(commands.Cog):
     
     def __init__(self, bot):
         self.bot = bot
-        self.config = Config.get_conf(self, 1312131213121312, force_registration=True)
+        self.config = Config.get_conf(self, identifier=1312131213121312, force_registration=True)
         self.config.register_guild(guild_messages = [])
 
     
