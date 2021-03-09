@@ -36,18 +36,18 @@ class Countchart(commands.Cog):
         title.set_ha("center")
         plt.gca().axis("equal")
         cmap = plt.cm.terrain
-        colors = cmap(np.linspace(0., 1., 21))
+        colors = cmap(np.linspace(0., 1., 16))
         pie = plt.pie(sizes, colors=colors, startangle=0)
         plt.legend(
             pie[0],
             labels,
             bbox_to_anchor=(0.7, 0.5),
-            loc="best",
+            loc="center",
             fontsize=10,
             bbox_transform=plt.gcf().transFigure,
             facecolor="#ffffff",
         )
-        plt.subplots_adjust(left=0.0, bottom=0.1, right=0.45)
+        #plt.subplots_adjust(left=0.0, bottom=0.1, right=0.45)
         image_object = BytesIO()
         plt.savefig(image_object, format="PNG", facecolor="#36393E")
         image_object.seek(0)
@@ -74,20 +74,21 @@ class Countchart(commands.Cog):
                         break
 
                 for author in authors:
-                    if author in msg_data["users"]:
-                        msg_data["users"][author]["msgcount"] += 1
-                        msg_data["total count"] += 1
-                    else:
-                        msg_data["users"][author] = {}
-                        msg_data["users"][author]["msgcount"] = 1
-                        msg_data["total count"] += 1
+                    if ctx.guild.get_member_named(author) != None:
+                        if author in msg_data["users"]:
+                            msg_data["users"][author]["msgcount"] += 1
+                            msg_data["total count"] += 1
+                        else:
+                            msg_data["users"][author] = {}
+                            msg_data["users"][author]["msgcount"] = 1
+                            msg_data["total count"] += 1
 
         for usr in msg_data["users"]:
             pd = float(msg_data["users"][usr]["msgcount"]) / float(msg_data["total count"])
             msg_data["users"][usr]["percent"] = round(pd * 100, 1)
 
         top_ten = heapq.nlargest(
-            20,
+            15,
             [
                 (x, msg_data["users"][x][y])
                 for x in msg_data["users"]
