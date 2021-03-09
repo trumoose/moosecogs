@@ -94,13 +94,12 @@ class Countchart(commands.Cog):
         e = discord.Embed(description="This might take a while...", colour=await self.bot.get_embed_colour(location=channel))
         em = await ctx.send(embed=e)
 
-        history = []
         message_history = await self.config.guild(ctx.guild).guild_messages()
         history_counter = 0
 
         async for msg in channel.history(limit=messages):
             if not msg in message_history:
-                history.append(msg)
+                message_history.append(msg)
                 history_counter += 1
                 await asyncio.sleep(0.005)
                 if history_counter % 250 == 0:
@@ -113,9 +112,7 @@ class Countchart(commands.Cog):
                     except discord.NotFound:
                         pass # for cases where the embed was deleted preventing the edit
                         
-        await self.config.guild(ctx.guild).guild_messages.set(history)
-        
-        message_history = await self.config.guild(ctx.guild).guild_messages()
+        await self.config.guild(ctx.guild).guild_messages.set(message_history)
 
         msg_data = {"total count": 0, "users": {}}
         for msg in message_history:
