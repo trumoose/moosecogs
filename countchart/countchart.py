@@ -85,6 +85,8 @@ class Countchart(commands.Cog):
         
         await ctx.send("Gathering messages...")
         
+        msg_data = {"total count": 0, "users": {}}
+        
         async with self.config.guild(ctx.guild).guild_messages() as message_history:
             async for msg in channel.history(limit=1000000):
                 if msg:
@@ -93,9 +95,8 @@ class Countchart(commands.Cog):
                         await asyncio.sleep(0.005)
 
             await ctx.send("All messages gathered!")
-        
-            msg_data = {"total count": 0, "users": {}}
-            async for author in message_history:
+
+            for author in message_history:
                 if author in msg_data["users"]:
                     msg_data["users"][author]["msgcount"] += 1
                     msg_data["total count"] += 1
@@ -104,29 +105,28 @@ class Countchart(commands.Cog):
                     msg_data["users"][author]["msgcount"] = 1
                     msg_data["total count"] += 1
 
-            for usr in msg_data["users"]:
-                pd = float(msg_data["users"][usr]["msgcount"]) / float(msg_data["total count"])
-                msg_data["users"][usr]["percent"] = round(pd * 100, 1)
+        for usr in msg_data["users"]:
+            pd = float(msg_data["users"][usr]["msgcount"]) / float(msg_data["total count"])
+            msg_data["users"][usr]["percent"] = round(pd * 100, 1)
 
-            top_ten = heapq.nlargest(
-                20,
-                [
-                    (x, msg_data["users"][x][y])
-                    for x in msg_data["users"]
-                    for y in msg_data["users"][x]
-                    if (y == "percent" and msg_data["users"][x][y] > 0)
-                ],
-                key=lambda x: x[1],
-            )
-            others = 100 - sum(x[1] for x in top_ten)
-            chart = await self.create_chart(top_ten, others, channel)
-            await ctx.send(file=discord.File(chart, "chart.png"))
+        top_ten = heapq.nlargest(
+            20,
+            [
+                (x, msg_data["users"][x][y])
+                for x in msg_data["users"]
+                for y in msg_data["users"][x]
+                if (y == "percent" and msg_data["users"][x][y] > 0)
+            ],
+            key=lambda x: x[1],
+        )
+        others = 100 - sum(x[1] for x in top_ten)
+        chart = await self.create_chart(top_ten, others, channel)
+        await ctx.send(file=discord.File(chart, "chart.png"))
 
     @commands.command()
     async def sendcountchart(self, ctx):
         message_history = await self.config.guild(ctx.guild).guild_messages()
-        for msg in message_history:
-            await ctx.send("{}".format(msg.content))
+        await ctx.send("Total messages: {}".format(message_history.len()))
         
     @commands.command()
     async def emptycountchart(self, ctx):
