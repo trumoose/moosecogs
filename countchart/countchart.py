@@ -24,7 +24,7 @@ class Countchart(commands.Cog):
         default_guild = {"guild_messages": []}
 
         self.config.register_guild(**default_guild)
-
+"""
     @staticmethod
     async def create_chart(top, others):
         channel = discord.get_channel(id=771829982158389258)
@@ -80,7 +80,7 @@ class Countchart(commands.Cog):
         plt.savefig(image_object, format="PNG", facecolor="#36393E")
         image_object.seek(0)
         return image_object
-
+"""
     @commands.command()
     @commands.cooldown(1, 10, commands.BucketType.channel)
     @commands.max_concurrency(1, commands.BucketType.channel)
@@ -113,7 +113,7 @@ class Countchart(commands.Cog):
                         pass # for cases where the embed was deleted preventing the edit
                         
         await self.config.guild(ctx.guild).guild_messages.set(message_history)
-
+"""
         msg_data = {"total count": 0, "users": {}}
         for msg in message_history:
             if len(msg.author.display_name) >= 20:
@@ -152,4 +152,4 @@ class Countchart(commands.Cog):
             await em.delete()
         except discord.NotFound:
             pass
-        await ctx.send(file=discord.File(chart, "chart.png"))
+        await ctx.send(file=discord.File(chart, "chart.png"))"""
