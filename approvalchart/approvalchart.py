@@ -60,7 +60,7 @@ class Approvalchart(commands.Cog):
         
         msg_data = {"total count": 0, "users": {}}
         async for msg in messages:
-            authors.append(str(msg.mentions[0].name))
+            authors.append(str(msg.mentions[0].mention))
             await asyncio.sleep(0.005)
 
         for author in authors:
