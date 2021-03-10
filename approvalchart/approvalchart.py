@@ -25,8 +25,8 @@ class Approvalchart(commands.Cog):
     @staticmethod
     async def create_approvalchart(top, channel):
         plt.clf()
-        sizes = [x[1] for x in top]
-        labels = ["{} {:g}%".format(x[0], x[1]) for x in top]
+        sizes = [x for x in top.values()]
+        labels  = [k for k in top.keys()]
         title = plt.title("Counting  ", color="white", fontsize=15)
         title.set_va("top")
         title.set_ha("center")
