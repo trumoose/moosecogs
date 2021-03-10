@@ -63,8 +63,8 @@ class Approvalchart(commands.Cog):
             if(len(msg.mentions) > 0):
                 usrid = msg.mentions[0].id
                 usr = ctx.guild.get_member(usrid)
-                count++
-                if count % 10 is 0:
+                count = count + 1
+                if count % 10 == 0:
                     await ctx.send("user: {}".format(str(usr)))
                 #name = str(usr.name)
                 #authors.append(name)
