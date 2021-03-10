@@ -57,12 +57,15 @@ class Approvalchart(commands.Cog):
         messages = channel.history(limit = 1000000)
         
         authors = []
-        
+        count = 0
         users = {}
         async for msg in messages:
             if(len(msg.mentions) > 0):
                 usrid = msg.mentions[0].id
                 usr = ctx.guild.get_member(usrid)
+                count++
+                if count % 10 is 0:
+                    await ctx.send("user: {}".format(str(usr)))
                 #name = str(usr.name)
                 #authors.append(name)
                 await asyncio.sleep(0.005)
