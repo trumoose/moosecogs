@@ -63,7 +63,7 @@ class Approvalchart(commands.Cog):
             if(len(msg.mentions) > 0):
                 usrid = msg.mentions[0].id
                 usr = ctx.guild.get_member(usrid)
-                name = usr.name
+                name = str(usr.name)
                 #authors.append(name)
                 await asyncio.sleep(0.005)
 
