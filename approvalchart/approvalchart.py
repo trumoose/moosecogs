@@ -20,10 +20,10 @@ class Approvalchart(commands.Cog):
     
     def __init__(self, bot):
         self.bot = bot
-        self.config = Config.get_conf(self, identifier=13121312131213121312, force_registration=True)
+        self.config = Config.get_conf(self, identifier=131243481312, force_registration=True)
 
     @staticmethod
-    async def create_chart(top, channel):
+    async def create_approvalchart(top, channel):
         plt.clf()
         sizes = [x[1] for x in top]
         labels = ["{} {:g}%".format(x[0], x[1]) for x in top]
@@ -49,8 +49,8 @@ class Approvalchart(commands.Cog):
         image_object.seek(0)
         return image_object
         
-    @commands.approvalchart()
-    async def countchart(self, ctx):
+    @commands.command()
+    async def approvalchart(self, ctx):
         """Generates a pie chart, representing all the approvals in the approvals channel."""
         
         channel = ctx.guild.get_channel(779971763999342653)
@@ -72,13 +72,13 @@ class Approvalchart(commands.Cog):
                 msg_data["users"][author]["msgcount"] = 1
                 msg_data["total count"] += 1
 
-        #top_ten = heapq.nlargest(20,
-        #    [
-        #        (x, msg_data["users"][x][y])
-        #        for x in msg_data["users"]
-        #        for y in msg_data["users"][x]
-       #         if (y == "msgcount" and msg_data["users"][x][y] > 0)
-        #    ]
-        #)
-        #chart = await self.create_chart(top_ten, channel)
-        #await ctx.send(file=discord.File(chart, "chart.png"))
+        top_ten = heapq.nlargest(20,
+            [
+                (x, msg_data["users"][x][y])
+                for x in msg_data["users"]
+                for y in msg_data["users"][x]
+                if (y == "msgcount" and msg_data["users"][x][y] > 0)
+            ]
+        )
+        chart = await self.create_approvalchart(top_ten, channel)
+        await ctx.send(file=discord.File(chart, "chart.png"))
