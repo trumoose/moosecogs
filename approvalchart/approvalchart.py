@@ -61,9 +61,10 @@ class Approvalchart(commands.Cog):
         users = {}
         async for msg in messages:
             if(len(msg.mentions) > 0):
-                id = msg.mentions[0].id
-                usr = ctx.guild.get_member(id)
-                #authors.append(str(usr.name))
+                usrid = msg.mentions[0].id
+                usr = ctx.guild.get_member(usrid)
+                name = usr.name
+                authors.append(name)
                 await asyncio.sleep(0.005)
 
         await ctx.send("{}".format(authors[0]))
