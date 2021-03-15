@@ -70,7 +70,7 @@ class Countchart(commands.Cog):
                     text = msg.content
                     if last_known_element != text:
                         if ctx.guild.get_member_named(str(msg.author)) != None:
-                            message_history.insert(0, (str(msg.content)))
+                            message_history = [str(msg.content)] + message_history
                             authors.append(str(msg.author))
                             await asyncio.sleep(0.005)
                     else:
@@ -119,7 +119,7 @@ class Countchart(commands.Cog):
     @commands.command()    
     async def sendlastelement(self, ctx):
         async with self.config.guild(ctx.guild).guild_messages() as message_history:
-            await ctx.send("Last element: {}".format(str(message_history[len(message_history) - 1])))
+            await ctx.send("Last element: {}".format(str(message_history[len(message_history)])))
         
     @checks.mod_or_permissions(manage_channels=True)
     @commands.command()
