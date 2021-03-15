@@ -69,11 +69,12 @@ class Countchart(commands.Cog):
                 async for msg in messages:
                     text = msg.content
                     if last_known_element != text:
-                        message_history.insert(len(message_history) - 1, (str(msg.content)))
                         authors.append(str(msg.author))
                         await asyncio.sleep(0.005)
                     else:
                         break
+                    
+                message_history = messages
 
                 for author in authors:
                     if ctx.guild.get_member_named(str(author)) != None:
