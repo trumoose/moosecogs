@@ -137,7 +137,7 @@ class Study(commands.Cog):
                 await ctx.author.add_roles(studying)
                 await self.config.member(ctx.author).studyInProgess.set(True)
                 if not await self.config.member(ctx.author).timerInProgress():
-                    await ctx.tick()
+                    await ctx.react_quietly("📝")
                 
         if await self.config.member(ctx.author).timerInProgress():
             await ctx.react_quietly("⏱️")
