@@ -108,6 +108,12 @@ class Countchart(commands.Cog):
     async def sendcountchart(self, ctx):
         async with self.config.guild(ctx.guild).guild_messages() as message_history:
             await ctx.send("Total messages: {}".format(str(len(message_history))))
+            
+    @checks.mod_or_permissions(manage_channels=True)
+    @commands.command()
+    async def sendfirstelement(self, ctx):
+        async with self.config.guild(ctx.guild).guild_messages() as message_history:
+            await ctx.send("First element: {}".format(str(message_history[0])))
         
     @checks.mod_or_permissions(manage_channels=True)
     @commands.command()
