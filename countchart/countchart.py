@@ -69,21 +69,21 @@ class Countchart(commands.Cog):
                 async for msg in messages:
                     text = msg.content
                     if last_known_element != text:
-                        if ctx.guild.get_member_named(str(msg.author)) != None:
-                            message_history.insert(len(message_history) - 1, (str(msg.content)))
-                            authors.append(str(msg.author))
-                            await asyncio.sleep(0.005)
+                        message_history.insert(len(message_history) - 1, (str(msg.content)))
+                        authors.append(str(msg.author))
+                        await asyncio.sleep(0.005)
                     else:
                         break
 
                 for author in authors:
-                    if author in msg_data["users"]:
-                        msg_data["users"][author]["msgcount"] += 1
-                        msg_data["total count"] += 1
-                    else:
-                        msg_data["users"][author] = {}
-                        msg_data["users"][author]["msgcount"] = 1
-                        msg_data["total count"] += 1
+                    if ctx.guild.get_member_named(str(author)) != None:
+                        if author in msg_data["users"]:
+                            msg_data["users"][author]["msgcount"] += 1
+                            msg_data["total count"] += 1
+                        else:
+                            msg_data["users"][author] = {}
+                            msg_data["users"][author]["msgcount"] = 1
+                            msg_data["total count"] += 1
 
         for usr in msg_data["users"]:
             pd = float(msg_data["users"][usr]["msgcount"]) / float(msg_data["total count"])
