@@ -59,6 +59,7 @@ class Countchart(commands.Cog):
         
         channel = ctx.guild.get_channel(771829982158389258)
         messages = channel.history(limit = 1000000)
+        message_array = []
         
         msg_data = {"total count": 0, "users": {}}
         async with self.config.guild(ctx.guild).guild_messages() as message_history:
@@ -69,13 +70,14 @@ class Countchart(commands.Cog):
                 async for msg in messages:
                     text = msg.content
                     if last_known_element != text:
+                        message_array.insert(0, (str(msg.content)))
                         authors.append(str(msg.author))
                         await asyncio.sleep(0.005)
                     else:
                         break
-                    
-                message_history = messages
-
+                
+                message_history.extend(message_array)
+                
                 for author in authors:
                     if ctx.guild.get_member_named(str(author)) != None:
                         if author in msg_data["users"]:
