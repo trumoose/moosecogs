@@ -79,14 +79,13 @@ class Countchart(commands.Cog):
                 message_history.extend(message_array)
                 
                 for author in authors:
-                    if ctx.guild.get_member_named(str(author)) != None:
-                        if author in msg_data["users"]:
-                            msg_data["users"][author]["msgcount"] += 1
-                            msg_data["total count"] += 1
-                        else:
-                            msg_data["users"][author] = {}
-                            msg_data["users"][author]["msgcount"] = 1
-                            msg_data["total count"] += 1
+                    if author in msg_data["users"]:
+                        msg_data["users"][author]["msgcount"] += 1
+                        msg_data["total count"] += 1
+                    else:
+                        msg_data["users"][author] = {}
+                        msg_data["users"][author]["msgcount"] = 1
+                        msg_data["total count"] += 1
 
         for usr in msg_data["users"]:
             pd = float(msg_data["users"][usr]["msgcount"]) / float(msg_data["total count"])
