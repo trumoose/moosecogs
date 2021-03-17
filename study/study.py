@@ -60,8 +60,8 @@ class Study(commands.Cog):
         testunit = "moosey"
     
         if unit_of_time == None and duration is not None:
-            testdur="".join([i for i in x if not i.isalpha()])
-            testunit="".join([i for i in x if i.isalpha()])
+            testdur = "".join([i for i in duration if not i.isalpha()])
+            testunit = "".join([i for i in duration if i.isalpha()])
             
         elif duration != None:
             testdur = duration
