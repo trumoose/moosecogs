@@ -189,3 +189,22 @@ class Study(commands.Cog):
             for r in roles:
                 await ctx.send('roleid: {}'.format(r))
             await ctx.tick()
+            
+    @commands.command()
+    async def addstudyroles(self, ctx):
+        roleArray = []
+        async with self.config.member(ctx.author).roles() as roles:
+            for r in roles:
+                try:
+                    roleToAdd = discord.utils.get(ctx.guild.roles, id=r)
+                    roleArray.append(roleToAdd)
+                except:
+                    await ctx.send('Could not get role {}'.format(roleToAdd.name))
+                if serverbooster in ctx.author.roles:
+                    roleArray.append(serverbooster)
+                if botwrangler in ctx.author.roles:
+                    roleArray.append(botwrangler)
+                await ctx.author.edit(roles=roleArray)
+                await ctx.author.remove_roles(studying)
+                await self.config.member(ctx.author).studyInProgess.set(False)
+                await ctx.tick()
