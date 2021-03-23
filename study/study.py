@@ -192,6 +192,12 @@ class Study(commands.Cog):
             
     @commands.command()
     async def addstudyroles(self, ctx):
+        studying = discord.utils.get(ctx.guild.roles, name='study')
+
+        everyone1 = ctx.guild.get_role(776052319271911434)
+        serverbooster = ctx.guild.get_role(767011709155672095)
+        botwrangler = ctx.guild.get_role(801850754565537874)
+        everyone2 = ctx.guild.get_role(766870004086865930)
         roleArray = []
         async with self.config.member(ctx.author).roles() as roles:
             for r in roles:
