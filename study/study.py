@@ -81,12 +81,12 @@ class Study(commands.Cog):
             #await ctx.send("Study already finished. Aborting.")
             await self.config.member(ctx.author).timerInProgress.set(False)
             await self.config.member(ctx.author).recursion.set(False)
-            await self.config.member(ctx.author).studyInProgess.set(False)
             return
             
         elif not await self.config.member(ctx.author).recursion() and await self.config.member(ctx.author).timerInProgress():
             #await ctx.send("**{}** has finished studying.".format(ctx.author.name))
             await self.config.member(ctx.author).timerInProgress.set(False)
+            await self.config.member(ctx.author).recursion.set(False)
             
         elif not await self.config.member(ctx.author).studyInProgess():
             if testdur != -999 and testunit != "moosey":
