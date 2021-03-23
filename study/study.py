@@ -200,11 +200,11 @@ class Study(commands.Cog):
                     roleArray.append(roleToAdd)
                 except:
                     await ctx.send('Could not get role {}'.format(roleToAdd.name))
-                if serverbooster in ctx.author.roles:
-                    roleArray.append(serverbooster)
-                if botwrangler in ctx.author.roles:
-                    roleArray.append(botwrangler)
-                await ctx.author.edit(roles=roleArray)
-                await ctx.author.remove_roles(studying)
-                await self.config.member(ctx.author).studyInProgess.set(False)
-                await ctx.tick()
+            if serverbooster in ctx.author.roles:
+                roleArray.append(serverbooster)
+            if botwrangler in ctx.author.roles:
+                roleArray.append(botwrangler)
+            await ctx.author.edit(roles=roleArray)
+            await ctx.author.remove_roles(studying)
+            await self.config.member(ctx.author).studyInProgess.set(False)
+            await ctx.tick()
