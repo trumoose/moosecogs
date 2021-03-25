@@ -152,7 +152,7 @@ class Study(commands.Cog):
             await self.study(ctx)
             await ctx.tick()
     
-    @checks.mod_or_permissions(manage_channels=True)
+    @checks.mod_or_permissions(manage_messages=True)
     @commands.command()
     async def appendmyroles(self, ctx):
         async with self.config.member(ctx.author).roles() as roles:
@@ -160,7 +160,7 @@ class Study(commands.Cog):
                 roles.append(r.id)
             await ctx.tick()
     
-    @checks.mod_or_permissions(manage_channels=True)
+    @checks.mod_or_permissions(manage_messages=True)
     @commands.command()
     async def removestudy(self, ctx):
         studying = discord.utils.get(ctx.guild.roles, name='study')
@@ -168,12 +168,6 @@ class Study(commands.Cog):
         await self.config.member(ctx.author).studyInProgess.set(False)
         await self.config.member(ctx.author).timerInProgress.set(False)
 
-    @checks.mod_or_permissions(manage_channels=True)
-    @commands.command()
-    async def addadmin(self, ctx):
-        studying = discord.utils.get(ctx.guild.roles, name='admin')
-        await ctx.author.add_roles(studying)
-    
     @checks.mod_or_permissions(manage_channels=True)
     @commands.command()
     async def removemyroles(self, ctx):
