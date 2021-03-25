@@ -176,7 +176,7 @@ class Study(commands.Cog):
                 roles.clear()
             await ctx.tick()
     
-    @checks.mod_or_permissions(manage_channels=True)
+    @checks.mod_or_permissions(manage_messages=True)
     @commands.command()
     async def printmyroles(self, ctx):
         async with self.config.member(ctx.author).roles() as roles:
