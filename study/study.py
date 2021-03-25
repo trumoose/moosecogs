@@ -208,3 +208,12 @@ class Study(commands.Cog):
             await ctx.author.remove_roles(studying)
             await self.config.member(ctx.author).studyInProgess.set(False)
             await ctx.tick()
+            
+    @checks.mod_or_permissions(manage_messages=True)
+    @commands.command()
+    async def resetall(self, ctx):
+        await self.config.member(ctx.author).recursion.set(False)
+        await self.config.member(ctx.author).studyInProgess.set(False)
+        await self.config.member(ctx.author).timerInProgress.set(False)
+        async with self.config.member(ctx.author).roles() as roles:
+            roles.clear()
