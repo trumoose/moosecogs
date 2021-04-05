@@ -47,7 +47,7 @@ class Marriage(commands.Cog):
         """Set member variables for a user."""
         if var == "married":
             await self.config.member(member).married.set(state)
-            if not state:
+            if state == False:
                 await self.config.member(member).current.clear()
             await ctx.send(f"Set {member.mention}'s marriage status to {'married!' if state else 'unmarried!'}")
         if var == "divorced":
@@ -55,12 +55,12 @@ class Marriage(commands.Cog):
             await ctx.send(f"Set {member.mention}'s divorce status to {'divorced!' if state else 'undivorced!'}")
         if var == "parent":
             await self.config.member(member).parent.set(state)
-            if not state:
+            if state == False:
                 await self.config.member(member).children.clear()
             await ctx.send(f"Set {member.mention}'s parental status to {'parent!' if state else 'not a parent!'}")
         if var == "child":
             await self.config.member(member).child.set(state)
-            if not state:
+            if state == False:
                 await self.config.member(member).parents.clear()
             await ctx.send(f"Set {member.mention}'s child status to {'child!' if state else 'orphan!'}")
         if var == "marcount":
