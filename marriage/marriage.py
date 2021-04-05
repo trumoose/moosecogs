@@ -8,7 +8,7 @@ from redbot.core import Config, checks, commands
 from redbot.core.utils.chat_formatting import humanize_list, box
 from redbot.core.utils.predicates import MessagePredicate
 
-class Marriage(commands.Cog):
+class Mooseymarriage(commands.Cog):
     """
     Marriage cog with some extra stuff.
     """

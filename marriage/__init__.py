@@ -1,4 +1,4 @@
-from .marriage import Marriage
+from .marriage import Mooseymarriage
 
 def setup(bot):
-    bot.add_cog(Marriage(bot))
+    bot.add_cog(Mooseymarriage(bot))
