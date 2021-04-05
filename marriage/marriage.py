@@ -22,13 +22,13 @@ class Marriage(commands.Cog):
             multi=False,
         )
 
-        self.config.register_member("married": False,
+        self.config.register_member({"married": False,
             "current": [],
             "divorced": False,
             "exes": [],
             "about": "I'm mysterious.",
             "marcount": 0,
-            "dircount": 0,)
+            "dircount": 0})
 
     @commands.group(autohelp=True, aliases=["marriage"])
     @commands.guild_only()
