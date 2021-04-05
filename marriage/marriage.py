@@ -18,7 +18,6 @@ class Marriage(commands.Cog):
         self.config = Config.get_conf(self, identifier=1234580008135, force_registration=True)
 
         self.config.register_guild(
-            toggle=False,
             multi=False
         )
 
@@ -182,23 +181,20 @@ class Marriage(commands.Cog):
     @commands.guild_only()
     @commands.command()
     async def divorce(
-        self, ctx: commands.Context, member: discord.Member, court: bool = False
+        self, ctx: commands.Context, member: discord.Member
     ):
         """Divorce your current spouse"""
-        if not await self.config.guild(ctx.guild).toggle():
-            return await ctx.send("Marriage is not enabled!")
         if member.id == ctx.author.id:
             return await ctx.send("You cannot divorce yourself!")
         if member.id not in await self.config.member(ctx.author).current():
             return await ctx.send("You two aren't married!")
-        if not court:
-            await ctx.send(
-                f"{ctx.author.mention} wants to divorce you, {member.mention}, do you accept?\n"
-            )
-            pred = MessagePredicate.yes_or_no(ctx, ctx.channel, member)
-            await self.bot.wait_for("message", check=pred)
-            if not pred.result:
-                await ctx.send(f"Too bad! Proceeding with divorce...\n")
+        await ctx.send(
+            f"{ctx.author.mention} wants to divorce you, {member.mention}, do you accept?\n"
+        )
+        pred = MessagePredicate.yes_or_no(ctx, ctx.channel, member)
+        await self.bot.wait_for("message", check=pred)
+        if not pred.result:
+            await ctx.send(f"Too bad! Proceeding with divorce...\n")
         async with self.config.member(ctx.author).current() as acurrent:
             acurrent.remove(member.id)
         async with self.config.member(member).current() as tcurrent:
