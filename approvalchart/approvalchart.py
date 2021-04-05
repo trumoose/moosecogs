@@ -66,14 +66,14 @@ class Approvalchart(commands.Cog):
         await channel.trigger_typing()
         async for msg in messages:
             usr = (msg.content).split()[0]
-            print(usr)
             usr2 = re.sub('[^0-9]','', usr)
+            print(usr2)
             usr3 = discord.utils.get(ctx.guild.members, id=usr2)
             authors.append(usr3)
             await asyncio.sleep(0.0025)
 
-        print("Authors: ")
-        print(authors)
+        #print("Authors: ")
+        #print(authors)
         
         for author in authors:
             if author in users:
@@ -81,8 +81,8 @@ class Approvalchart(commands.Cog):
             else:
                 users[author] = 1
 
-        print("Users: ")
-        print(users)
+        #print("Users: ")
+        #print(users)
         
         #top_ten = heapq.nlargest(20, users.items(), key=lambda i: i[1])
         #chart = await self.create_approvalchart(top_ten, channel)
