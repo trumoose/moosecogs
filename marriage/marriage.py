@@ -98,8 +98,11 @@ class Marriage(commands.Cog):
                         rs_status = "Parent"
             else:
                 rs_status = "Married"
+                
             spouse_ids = await self.config.member(member).current()
             spouses = []
+            spouse_header = ""
+            spouse_text = ""
             for spouse_id in spouse_ids:
                 spouse = self.bot.get_user(spouse_id)
                 if spouse:
@@ -113,6 +116,8 @@ class Marriage(commands.Cog):
                 
             children_ids = await self.config.member(member).children()
             kids = []
+            kids_header = ""
+            kids_text = ""
             for children_id in children_ids:
                 kid = self.bot.get_user(children_id)
                 if kid:
