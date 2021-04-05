@@ -28,9 +28,9 @@ class Approvalchart(commands.Cog):
         plt.clf()
         sizes = []
         labels  = []
-        for x in top[0]:
+        for x in top[1]:
             labels.append(x)
-        for y in top[1]:
+        for y in top[0]:
             sizes.append(y)
         title = plt.title("Counting  ", color="white", fontsize=15)
         title.set_va("top")
