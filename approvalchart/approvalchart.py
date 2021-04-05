@@ -96,7 +96,7 @@ class Approvalchart(commands.Cog):
         users = {}
         await ctx.channel.trigger_typing()
         async for msg in messages:
-            embeds = message.embeds
+            embeds = msg.embeds
             for embed in embeds:
                 print(embed.to_dict())
             #usr = (msg.content).split()[0]
