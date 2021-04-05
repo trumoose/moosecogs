@@ -66,10 +66,11 @@ class Approvalchart(commands.Cog):
         await channel.trigger_typing()
         async for msg in messages:
             usr = (msg.content).split()[0]
+            print(usr)
             usr2 = re.sub('[^0-9]','', usr)
             usr3 = discord.utils.get(ctx.guild.members, id=usr2)
             authors.append(usr3)
-            await asyncio.sleep(0.005)
+            await asyncio.sleep(0.0025)
 
         print("Authors: ")
         print(authors)
