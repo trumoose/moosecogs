@@ -65,7 +65,7 @@ class Approvalchart(commands.Cog):
         users = {}
         await channel.trigger_typing()
         async for msg in messages:
-            usr = msg.split()[0]
+            usr = (msg.content).split()[0]
             usr2 = re.sub('[^0-9]','', usr)
             usr3 = ctx.guild.get_user(usr2)
             authors.append(usr3)
