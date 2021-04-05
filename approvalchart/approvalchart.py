@@ -67,7 +67,7 @@ class Approvalchart(commands.Cog):
         async for msg in messages:
             usr = (msg.content).split()[0]
             usr2 = re.sub('[^0-9]','', usr)
-            usr3 = ctx.guild.get_user(usr2)
+            usr3 = discord.utils.get(ctx.guild.users, id=usr2)
             authors.append(usr3)
             await asyncio.sleep(0.005)
 
