@@ -37,7 +37,8 @@ class Approvalchart(commands.Cog):
         title.set_ha("center")
         plt.gca().axis("equal")
         cmap = plt.cm.rainbow
-        colors = cmap(np.linspace(0., 1., 21))
+        reversed_cmap = cmap.reversed()
+        colors = reversed_cmap(np.linspace(0., 1., 21))
         pie = plt.pie(sizes, colors=colors, startangle=0)
         plt.legend(
             pie[0],
