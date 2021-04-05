@@ -96,7 +96,9 @@ class Approvalchart(commands.Cog):
         users = {}
         await ctx.channel.trigger_typing()
         async for msg in messages:
-            print(msg.content)
+            embeds = message.embeds
+            for embed in embeds:
+                print(embed.to_dict())
             #usr = (msg.content).split()[0]
             #usr2 = re.sub('[^0-9]','', usr)
             #usr3 = discord.utils.get(ctx.guild.members, id=int(usr2))
