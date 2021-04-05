@@ -28,8 +28,9 @@ class Approvalchart(commands.Cog):
         plt.clf()
         sizes = []
         labels  = []
-        for x, y in top.items():
+        for x in top[0]:
             labels.append(x)
+        for y in top[1]:
             sizes.append(y)
         title = plt.title("Counting  ", color="white", fontsize=15)
         title.set_va("top")
@@ -37,7 +38,7 @@ class Approvalchart(commands.Cog):
         plt.gca().axis("equal")
         cmap = plt.cm.terrain
         colors = cmap(np.linspace(0., 1., 21))
-        pie = plt.pie(sizes, colors=colors, sort=True, startangle=0)
+        pie = plt.pie(sizes, colors=colors, startangle=0)
         plt.legend(
             pie[0],
             labels,
@@ -77,6 +78,7 @@ class Approvalchart(commands.Cog):
                 users[author] += 1
             else:
                 users[author] = 1
-
-        chart = await self.create_approvalchart(users, channel)
+                
+        top = sorted(users.items(), key=lambda x: x[1])
+        chart = await self.create_approvalchart(top, channel)
         await ctx.send(file=discord.File(chart, "chart.png"))
