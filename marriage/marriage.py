@@ -140,16 +140,14 @@ class Marriage(commands.Cog):
     @commands.command()
     async def marry(self, ctx: commands.Context, member: discord.Member):
         """Marry the love of your life!"""
-        conf = await self.config.guild(ctx.guild)
         if member.id == ctx.author.id:
             return await ctx.send("You cannot marry yourself!")
-        m_conf = await self.config.member(ctx.author)
-        if member.id in await m_conf(ctx.author).current():
+        if member.id in await self.config.member(ctx.author).current():
             return await ctx.send("You two are already married!")
-        if not await conf.multi():
-            if await m_conf(ctx.author).married():
+        if not await self.config.guild(ctx.guild).multi():
+            if await self.config.member(ctx.author).married():
                 return await ctx.send("You're already married!")
-            if await m_conf(member).married():
+            if await self.config.member(member).married():
                 return await ctx.send("They're already married!")
         await ctx.send(
             f"{ctx.author.mention} has asked {member.mention} to marry them!\n"
@@ -162,21 +160,21 @@ class Marriage(commands.Cog):
             return await ctx.send("Oh no... I was looking forward to the cerenomy...")
         if not pred.result:
             return await ctx.send("Oh no... I was looking forward to the cerenomy...")
-        author_marcount = await m_conf(ctx.author).marcount()
-        target_marcount = await m_conf(member).marcount()
+        author_marcount = await self.config.member(ctx.author).marcount()
+        target_marcount = await self.config.member(member).marcount()
 
-        await m_conf(ctx.author).marcount.set(author_marcount + 1)
-        await m_conf(member).marcount.set(target_marcount + 1)
+        await self.config.member(ctx.author).marcount.set(author_marcount + 1)
+        await self.config.member(member).marcount.set(target_marcount + 1)
 
-        await m_conf(ctx.author).married.set(True)
-        await m_conf(member).married.set(True)
+        await self.config.member(ctx.author).married.set(True)
+        await self.config.member(member).married.set(True)
 
-        await m_conf(ctx.author).divorced.clear()
-        await m_conf(member).divorced.clear()
+        await self.config.member(ctx.author).divorced.clear()
+        await self.config.member(member).divorced.clear()
 
-        async with m_conf(ctx.author).current() as acurrent:
+        async with self.config.member(ctx.author).current() as acurrent:
             acurrent.append(member.id)
-        async with m_conf(member).current() as tcurrent:
+        async with self.config.member(member).current() as tcurrent:
             tcurrent.append(ctx.author.id)
         await ctx.send(f":church: {ctx.author.mention} and {member.mention} are now a happy married couple! ")
 
