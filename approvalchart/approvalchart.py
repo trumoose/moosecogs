@@ -83,3 +83,33 @@ class Approvalchart(commands.Cog):
         top = sorted(users.items(), key=lambda x: x[1], reverse=True)
         chart = await self.create_approvalchart(top)
         await ctx.send(file=discord.File(chart, "chart.png"))
+        
+    @commands.command()
+    async def bans(self, ctx):
+        """Generates a pie chart, representing all the bans in the modlog channel."""
+        
+        channel1 = ctx.guild.get_channel(774884417746501633)
+        messages = channel1.history(limit = 2)
+        
+        authors = []
+        count = 0
+        users = {}
+        await ctx.channel.trigger_typing()
+        async for msg in messages:
+            print(msg.content)
+            #usr = (msg.content).split()[0]
+            #usr2 = re.sub('[^0-9]','', usr)
+            #usr3 = discord.utils.get(ctx.guild.members, id=int(usr2))
+            #if usr3 is not None:
+                #authors.append(usr3.name)
+            await asyncio.sleep(0.005)
+
+        #for author in authors:
+            #if author in users:
+                #users[author] += 1
+            #else:
+                #users[author] = 1
+                
+        #top = sorted(users.items(), key=lambda x: x[1], reverse=True)
+        #chart = await self.create_approvalchart(top)
+        #await ctx.send(file=discord.File(chart, "chart.png"))
