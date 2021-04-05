@@ -104,17 +104,17 @@ class Marriage(commands.Cog):
 
     @marriage.command(name="debug")
     async def marriage_debug(self, ctx: commands.Context, member: typing.Optional[discord.Member]):
-        await ctx.send(f"married = {'True' if await self.config.member(member).married() else 'False'}")
-        await ctx.send(f"divorced = {'True' if await self.config.member(member).divorced() else 'False'}")
-        await ctx.send(f"parent = {'True' if await self.config.member(member).parent() else 'False'}")
-        await ctx.send(f"child = {'True' if await self.config.member(member).child() else 'False'}")
-        await ctx.send(f"current = {humanize_list(await self.config.member(member).current())}")
-        await ctx.send(f"children = {humanize_list(await self.config.member(member).children())}")
-        await ctx.send(f"parents = {humanize_list(await self.config.member(member).parents())}")
-        await ctx.send(f"exes = {humanize_list(await self.config.member(member).exes())}")
-        await ctx.send(f"marcount = {await self.config.member(member).marcount()}")
-        await ctx.send(f"kidcount = {await self.config.member(member).kidcount()}")
-        await ctx.send(f"parcount = {await self.config.member(member).parcount()}")
+        await ctx.send(f"married = {'True' if await self.config.member(member).married() else 'False'}"
+                       f"divorced = {'True' if await self.config.member(member).divorced() else 'False'}"
+                       f"parent = {'True' if await self.config.member(member).parent() else 'False'}"
+                       f"child = {'True' if await self.config.member(member).child() else 'False'}"
+                       f"current = {humanize_list(await self.config.member(member).current())}"
+                       f"children = {humanize_list(await self.config.member(member).children())}"
+                       f"parents = {humanize_list(await self.config.member(member).parents())}"
+                       f"exes = {humanize_list(await self.config.member(member).exes())}"
+                       f"marcount = {await self.config.member(member).marcount()}"
+                       f"kidcount = {await self.config.member(member).kidcount()}"
+                       f"parcount = {await self.config.member(member).parcount()}")
 
     @commands.group(invoke_without_command=True)
     @commands.guild_only()
@@ -423,4 +423,4 @@ class Marriage(commands.Cog):
                 for x in spouses:
                     async with self.config.member(self.bot.get_user(x)).children() as children:
                         children.append(member.id)
-        await ctx.send(f":classical_building: {ctx.author.mention} has adopted {member.mention}! ")
+        await ctx.send(f":baby: {ctx.author.mention} has adopted {member.mention}! ")
