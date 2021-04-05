@@ -50,14 +50,12 @@ class Marriage(commands.Cog):
         """Display your or someone else's about"""
         if not member:
             member = ctx.author
-        m_conf = await self.config.member(member)
-
-        is_married = await m_conf.married()
+        is_married = await self.config.member(member).married()
         if not is_married:
-            rs_status = "Single" if not await m_conf.divorced() else "Divorced"
+            rs_status = "Single" if not await self.config.member(member).divorced() else "Divorced"
         else:
             rs_status = "Married"
-            spouse_ids = await m_conf.current()
+            spouse_ids = await self.config.member(member).current()
             spouses = []
             for spouse_id in spouse_ids:
                 spouse = self.bot.get_user(spouse_id)
@@ -69,10 +67,10 @@ class Marriage(commands.Cog):
             else:
                 spouse_text = humanize_list(spouses)
                 spouse_header = "Spouse:" if len(spouses) == 1 else "Spouses:"
-        marcount = await m_conf.marcount()
+        marcount = await self.config.member(member).marcount()
         been_married = f"{marcount} time" if marcount == 1 else f"{marcount} times"
         if marcount != 0:
-            exes_ids = await m_conf.exes()
+            exes_ids = await self.config.member(member.exes()
             if exes_ids == []:
                 ex_text = "None"
             else:
@@ -88,12 +86,12 @@ class Marriage(commands.Cog):
         e.set_author(name=f"{member.name}'s Profile", icon_url=member.avatar_url)
         e.set_footer(text=f"{member.name}#{member.discriminator} ({member.id})")
         e.set_thumbnail(url=member.avatar_url)
-        e.add_field(name="About:", value=await m_conf.about(), inline=False)
+        e.add_field(name="About:", value=await self.config.member(member).about(), inline=False)
         e.add_field(name="Status:", value=rs_status)
         if is_married:
             e.add_field(name=spouse_header, value=spouse_text)
         e.add_field(name="Been married:", value=been_married)
-        if await m_conf.marcount() != 0:
+        if await self.config.member(member).marcount() != 0:
             e.add_field(name="Ex spouses:", value=ex_text)
 
         await ctx.send(embed=e)
@@ -104,11 +102,9 @@ class Marriage(commands.Cog):
         self, ctx: commands.Context, member: typing.Optional[discord.Member]
     ):
         """Display your or someone else's exes."""
-        conf = await self.config.guild(ctx.guild)
         if not member:
             member = ctx.author
-        m_conf = await self.config.member(member)
-        exes_ids = await m_conf.exes()
+        exes_ids = await self.config.member(member).exes()
         exes = list()
         for ex_id in exes_ids:
             ex = self.bot.get_user(ex_id)
@@ -122,11 +118,9 @@ class Marriage(commands.Cog):
     async def spouses(
         self, ctx: commands.Context, member: typing.Optional[discord.Member]
     ):
-        conf = await self.config.guild(ctx.guild)
         if not member:
             member = ctx.author
-        m_conf = await self.config.member
-        spouses_ids = await m_conf(member).current()
+        spouses_ids = await self.config.member(member).current()
         sp_text = ""
         for s_id in spouses_ids:
             spouse = self.bot.get_user(s_id)
