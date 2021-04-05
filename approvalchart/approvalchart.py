@@ -29,8 +29,8 @@ class Approvalchart(commands.Cog):
         sizes = []
         labels  = []
         for x in top:
-            x[0] = x[0] + " " + str(x[1])
-            labels.append(x[0])
+            usr = str(x[0]) + " " + str(x[1])
+            labels.append(str)
             sizes.append(x[1])
         title = plt.title("Approvals  ", color="white", fontsize=15)
         title.set_va("top")
@@ -55,7 +55,7 @@ class Approvalchart(commands.Cog):
         return image_object
         
     @commands.command()
-    async def approvalchart(self, ctx):
+    async def approvals(self, ctx):
         """Generates a pie chart, representing all the approvals in the approvals channel."""
         
         channel = ctx.guild.get_channel(779971763999342653)
