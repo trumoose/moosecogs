@@ -21,13 +21,15 @@ class Marriage(commands.Cog):
             multi=False
         )
 
-        self.config.register_member(married = False,
+        self.config.register_member(
+            married = False,
             current = [],
             divorced = False,
             exes = [],
             about = "I'm mysterious.",
             marcount = 0,
-            dircount = 0)
+            dircount = 0
+        )
             
     @commands.group(autohelp=True, aliases=["marriage"])
     @commands.guild_only()
@@ -35,18 +37,18 @@ class Marriage(commands.Cog):
     async def marriage(self, ctx: commands.Context):
         f"""Various Marriage settings."""
 
-    @marryset.command(name="multiple")
-    async def marriage_multiple(self, ctx: commands.Context, member: typing.Optional[discord.Member], var, state: bool):
+    @marriage.command(name="set")
+    async def marriage_set(self, ctx: commands.Context, member: typing.Optional[discord.Member], var, state: bool):
         """Set member variables for a user."""
         if var == "married":
-            await self.config.member(member).divorced.set(state)
+            await self.config.member(member).married.set(state)
         await ctx.send(f"Set {member.mention}'s status to {'married!' if state else 'unmarried!'}")
         if var == "divorced":
             await self.config.member(member).divorced.set(state)
         await ctx.send(f"Set {member.mention}'s status to {'divorced!' if state else 'undivorced!'}")
         
-    @marryset.command(name="set")
-    async def marriage_set(self, ctx: commands.Context, state: bool):
+    @marriage.command(name="multiple")
+    async def marriage_multiple(self, ctx: commands.Context, state: bool):
         """Enable/disable whether members can be married to multiple people at once."""
         await self.config.guild(ctx.guild).multi.set(state)
         await ctx.send(f"Members {'can' if state else 'cannot'} marry multiple people.")
