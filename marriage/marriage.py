@@ -4,11 +4,9 @@ import random
 import datetime
 import typing
 
-from redbot.core import Config, checks, commands, bank
+from redbot.core import Config, checks, commands
 from redbot.core.utils.chat_formatting import humanize_list, box
 from redbot.core.utils.predicates import MessagePredicate
-
-from redbot.core.bot import Red
 
 class Marriage(commands.Cog):
     """
@@ -34,7 +32,6 @@ class Marriage(commands.Cog):
         )
 
         self.config.register_member(**default_user)
-        self.config.register_user(**default_user)
 
     @commands.group(autohelp=True, aliases=["marriage"])
     @commands.guild_only()
