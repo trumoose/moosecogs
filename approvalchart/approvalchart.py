@@ -31,7 +31,7 @@ class Approvalchart(commands.Cog):
         for x in top:
             labels.append(x[0])
             sizes.append(x[1])
-        title = plt.title("Counting  ", color="white", fontsize=15)
+        title = plt.title("Approvals  ", color="white", fontsize=15)
         title.set_va("top")
         title.set_ha("center")
         plt.gca().axis("equal")
@@ -43,7 +43,7 @@ class Approvalchart(commands.Cog):
             labels,
             bbox_to_anchor=(0.7, 0.5),
             loc="center",
-            fontsize=10,
+            fontsize=9,
             bbox_transform=plt.gcf().transFigure,
             facecolor="#ffffff",
         )
