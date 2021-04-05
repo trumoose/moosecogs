@@ -33,7 +33,8 @@ class Marriage(commands.Cog):
     @commands.group(autohelp=True, aliases=["marriage"])
     @commands.guild_only()
     @checks.admin()
-    async def marryset(self, ctx: commands.Context)
+    async def marryset(self, ctx: commands.Context):
+        f"""Various Marriage settings."""
 
     @marryset.command(name="multiple")
     async def marryset_multiple(self, ctx: commands.Context, state: bool):
