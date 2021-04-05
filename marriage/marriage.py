@@ -15,7 +15,7 @@ class Marriage(commands.Cog):
     Marriage cog with some extra stuff.
     """
 
-    def __init__(self, bot: Red):
+    def __init__(self, bot):
         self.bot = bot
         self.config = Config.get_conf(
             self, identifier=1234580008135, force_registration=True
