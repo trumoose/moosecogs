@@ -70,9 +70,9 @@ class Approvalchart(commands.Cog):
 
         for author in authors:
             if author in users:
-                users[str(author.name)] += 1
+                users[str(author)] += 1
             else:
-                users[str(author.name)] = 1
+                users[str(author)] = 1
 
         top_ten = heapq.nlargest(20, users.items(), key=lambda i: i[1])
         chart = await self.create_approvalchart(top_ten, channel)
