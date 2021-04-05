@@ -3,6 +3,7 @@ import asyncio
 import random
 import datetime
 import typing
+import ast
 
 from redbot.core import Config, checks, commands
 from redbot.core.utils.chat_formatting import humanize_list, box
@@ -49,20 +50,20 @@ class Marriage(commands.Cog):
             await self.config.member(member).married.set(state)
             if state == False:
                 await self.config.member(member).current.clear()
-            await ctx.send(f"Set {member.mention}'s marriage status to {'married!' if state else 'unmarried!'}")
+            await ctx.send(f"Set {member.mention}'s marriage status to {'married!' if ast.literal_eval(state) else 'unmarried!'}")
         if var == "divorced":
             await self.config.member(member).divorced.set(state)
-            await ctx.send(f"Set {member.mention}'s divorce status to {'divorced!' if state else 'undivorced!'}")
+            await ctx.send(f"Set {member.mention}'s divorce status to {'divorced!' if ast.literal_eval(state) else 'undivorced!'}")
         if var == "parent":
             await self.config.member(member).parent.set(state)
             if state == False:
                 await self.config.member(member).children.clear()
-            await ctx.send(f"Set {member.mention}'s parental status to {'parent!' if state else 'not a parent!'}")
+            await ctx.send(f"Set {member.mention}'s parental status to {'parent!' if ast.literal_eval(state) else 'not a parent!'}")
         if var == "child":
             await self.config.member(member).child.set(state)
             if state == False:
                 await self.config.member(member).parents.clear()
-            await ctx.send(f"Set {member.mention}'s child status to {'child!' if state else 'orphan!'}")
+            await ctx.send(f"Set {member.mention}'s child status to {'child!' if ast.literal_eval(state) else 'orphan!'}")
         if var == "marcount":
             await self.config.member(member).marcount.set(state)
             await ctx.send(f"Set {member.mention}'s number of marriages to {state}!")
