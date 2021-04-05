@@ -62,6 +62,7 @@ class Approvalchart(commands.Cog):
         authors = []
         count = 0
         users = {}
+        await channel.trigger_typing()
         async for msg in messages:
             usr = msg.mentions[0].mention
             authors.append(usr)
