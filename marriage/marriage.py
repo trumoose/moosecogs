@@ -59,6 +59,8 @@ class Marriage(commands.Cog):
             await ctx.send(f"Set {member.mention}'s marriage status to {'married!' if boolean else 'unmarried!'}")
         if var == "divorced":
             await self.config.member(member).divorced.set(boolean)
+            if boolean == False:
+                await self.config.member(member).exes.clear()
             await ctx.send(f"Set {member.mention}'s divorce status to {'divorced!' if boolean else 'undivorced!'}")
         if var == "parent":
             await self.config.member(member).parent.set(boolean)
@@ -79,6 +81,20 @@ class Marriage(commands.Cog):
         if var == "parcount":
             await self.config.member(member).parcount.set(state)
             await ctx.send(f"Set {member.mention}'s number of parents to {state}!")
+        
+    @marriage.command(name="reset")
+    async def marriage_reset(self, ctx: commands.Context, member: typing.Optional[discord.Member]):
+        await self.config.member(member).married.set(False)
+        await self.config.member(member).divorced.set(False)
+        await self.config.member(member).parent.set(False)
+        await self.config.member(member).child.set(False)
+        await self.config.member(member).current.clear()
+        await self.config.member(member).exes.clear()
+        await self.config.member(member).children.clear()
+        await self.config.member(member).parents.clear()
+        await self.config.member(member).marcount.set(0)
+        await self.config.member(member).kidcount.set(0)
+        await self.config.member(member).parcount.set(0)
         
     @marriage.command(name="multiple")
     async def marriage_multiple(self, ctx: commands.Context, state: bool):
