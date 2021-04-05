@@ -65,14 +65,14 @@ class Approvalchart(commands.Cog):
         await channel.trigger_typing()
         async for msg in messages:
             usr = msg.mentions[0].mention
-            authors.append(usr)
+            authors.append(usr.name)
             await asyncio.sleep(0.005)
 
         for author in authors:
             if author in users:
-                users[author.name] += 1
+                users[author] += 1
             else:
-                users[author.name] = 1
+                users[author] = 1
 
         print(users)
         
