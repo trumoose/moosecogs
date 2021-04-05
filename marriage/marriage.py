@@ -206,7 +206,7 @@ class Marriage(commands.Cog):
         if len(await self.config.member(ctx.author).current()) == 0:
             await self.config.member(ctx.author).married.clear()
             await self.config.member(ctx.author).divorced.set(True)
-        if len(await m_conf(member).current()) == 0:
+        if len(await self.config.member(member).current()) == 0:
             await self.config.member(member).married.clear()
             await self.config.member(member).divorced.set(True)
         await ctx.send(
