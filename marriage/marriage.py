@@ -69,6 +69,10 @@ class Marriage(commands.Cog):
             member = ctx.author
         is_married = await self.config.member(member).married()
         is_parent = await self.config.member(member).parent()
+        kids_header = ""
+        kids_text = ""
+        spouse_header = ""
+        spouse_text = ""
         if not is_married:
             if await self.config.member(member).parent():
                 if await self.config.member(member).divorced():
@@ -101,8 +105,7 @@ class Marriage(commands.Cog):
                 
             spouse_ids = await self.config.member(member).current()
             spouses = []
-            spouse_header = ""
-            spouse_text = ""
+            
             for spouse_id in spouse_ids:
                 spouse = self.bot.get_user(spouse_id)
                 if spouse:
@@ -116,8 +119,7 @@ class Marriage(commands.Cog):
                 
             children_ids = await self.config.member(member).children()
             kids = []
-            kids_header = ""
-            kids_text = ""
+            
             for children_id in children_ids:
                 kid = self.bot.get_user(children_id)
                 if kid:
