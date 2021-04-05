@@ -32,7 +32,6 @@ class Marriage(commands.Cog):
             exes = [],
             about = "I'm mysterious.",
             marcount = 0,
-            dircount = 0,
             kidcount = 0,
             parcount = 0
         )
@@ -44,14 +43,29 @@ class Marriage(commands.Cog):
         f"""Various Marriage settings."""
 
     @marriage.command(name="set")
-    async def marriage_set(self, ctx: commands.Context, member: typing.Optional[discord.Member], var, state: bool):
+    async def marriage_set(self, ctx: commands.Context, member: typing.Optional[discord.Member], var, state):
         """Set member variables for a user."""
         if var == "married":
             await self.config.member(member).married.set(state)
-            await ctx.send(f"Set {member.mention}'s status to {'married!' if state else 'unmarried!'}")
+            await ctx.send(f"Set {member.mention}'s marriage status to {'married!' if state else 'unmarried!'}")
         if var == "divorced":
             await self.config.member(member).divorced.set(state)
-            await ctx.send(f"Set {member.mention}'s status to {'divorced!' if state else 'undivorced!'}")
+            await ctx.send(f"Set {member.mention}'s divorce status to {'divorced!' if state else 'undivorced!'}")
+        if var == "parent":
+            await self.config.member(member).parent.set(state)
+            await ctx.send(f"Set {member.mention}'s parental status to {'parent!' if state else 'not a parent!'}")
+        if var == "child":
+            await self.config.member(member).child.set(state)
+            await ctx.send(f"Set {member.mention}'s child status to {'child!' if state else 'orphan!'}")
+        if var == "marcount":
+            await self.config.member(member).marcount.set(state)
+            await ctx.send(f"Set {member.mention}'s number of marriages to {state}!")
+        if var == "kidcount":
+            await self.config.member(member).kidcount.set(state)
+            await ctx.send(f"Set {member.mention}'s number of kids to {state}!")
+        if var == "parcount":
+            await self.config.member(member).parcount.set(state)
+            await ctx.send(f"Set {member.mention}'s number of parents to {state}!")
         
     @marriage.command(name="multiple")
     async def marriage_multiple(self, ctx: commands.Context, state: bool):
