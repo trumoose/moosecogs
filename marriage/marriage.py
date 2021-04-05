@@ -19,7 +19,7 @@ class Marriage(commands.Cog):
 
         self.config.register_guild(
             toggle=False,
-            multi=False,
+            multi=False
         )
 
         self.config.register_member({"married": False,
