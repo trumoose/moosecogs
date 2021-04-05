@@ -84,6 +84,7 @@ class Approvalchart(commands.Cog):
         chart = await self.create_approvalchart(top)
         await ctx.send(file=discord.File(chart, "chart.png"))
         
+    @checks.mod_or_permissions(manage_messages=True)
     @commands.command()
     async def bans(self, ctx):
         """Generates a pie chart, representing all the bans in the modlog channel."""
@@ -97,6 +98,7 @@ class Approvalchart(commands.Cog):
             for embed in embeds:
                 embed_dict = embed.to_dict()
                 print(embed_dict['fields'])
+                await ctx.send(embed_dict['fields'])
             #usr = (msg.content).split()[0]
             #usr2 = re.sub('[^0-9]','', usr)
             #usr3 = discord.utils.get(ctx.guild.members, id=int(usr2))
