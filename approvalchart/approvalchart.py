@@ -29,6 +29,7 @@ class Approvalchart(commands.Cog):
         sizes = []
         labels  = []
         for x in top:
+            x[0] = x[0] + " " + x[1]
             labels.append(x[0])
             sizes.append(x[1])
         title = plt.title("Approvals  ", color="white", fontsize=15)
