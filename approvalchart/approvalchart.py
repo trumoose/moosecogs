@@ -24,7 +24,7 @@ class Approvalchart(commands.Cog):
         self.config = Config.get_conf(self, identifier=131243481312, force_registration=True)
 
     @staticmethod
-    async def create_approvalchart(top):
+    async def create_approvalchart(top, callType):
         plt.clf()
         sizes = []
         labels  = []
@@ -32,7 +32,7 @@ class Approvalchart(commands.Cog):
             usr = x[0] + " (" + str(x[1]) + ")"
             labels.append(usr)
             sizes.append(x[1])
-        title = plt.title("Approvals  ", color="white", fontsize=15)
+        title = plt.title(callType, color="white", fontsize=15)
         title.set_va("top")
         title.set_ha("center")
         plt.gca().axis("equal")
@@ -81,7 +81,7 @@ class Approvalchart(commands.Cog):
                 users[author] = 1
                 
         top = sorted(users.items(), key=lambda x: x[1], reverse=True)
-        chart = await self.create_approvalchart(top)
+        chart = await self.create_approvalchart(top, "Approvals")
         await ctx.send(file=discord.File(chart, "chart.png"))
         
     @checks.mod_or_permissions(manage_messages=True)
@@ -90,27 +90,25 @@ class Approvalchart(commands.Cog):
         """Generates a pie chart, representing all the bans in the modlog channel."""
         
         channel1 = ctx.guild.get_channel(774884417746501633)
-        messages = channel1.history(limit = 5)
+        messages = channel1.history(limit = 1000000)
 
-        #await ctx.channel.trigger_typing()
+        await ctx.channel.trigger_typing()
         async for msg in messages:
             embeds = msg.embeds
             for embed in embeds:
                 embed_dict = embed.to_dict()
                 usr = re.search(r'\((.*?)\)',embed_dict['fields'][0]['value']).group(1)
                 await ctx.send(usr)
-            #usr = (msg.content).split()[0]
-            #usr2 = re.sub('[^0-9]','', usr)
-            #usr3 = discord.utils.get(ctx.guild.members, id=int(usr2))
-            #if usr3 is not None:
-                #authors.append(usr3.name)
+                usr2 = discord.utils.get(ctx.guild.members, id=int(usr))
+                if usr2 is not None:
+                    authors.append(usr3.name)
 
-        #for author in authors:
-            #if author in users:
-                #users[author] += 1
-            #else:
-                #users[author] = 1
+        for author in authors:
+            if author in users:
+                users[author] += 1
+            else:
+                users[author] = 1
                 
-        #top = sorted(users.items(), key=lambda x: x[1], reverse=True)
-        #chart = await self.create_approvalchart(top)
-        #await ctx.send(file=discord.File(chart, "chart.png"))
+        top = sorted(users.items(), key=lambda x: x[1], reverse=True)
+        chart = await self.create_approvalchart(top, "Bans")
+        await ctx.send(file=discord.File(chart, "chart.png"))
