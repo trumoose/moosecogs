@@ -34,10 +34,6 @@ class Marriage(commands.Cog):
     @commands.guild_only()
     @checks.admin()
     async def marryset(self, ctx: commands.Context):
-        f"""Various Marriage settings.
-        
-        Version: {self.__version__}
-        Author: {self.__author__}"""
 
     @marryset.command(name="multiple")
     async def marryset_multiple(self, ctx: commands.Context, state: bool):
