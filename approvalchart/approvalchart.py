@@ -78,7 +78,6 @@ class Approvalchart(commands.Cog):
             else:
                 users[author] = 1
                 
-        sorted(users.items(), key=lambda x: x[1])
-        chart = await self.create_approvalchart(users, channel)
-        await ctx.send("generated")
+        top = sorted(users.items(), key=lambda x: x[1])
+        chart = await self.create_approvalchart(top, channel)
         await ctx.send(file=discord.File(chart, "chart.png"))
