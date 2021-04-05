@@ -71,15 +71,17 @@ class Approvalchart(commands.Cog):
             authors.append(usr3)
             await asyncio.sleep(0.005)
 
+        print("Authors: " + users)
+        
         for author in authors:
             if author in users:
                 users[author] += 1
             else:
                 users[author] = 1
 
-        print(users)
+        print("Users: " + users)
         
-        top_ten = heapq.nlargest(20, users.items(), key=lambda i: i[1])
-        chart = await self.create_approvalchart(top_ten, channel)
-        await ctx.send("generated")
-        await ctx.send(file=discord.File(chart, "chart.png"))
+        #top_ten = heapq.nlargest(20, users.items(), key=lambda i: i[1])
+        #chart = await self.create_approvalchart(top_ten, channel)
+        #await ctx.send("generated")
+        #await ctx.send(file=discord.File(chart, "chart.png"))
