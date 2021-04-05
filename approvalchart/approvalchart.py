@@ -89,7 +89,7 @@ class Approvalchart(commands.Cog):
         """Generates a pie chart, representing all the bans in the modlog channel."""
         
         channel1 = ctx.guild.get_channel(774884417746501633)
-        messages = channel1.history(limit = 1)
+        messages = channel1.history(limit = 5)
 
         #await ctx.channel.trigger_typing()
         async for msg in messages:
