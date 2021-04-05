@@ -266,6 +266,10 @@ class Marriage(commands.Cog):
             return await ctx.send("You cannot marry yourself!")
         if member.id in await self.config.member(ctx.author).current():
             return await ctx.send("You two are already married!")
+        if member.id in await self.config.member(ctx.author).children():
+            return await ctx.send("Youu cannot marry your own child!")
+        if member.id in await self.config.member(ctx.author).parent():
+            return await ctx.send("Youu cannot marry your own parent!")
         if not await self.config.guild(ctx.guild).multi():
             if await self.config.member(ctx.author).married():
                 return await ctx.send("You're already married!")
@@ -285,12 +289,15 @@ class Marriage(commands.Cog):
         author_marcount = await self.config.member(ctx.author).marcount()
         target_marcount = await self.config.member(member).marcount()
 
+        # incrementing MARCOUNT
         await self.config.member(ctx.author).marcount.set(author_marcount + 1)
         await self.config.member(member).marcount.set(target_marcount + 1)
 
+        # setting MARRIED to TRUE
         await self.config.member(ctx.author).married.set(True)
         await self.config.member(member).married.set(True)
 
+        # setting DIVORCED to FALSE
         await self.config.member(ctx.author).divorced.clear()
         await self.config.member(member).divorced.clear()
 
@@ -298,6 +305,29 @@ class Marriage(commands.Cog):
             acurrent.append(member.id)
         async with self.config.member(member).current() as tcurrent:
             tcurrent.append(ctx.author.id)
+            
+        author_kidcount = await self.config.member(ctx.author).kidcount()
+        target_parcount = await self.config.member(member).kidcount()
+        total_kidcount = author_kidcount + target_kidcount
+        new_kids = await self.config.member(ctx.author).children() + await self.config.member(member).children()
+        
+        await self.config.member(ctx.author).kidcount.set(total_kidcount)
+        await self.config.member(member).parcount.set(total_kidcount)
+        
+        # set NEW CHILDREN
+        await self.config.member(ctx.author).children.set(new_kids)
+        await self.config.member(member).children.set(new_kids)
+        
+        if total_kidcount > 0:
+            await self.config.member(ctx.author).parent.set(True)
+            await self.config.member(member).parent.set(True)
+            
+        # add PARENT to CHILD'S parents
+        async with self.config.member(member).children() as children:
+            for x in children:
+                async with self.config.member(self.bot.get_user(x)).parents() as parents:
+                    parents.append(member.id)
+            
         await ctx.send(f":church: {ctx.author.mention} and {member.mention} are now a happy married couple! ")
 
     @commands.max_concurrency(1, commands.BucketType.channel, wait=True)
