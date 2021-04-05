@@ -48,7 +48,6 @@ class Marriage(commands.Cog):
         self, ctx: commands.Context, member: typing.Optional[discord.Member]
     ):
         """Display your or someone else's about"""
-        conf = await self.config.guild(ctx.guild)
         if not member:
             member = ctx.author
         m_conf = await self.config.member(member)
