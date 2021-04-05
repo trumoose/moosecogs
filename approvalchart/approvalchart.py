@@ -95,7 +95,8 @@ class Approvalchart(commands.Cog):
         async for msg in messages:
             embeds = msg.embeds
             for embed in embeds:
-                print(embed.to_dict())
+                embed_dict = embed.to_dict()
+                print(embed_dict['value'])
             #usr = (msg.content).split()[0]
             #usr2 = re.sub('[^0-9]','', usr)
             #usr3 = discord.utils.get(ctx.guild.members, id=int(usr2))
