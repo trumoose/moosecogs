@@ -126,10 +126,10 @@ class Marriage(commands.Cog):
             member = ctx.author
         is_married = await self.config.member(member).married()
         is_parent = await self.config.member(member).parent()
-        kids_header = ""
-        kids_text = ""
-        spouse_header = ""
-        spouse_text = ""
+        kids_header = "Error?"
+        kids_text = "Moosey sucks at coding!"
+        spouse_header = "Error?"
+        spouse_text = "Moosey sucks at coding!"
         if not is_married:
             if await self.config.member(member).parent():
                 if await self.config.member(member).divorced():
