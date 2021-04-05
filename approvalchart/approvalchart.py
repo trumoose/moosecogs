@@ -68,7 +68,8 @@ class Approvalchart(commands.Cog):
             usr = (msg.content).split()[0]
             usr2 = re.sub('[^0-9]','', usr)
             usr3 = discord.utils.get(ctx.guild.members, id=int(usr2))
-            authors.append(usr3.name)
+            if usr3 is not None:
+                authors.append(usr3.name)
             await asyncio.sleep(0.0025)
 
         print("Authors: ")
