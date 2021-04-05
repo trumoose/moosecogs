@@ -47,7 +47,7 @@ class Marriage(commands.Cog):
         """Set member variables for a user."""
         boolean = False
         
-        if state == "True" or "true":
+        if state == "True" or state == "true":
             boolean = True
         else:
             boolean = False
