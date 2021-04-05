@@ -70,9 +70,9 @@ class Approvalchart(commands.Cog):
 
         for author in authors:
             if author in users:
-                users[str(author)] += 1
+                users[author.name] += 1
             else:
-                users[str(author)] = 1
+                users[author.name] = 1
 
         print(users)
         
