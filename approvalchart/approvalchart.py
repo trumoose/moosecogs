@@ -4,6 +4,7 @@ import heapq
 from io import BytesIO
 from typing import Optional
 import numpy as np
+import re
 
 import matplotlib
 
@@ -64,8 +65,10 @@ class Approvalchart(commands.Cog):
         users = {}
         await channel.trigger_typing()
         async for msg in messages:
-            usr = msg.mentions[0].name
-            authors.append(usr)
+            usr = msg.split()[0]
+            usr2 = re.sub('[^0-9]','', usr)
+            usr3 = ctx.guild.get_user(usr2)
+            authors.append(usr3)
             await asyncio.sleep(0.005)
 
         for author in authors:
