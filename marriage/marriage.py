@@ -42,10 +42,10 @@ class Marriage(commands.Cog):
         """Set member variables for a user."""
         if var == "married":
             await self.config.member(member).married.set(state)
-        await ctx.send(f"Set {member.mention}'s status to {'married!' if state else 'unmarried!'}")
+            await ctx.send(f"Set {member.mention}'s status to {'married!' if state else 'unmarried!'}")
         if var == "divorced":
             await self.config.member(member).divorced.set(state)
-        await ctx.send(f"Set {member.mention}'s status to {'divorced!' if state else 'undivorced!'}")
+            await ctx.send(f"Set {member.mention}'s status to {'divorced!' if state else 'undivorced!'}")
         
     @marriage.command(name="multiple")
     async def marriage_multiple(self, ctx: commands.Context, state: bool):
