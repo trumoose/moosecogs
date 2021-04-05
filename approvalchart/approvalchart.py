@@ -66,15 +66,14 @@ class Approvalchart(commands.Cog):
         users = {}
         history_counter = 0
         async for msg in messages:
-            history_counter += 1
             if history_counter % 250 == 0:
                 await ctx.channel.trigger_typing()
+            history_counter += 1
             usr = (msg.content).split()[0]
             usr2 = re.sub('[^0-9]','', usr)
             usr3 = discord.utils.get(ctx.guild.members, id=int(usr2))
             if usr3 is not None:
                 authors.append(usr3.name)
-            await asyncio.sleep(0.005)
 
         for author in authors:
             if author in users:
@@ -99,9 +98,9 @@ class Approvalchart(commands.Cog):
         history_counter = 0
         async for msg in messages:
             embeds = msg.embeds
-            history_counter += 1
             if history_counter % 250 == 0:
                 await ctx.channel.trigger_typing()
+            history_counter += 1
             for embed in embeds:
                 embed_dict = embed.to_dict()
                 try:
