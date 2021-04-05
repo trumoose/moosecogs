@@ -98,10 +98,14 @@ class Approvalchart(commands.Cog):
             embeds = msg.embeds
             for embed in embeds:
                 embed_dict = embed.to_dict()
-                usr = re.search(r'\((.*?)\)',embed_dict['fields'][0]['value']).group(1)
-                usr2 = discord.utils.get(ctx.guild.members, id=int(usr))
-                if usr2 is not None:
-                    authors.append(usr2.name)
+                try:
+                    usr = re.search(r'\((.*?)\)',embed_dict['fields'][0]['value']).group(1)
+                except:
+                    print("Fields not found")
+                else:
+                    usr2 = discord.utils.get(ctx.guild.members, id=int(usr))
+                    if usr2 is not None:
+                        authors.append(usr2.name)
 
         for author in authors:
             if author in users:
