@@ -17,9 +17,7 @@ class Marriage(commands.Cog):
 
     def __init__(self, bot):
         self.bot = bot
-        self.config = Config.get_conf(
-            self, identifier=1234580008135, force_registration=True
-        )
+        self.config = Config.get_conf(self, identifier=1234580008135, force_registration=True)
         default_user = {
             "married": False,
             "current": [],
