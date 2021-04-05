@@ -30,7 +30,7 @@ class Approvalchart(commands.Cog):
         labels  = []
         for x in top:
             usr = x[0] + " " + str(x[1])
-            labels.append(str)
+            labels.append(usr)
             sizes.append(x[1])
         title = plt.title("Approvals  ", color="white", fontsize=15)
         title.set_va("top")
