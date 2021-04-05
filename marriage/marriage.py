@@ -263,13 +263,13 @@ class Marriage(commands.Cog):
     async def marry(self, ctx: commands.Context, member: discord.Member):
         """Marry the love of your life!"""
         if member.id == ctx.author.id:
-            return await ctx.send("You cannot marry yourself!")
+            return await ctx.send("You can't marry yourself!")
         if member.id in await self.config.member(ctx.author).current():
             return await ctx.send("You two are already married!")
         if member.id in await self.config.member(ctx.author).children():
-            return await ctx.send("Youu cannot marry your own child!")
+            return await ctx.send("You can't marry your own child!")
         if member.id in await self.config.member(ctx.author).parent():
-            return await ctx.send("Youu cannot marry your own parent!")
+            return await ctx.send("You can't marry your own parent!")
         if not await self.config.guild(ctx.guild).multi():
             if await self.config.member(ctx.author).married():
                 return await ctx.send("You're already married!")
@@ -338,7 +338,7 @@ class Marriage(commands.Cog):
     ):
         """Divorce your current spouse"""
         if member.id == ctx.author.id:
-            return await ctx.send("You cannot divorce yourself!")
+            return await ctx.send("You can't divorce yourself!")
         if member.id not in await self.config.member(ctx.author).current():
             return await ctx.send("You two aren't married!")
         await ctx.send(
@@ -372,11 +372,11 @@ class Marriage(commands.Cog):
     async def adopt(self, ctx: commands.Context, member: discord.Member):
         """Adopt a vegan!"""
         if member.id == ctx.author.id:
-            return await ctx.send("You cannot adopt yourself!")
+            return await ctx.send("You can't adopt yourself!")
         if member.id in await self.config.member(ctx.author).parents():
-            return await ctx.send("You cannot adopt your own parent!")
+            return await ctx.send("You can't adopt your own parent!")
         if member.id in await self.config.member(ctx.author).current():
-            return await ctx.send("You cannot adopt your own spouse!")
+            return await ctx.send("You can't adopt your own spouse!")
         if member.id in await self.config.member(ctx.author).children():
             return await ctx.send("You've already adopted them!")
         if await self.config.member(member).parents():
