@@ -79,6 +79,20 @@ class Marriage(commands.Cog):
         await self.config.guild(ctx.guild).multi.set(state)
         await ctx.send(f"Members {'can' if state else 'cannot'} marry multiple people.")
 
+    @marriage.command(name="debug")
+    async def marriage_debug(self, ctx: commands.Context, member: typing.Optional[discord.Member]):
+        await ctx.send(f"married = {await self.config.member(member).married()}")
+        await ctx.send(f"divorced = {await self.config.member(member).divorced()}")
+        await ctx.send(f"parent = {await self.config.member(member).parent()}")
+        await ctx.send(f"child = {await self.config.member(member).child()}")
+        await ctx.send(f"current = {await self.config.member(member).current()}")
+        await ctx.send(f"children = {await self.config.member(member).children()}")
+        await ctx.send(f"parents = {await self.config.member(member).parents()}")
+        await ctx.send(f"exes = {await self.config.member(member).exes()}")
+        await ctx.send(f"marcount = {await self.config.member(member).marcount()}")
+        await ctx.send(f"kidcount = {await self.config.member(member).kidcount()}")
+        await ctx.send(f"parcount = {await self.config.member(member).parcount()}")
+
     @commands.group(invoke_without_command=True)
     @commands.guild_only()
     async def about(
