@@ -63,7 +63,6 @@ class Approvalchart(commands.Cog):
         messages = channel1.history(limit = 1000000)
         
         authors = []
-        count = 0
         users = {}
         await ctx.channel.trigger_typing()
         async for msg in messages:
@@ -92,13 +91,14 @@ class Approvalchart(commands.Cog):
         channel1 = ctx.guild.get_channel(774884417746501633)
         messages = channel1.history(limit = 1000000)
 
+        authors = []
+        users = {}
         await ctx.channel.trigger_typing()
         async for msg in messages:
             embeds = msg.embeds
             for embed in embeds:
                 embed_dict = embed.to_dict()
                 usr = re.search(r'\((.*?)\)',embed_dict['fields'][0]['value']).group(1)
-                await ctx.send(usr)
                 usr2 = discord.utils.get(ctx.guild.members, id=int(usr))
                 if usr2 is not None:
                     authors.append(usr3.name)
