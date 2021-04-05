@@ -70,7 +70,7 @@ class Marriage(commands.Cog):
         marcount = await self.config.member(member).marcount()
         been_married = f"{marcount} time" if marcount == 1 else f"{marcount} times"
         if marcount != 0:
-            exes_ids = await self.config.member(member.exes()
+            exes_ids = await self.config.member(member).exes()
             if exes_ids == []:
                 ex_text = "None"
             else:
