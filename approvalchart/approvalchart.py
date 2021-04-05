@@ -71,7 +71,8 @@ class Approvalchart(commands.Cog):
             authors.append(usr3)
             await asyncio.sleep(0.005)
 
-        print("Authors: " + authors)
+        print("Authors: ")
+        print(authors)
         
         for author in authors:
             if author in users:
@@ -79,6 +80,7 @@ class Approvalchart(commands.Cog):
             else:
                 users[author] = 1
 
+        print("Users: ")
         print(users)
         
         #top_ten = heapq.nlargest(20, users.items(), key=lambda i: i[1])
