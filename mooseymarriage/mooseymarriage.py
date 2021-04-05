@@ -31,7 +31,7 @@ class Mooseymarriage(commands.Cog):
             dircount = 0
         )
             
-    @commands.group(autohelp=True, aliases=["marriage"])
+    @commands.group(autohelp=True)
     @commands.guild_only()
     @checks.admin()
     async def marriage(self, ctx: commands.Context):
