@@ -39,8 +39,7 @@ class Marriage(commands.Cog):
     @marryset.command(name="multiple")
     async def marryset_multiple(self, ctx: commands.Context, state: bool):
         """Enable/disable whether members can be married to multiple people at once."""
-        async with self.config.guild(ctx.guild).multi() as polygamy:
-            polygamy = state
+        await self.config.guild(ctx.guild).multi.set(state)
         await ctx.send(f"Members {'can' if state else 'cannot'} marry multiple people.")
 
     @commands.group(invoke_without_command=True)
