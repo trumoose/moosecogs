@@ -104,17 +104,17 @@ class Marriage(commands.Cog):
 
     @marriage.command(name="debug")
     async def marriage_debug(self, ctx: commands.Context, member: typing.Optional[discord.Member]):
-        await ctx.send(f"married = {'True' if await self.config.member(member).married() else 'False'}"
-                       f"divorced = {'True' if await self.config.member(member).divorced() else 'False'}"
-                       f"parent = {'True' if await self.config.member(member).parent() else 'False'}"
-                       f"child = {'True' if await self.config.member(member).child() else 'False'}"
-                       f"current = {humanize_list(await self.config.member(member).current())}"
-                       f"children = {humanize_list(await self.config.member(member).children())}"
-                       f"parents = {humanize_list(await self.config.member(member).parents())}"
-                       f"exes = {humanize_list(await self.config.member(member).exes())}"
-                       f"marcount = {await self.config.member(member).marcount()}"
-                       f"kidcount = {await self.config.member(member).kidcount()}"
-                       f"parcount = {await self.config.member(member).parcount()}")
+        await ctx.send(f"married = {'True' if await self.config.member(member).married() else 'False'}\n"
+                       f"divorced = {'True' if await self.config.member(member).divorced() else 'False'}\n"
+                       f"parent = {'True' if await self.config.member(member).parent() else 'False'}\n"
+                       f"child = {'True' if await self.config.member(member).child() else 'False'}\n"
+                       f"current = {humanize_list(await self.config.member(member).current())}\n"
+                       f"children = {humanize_list(await self.config.member(member).children())}\n"
+                       f"parents = {humanize_list(await self.config.member(member).parents())}\n"
+                       f"exes = {humanize_list(await self.config.member(member).exes())}\n"
+                       f"marcount = {await self.config.member(member).marcount()}\n"
+                       f"kidcount = {await self.config.member(member).kidcount()}\n"
+                       f"parcount = {await self.config.member(member).parcount()}\n")
 
     @commands.group(invoke_without_command=True)
     @commands.guild_only()
