@@ -185,13 +185,11 @@ class Marriage(commands.Cog):
         self, ctx: commands.Context, member: discord.Member, court: bool = False
     ):
         """Divorce your current spouse"""
-        conf = await self.config.guild(ctx.guild)
-        if not await conf.toggle():
+        if not await self.config.guild(ctx.guild).toggle():
             return await ctx.send("Marriage is not enabled!")
         if member.id == ctx.author.id:
             return await ctx.send("You cannot divorce yourself!")
-        m_conf = await self.config.member(user)
-        if member.id not in await m_conf(ctx.author).current():
+        if member.id not in await self.config.member(ctx.author).current():
             return await ctx.send("You two aren't married!")
         if not court:
             await ctx.send(
@@ -201,20 +199,20 @@ class Marriage(commands.Cog):
             await self.bot.wait_for("message", check=pred)
             if not pred.result:
                 await ctx.send(f"Too bad! Proceeding with divorce...\n")
-        async with m_conf(ctx.author).current() as acurrent:
+        async with self.config.member(ctx.author).current() as acurrent:
             acurrent.remove(member.id)
-        async with m_conf(member).current() as tcurrent:
+        async with self.config.member(member).current() as tcurrent:
             tcurrent.remove(ctx.author.id)
-        async with m_conf(ctx.author).exes() as aexes:
+        async with self.config.member(ctx.author).exes() as aexes:
             aexes.append(member.id)
-        async with m_conf(member).exes() as texes:
+        async with self.config.member(member).exes() as texes:
             texes.append(ctx.author.id)
-        if len(await m_conf(ctx.author).current()) == 0:
-            await m_conf(ctx.author).married.clear()
-            await m_conf(ctx.author).divorced.set(True)
+        if len(await self.config.member(ctx.author).current()) == 0:
+            await self.config.member(ctx.author).married.clear()
+            await self.config.member(ctx.author).divorced.set(True)
         if len(await m_conf(member).current()) == 0:
-            await m_conf(member).married.clear()
-            await m_conf(member).divorced.set(True)
+            await self.config.member(member).married.clear()
+            await self.config.member(member).divorced.set(True)
         await ctx.send(
             f":broken_heart: {ctx.author.mention} and {member.mention} got divorced...\n"
         )
