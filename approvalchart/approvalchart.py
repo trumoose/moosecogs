@@ -36,7 +36,7 @@ class Approvalchart(commands.Cog):
         title.set_va("top")
         title.set_ha("center")
         plt.gca().axis("equal")
-        cmap = plt.cm.terrain
+        cmap = plt.cm.rainbow
         colors = cmap(np.linspace(0., 1., 21))
         pie = plt.pie(sizes, colors=colors, startangle=0)
         plt.legend(
