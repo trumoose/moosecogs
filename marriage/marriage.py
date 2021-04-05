@@ -16,22 +16,19 @@ class Marriage(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.config = Config.get_conf(self, identifier=1234580008135, force_registration=True)
-        default_user = {
-            "married": False,
-            "current": [],
-            "divorced": False,
-            "exes": [],
-            "about": "I'm mysterious.",
-            "marcount": 0,
-            "dircount": 0,
-        }
 
         self.config.register_guild(
             toggle=False,
             multi=False,
         )
 
-        self.config.register_member(**default_user)
+        self.config.register_member("married": False,
+            "current": [],
+            "divorced": False,
+            "exes": [],
+            "about": "I'm mysterious.",
+            "marcount": 0,
+            "dircount": 0,)
 
     @commands.group(autohelp=True, aliases=["marriage"])
     @commands.guild_only()
