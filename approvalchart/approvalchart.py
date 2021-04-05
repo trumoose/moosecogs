@@ -25,8 +25,11 @@ class Approvalchart(commands.Cog):
     @staticmethod
     async def create_approvalchart(top, channel):
         plt.clf()
-        sizes = [x for x in top.values()]
-        labels  = [k for k in top.keys()]
+        sizes = []
+        labels  = []
+        for x, y in top.items():
+            labels.append(x)
+            sizes.append(y)
         title = plt.title("Counting  ", color="white", fontsize=15)
         title.set_va("top")
         title.set_ha("center")
@@ -66,9 +69,9 @@ class Approvalchart(commands.Cog):
 
         for author in authors:
             if author in users:
-                users[str(author)] += 1
+                users[str(author.name)] += 1
             else:
-                users[str(author)] = 1
+                users[str(author.name)] = 1
 
         top_ten = heapq.nlargest(20, users.items(), key=lambda i: i[1])
         chart = await self.create_approvalchart(top_ten, channel)
