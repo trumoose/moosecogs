@@ -388,7 +388,7 @@ class Marriage(commands.Cog):
                     await self.config.member(self.bot.get_user(x)).parent.set(True)
         
         # add PARENT'S SPOUSE(S) to CHILD'S parents 
-        async with self.config.member(member).parent() as parents:
+        async with self.config.member(member).parents() as parents:
             async with self.config.member(ctx.author).current() as spouses:
                 for x in spouses:
                     async with self.config.member(self.bot.get_user(x)).children() as children:
