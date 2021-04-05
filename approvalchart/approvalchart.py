@@ -24,12 +24,12 @@ class Approvalchart(commands.Cog):
         self.config = Config.get_conf(self, identifier=131243481312, force_registration=True)
 
     @staticmethod
-    async def create_approvalchart(top, channel):
+    async def create_approvalchart(top):
         plt.clf()
         sizes = []
         labels  = []
         for x in top:
-            usr = str(x[0]) + " " + str(x[1])
+            usr = x[0] + " " + str(x[1])
             labels.append(str)
             sizes.append(x[1])
         title = plt.title("Approvals  ", color="white", fontsize=15)
@@ -58,13 +58,13 @@ class Approvalchart(commands.Cog):
     async def approvals(self, ctx):
         """Generates a pie chart, representing all the approvals in the approvals channel."""
         
-        channel = ctx.guild.get_channel(779971763999342653)
-        messages = channel.history(limit = 1000000)
+        channel1 = ctx.guild.get_channel(779971763999342653)
+        messages = channel1.history(limit = 1000000)
         
         authors = []
         count = 0
         users = {}
-        await channel.trigger_typing()
+        await ctx.channel.trigger_typing()
         async for msg in messages:
             usr = (msg.content).split()[0]
             usr2 = re.sub('[^0-9]','', usr)
@@ -80,5 +80,5 @@ class Approvalchart(commands.Cog):
                 users[author] = 1
                 
         top = sorted(users.items(), key=lambda x: x[1], reverse=True)
-        chart = await self.create_approvalchart(top, channel)
+        chart = await self.create_approvalchart(top)
         await ctx.send(file=discord.File(chart, "chart.png"))
