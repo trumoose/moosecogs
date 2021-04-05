@@ -67,13 +67,12 @@ class Approvalchart(commands.Cog):
         async for msg in messages:
             usr = (msg.content).split()[0]
             usr2 = re.sub('[^0-9]','', usr)
-            print(usr2)
-            usr3 = discord.utils.get(ctx.guild.members, id=usr2)
+            usr3 = discord.utils.get(ctx.guild.members, id=int(usr2))
             authors.append(usr3)
             await asyncio.sleep(0.0025)
 
-        #print("Authors: ")
-        #print(authors)
+        print("Authors: ")
+        print(authors)
         
         for author in authors:
             if author in users:
