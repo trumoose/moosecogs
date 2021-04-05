@@ -74,6 +74,8 @@ class Approvalchart(commands.Cog):
             else:
                 users[str(author)] = 1
 
+        print(users)
+        
         top_ten = heapq.nlargest(20, users.items(), key=lambda i: i[1])
         chart = await self.create_approvalchart(top_ten, channel)
         await ctx.send("generated")
