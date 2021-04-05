@@ -89,11 +89,8 @@ class Approvalchart(commands.Cog):
         """Generates a pie chart, representing all the bans in the modlog channel."""
         
         channel1 = ctx.guild.get_channel(774884417746501633)
-        messages = channel1.history(limit = 2)
-        
-        authors = []
-        count = 0
-        users = {}
+        messages = channel1.history(limit = 10)
+
         #await ctx.channel.trigger_typing()
         print("Hello 1")
         async for msg in messages:
@@ -106,7 +103,6 @@ class Approvalchart(commands.Cog):
             #usr3 = discord.utils.get(ctx.guild.members, id=int(usr2))
             #if usr3 is not None:
                 #authors.append(usr3.name)
-            await asyncio.sleep(0.005)
 
         #for author in authors:
             #if author in users:
