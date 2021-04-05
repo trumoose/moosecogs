@@ -94,7 +94,7 @@ class Approvalchart(commands.Cog):
         authors = []
         count = 0
         users = {}
-        await ctx.channel.trigger_typing()
+        #await ctx.channel.trigger_typing()
         print("Hello 1")
         async for msg in messages:
             print("Hello 2")
