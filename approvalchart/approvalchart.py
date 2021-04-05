@@ -80,7 +80,7 @@ class Approvalchart(commands.Cog):
 
         print(users)
         
-        #top_ten = heapq.nlargest(20, users.items(), key=lambda i: i[1])
-        #chart = await self.create_approvalchart(top_ten, channel)
-        #await ctx.send("generated")
-        #await ctx.send(file=discord.File(chart, "chart.png"))
+        top_ten = heapq.nlargest(20, users.items(), key=lambda i: i[1])
+        chart = await self.create_approvalchart(top_ten, channel)
+        await ctx.send("generated")
+        await ctx.send(file=discord.File(chart, "chart.png"))
