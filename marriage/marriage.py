@@ -147,6 +147,10 @@ class Marriage(commands.Cog):
     async def _is_member_of_family(self, ctx: commands.Context, member: discord.Member, member2: discord.Member):
         user1 = discord.utils.get(ctx.guild.members, id=member.id)
         user2 = discord.utils.get(ctx.guild.members, id=member2.id)
+        async with self.config.member(user1).spouses() as spouses:
+            for spouse in spouses:
+                if spouse == user2.id:
+                    return True
         async with self.config.member(user1).greatest_ancestors() as gca:
             async with self.config.member(user2).greatest_ancestors() as gca2:
                 async with self.config.member(user1).spouses() as spouses:
@@ -167,6 +171,10 @@ class Marriage(commands.Cog):
                                             return True
                 for x in gca:
                     for y in gca2:
+                        if x == user2.id:
+                            return True
+                        if y == user.id:
+                            return True
                         if x == y:
                             return True
         return False
@@ -181,7 +189,7 @@ class Marriage(commands.Cog):
         if await self._is_member_of_family(ctx, member, member2):
             await ctx.send(f"{member.name} is a member of {member2.name}'s family!")
         else:
-            await ctx.send(f"{member.name} and {member2.name} are not related!")
+            await    ctx.send(f"{member.name} and {member2.name} are not related!")
             
     @commands.group(invoke_without_command=True)
     @commands.guild_only()
