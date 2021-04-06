@@ -31,6 +31,7 @@ class Marriage(commands.Cog):
             parents = [],
             exes = [],
             about = "I'm mysterious.",
+            gender = "",
             marcount = 0,
             kidcount = 0,
             parcount = 0
@@ -47,6 +48,10 @@ class Marriage(commands.Cog):
         
         if arg == "about":
             await self.config.member(ctx.author).about.set(value)
+            await ctx.tick()
+            
+        if arg == "gender":
+            await self.config.member(ctx.author).gender.set(value)
             await ctx.tick()
         
         """
@@ -145,6 +150,7 @@ class Marriage(commands.Cog):
         is_parent = await self.config.member(member).parent()
         is_divorced = await self.config.member(member).divorced()
         is_child = await self.config.member(member).child()
+        gender = await self.config.member(member).gender().lower()
         kids_header = "Error?"
         kids_text = "Moosey sucks at coding!"
         parents_header = "Error?"
@@ -155,16 +161,49 @@ class Marriage(commands.Cog):
         if not is_married:
             if is_parent:
                 if is_divorced:
-                    rs_status = "Widow"
+                    if gender[0] == "m":
+                        rs_status = "Widower"
+                    else:
+                        rs_status = "Widow"
                 else:
-                    rs_status = "Single Parent"
+                    if gender[0] == "m":
+                        rs_status = "Single Father"
+                    elif gender[0] == "f":
+                        rs_status = "Single Mother"
+                    else:
+                        rs_status = "Single Parent"
             elif is_divorced:
-                rs_status = "Divorced"
+                if gender[0] == "m":
+                    rs_status = "Divorced Husband"
+                if gender[0] == "f":
+                    rs_status = "Divorced Wife"
+                else:
+                    rs_status = "Divorced"
+            elif is_child:
+                async with self.config.member(member).parents() as parents:
+                    for parent_id in parents:
+                        parent = discord.utils.get(ctx.guild.members, id=parent_id)
+                        if await self.config.member(parent).kidcount() == 1:
+                            rs_status = "Only Child"
+                        elif self.config.member(parent).kidcount() > 1:
+                            if gender[0] == "m":
+                                rs_status = "Brother"
+                            elif gender[0] == "f"
+                                rs_status = "Sister"
+                            else:
+                                rs_status = "Sibling"
+                        else: 
+                            if gender[0] == "m":
+                                rs_status = "Son"
+                            elif gender[0] == "f":
+                                rs_status = "Daughter"
+                            else:
+                                rs_status = "Child"
             else:
                 rs_status = "Single" 
         else:
             if await self.config.member(member).parent():
-                async with self.config.member(ctx.author).children() as children:
+                async with self.config.member(member).children() as children:
                     if children != []:
                         for child_id in children:
                             child = discord.utils.get(ctx.guild.members, id=child_id)
@@ -178,13 +217,33 @@ class Marriage(commands.Cog):
                                                     greatgrandchild = discord.utils.get(ctx.guild.members, id=greatgrandchild_id)
                                                     async with self.config.member(greatgrandchild).children() as greatgreatgrandchildren:
                                                         if greatgreatgrandchildren != []:
-                                                            rs_status = "Old Fuck"
+                                                            if gender[0] == "m":
+                                                                rs_status = "Great-Grandfather"
+                                                            elif gender[0] == "f":
+                                                                rs_status = "Great-Grandmother"
+                                                            else:
+                                                                rs_status = "Great-Grandparent"
                                             else:
-                                                rs_status = "Grandparent"
+                                                if gender[0] == "m":
+                                                    rs_status = "Grandfather"
+                                                elif gender[0] == "f":
+                                                    rs_status = "Grandmother"
+                                                else:
+                                                    rs_status = "Grandparent"
                                 else:
-                                    rs_status = "Parent"
+                                    if gender[0] == "m":
+                                        rs_status = "Father"
+                                    elif gender[0] == "f":
+                                        rs_status = "Mother"
+                                    else:
+                                        rs_status = "Parent"
             else:
-                rs_status = "Married"
+                if gender[0] == "m":
+                    rs_status = "Husband"
+                elif gender[0] == "f":
+                    rs_status = "Wife"
+                else:
+                    rs_status = "Married"
                 
             spouse_ids = await self.config.member(member).spouses()
             spouses = []
@@ -194,11 +253,23 @@ class Marriage(commands.Cog):
                 if spouse:
                     spouses.append(spouse.name)
             if spouses == []:
-                spouse_header = "Spouse:"
+                spouse_header = "Partner:"
                 spouse_text = "None"
             else:
                 spouse_text = humanize_list(spouses)
-                spouse_header = "Spouse:" if len(spouses) == 1 else "Spouses:"
+                if len(spouses) == 1:
+                    for spouse_id in spouse_ids:
+                        spouse = self.bot.get_user(spouse_id)
+                        if spouse:
+                            spouse_gender = await self.config.member(spouse).gender().lower()
+                            if spouse_gender[0] == "m":
+                                spouse_header = "Husband:"
+                            if spouse_gender[0] == "f":
+                                spouse_header = "Wife:"
+                            if spouse_gender[0] == "f":
+                                spouse_header = "Partner:"
+                else:
+                    spouse_header = "Partners:"
                 
             children_ids = await self.config.member(member).children()
             kids = []
@@ -213,7 +284,19 @@ class Marriage(commands.Cog):
                 kids_text = "None"
             else:
                 kids_text = humanize_list(kids)
-                kids_header = "Child:" if len(kids) == 1 else "Children:"
+                if len(kids) == 1:
+                    for children_id in children_ids:
+                        kid = self.bot.get_user(children_id)
+                        if kid:
+                            kid_gender = await self.config.member(kid).gender().lower()
+                            if kid_gender[0] == "m":
+                                kids_header = "Son:"
+                            if spouse_gender[0] == "f":
+                                kids_header = "Daughter:"
+                            if spouse_gender[0] == "f":
+                                kids_header = "Child:"
+                else:
+                    kids_header = "Children:"
                 
         parent_ids = await self.config.member(member).parents()
         parents = []
@@ -228,7 +311,19 @@ class Marriage(commands.Cog):
                 parents_text = "None"
             else:
                 parents_text = humanize_list(parents)
-                parents_header = "Parent:" if len(parents) == 1 else "Parents:"
+                if len(parents) == 1:
+                    for parent_id in parent_ids:
+                        parent = self.bot.get_user(parent_id)
+                        if parent:
+                            parent_gender = await self.config.member(parent).gender().lower()
+                            if parent_gender[0] == "m":
+                                parents_header = "Mom:"
+                            if parent_gender[0] == "f":
+                                parents_header = "Dad:"
+                            if parent_gender[0] == "f":
+                                parents_header = "Parent:"
+                else:
+                    parents_header = "Parents:"
                 
         marcount = await self.config.member(member).marcount()
         been_married = f"{marcount}"
@@ -515,6 +610,63 @@ class Marriage(commands.Cog):
                     spouse = discord.utils.get(ctx.guild.members, id=x)
                     parents.append(spouse.id)
         await ctx.send(f":baby: {ctx.author.mention} has adopted {member.mention}! ")
+        
+    @commands.max_concurrency(1, commands.BucketType.channel, wait=True)
+    @commands.guild_only()
+    @commands.command()
+    async def adopt(self, ctx: commands.Context, member: discord.Member):
+        """Ask someone to be your parent!"""
+        if member.id == ctx.author.id:
+            return await ctx.send("You can't be your own parent!")
+        if member.id in await self.config.member(ctx.author).parents():
+            return await ctx.send("They're already your parent!")
+        if member.id in await self.config.member(ctx.author).spouses():
+            return await ctx.send("You can't ask your spouse to be your parent!")
+        if member.id in await self.config.member(ctx.author).children():
+            return await ctx.send("You can't ask your children to be your parent!")
+        await ctx.send(
+            f"{ctx.author.mention} has asked {member.mention} to be their parent!\n"
+            f"{member.mention}, what do you say?"
+        )
+        pred = MessagePredicate.yes_or_no(ctx, ctx.channel, member)
+        try:
+            await self.bot.wait_for("message", timeout=120, check=pred)
+        except asyncio.TimeoutError:
+            return await ctx.send("Oh no... that's too bad...")
+        if not pred.result:
+            return await ctx.send("Oh no... that's too bad...")
+            
+        target_kidcount = await self.config.member(member).kidcount()
+
+        await self.config.member(member).kidcount.set(target_kidcount + 1)
+        await self.config.member(ctx.author).parcount.set(1 + len(await self.config.member(member).spouses()))
+
+        await self.config.member(member).parent.set(True)
+        await self.config.member(ctx.author).child.set(True)
+
+        # add CHILD to PARENT'S children
+        async with self.config.member(member).children() as children:
+            children.append(ctx.author.id)
+            
+        # add PARENT to CHILD'S parents
+        async with self.config.member(ctx.author).parents() as parents:
+            parents.append(member.id)
+            
+        # add CHILD to PARENT'S SPOUSE(S) children
+        async with self.config.member(member).spouses() as spouses:
+            for x in spouses:
+                spouse = discord.utils.get(ctx.guild.members, id=x)
+                async with self.config.member(spouse).children() as children:
+                    children.append(ctx.author.id)
+                    await self.config.member(spouse).parent.set(True)
+        
+        # add PARENT'S SPOUSE(S) to CHILD'S parents 
+        async with self.config.member(ctx.author).parents() as parents:
+            async with self.config.member(member).spouses() as spouses:
+                for x in spouses:
+                    spouse = discord.utils.get(ctx.guild.members, id=x)
+                    parents.append(spouse.id)
+        await ctx.send(f":baby: {member.mention} has adopted {ctx.author.mention}! ")
         
     @commands.max_concurrency(1, commands.BucketType.channel, wait=True)
     @commands.guild_only()
