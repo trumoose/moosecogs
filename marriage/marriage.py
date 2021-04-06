@@ -31,7 +31,7 @@ class Marriage(commands.Cog):
             parents = [],
             exes = [],
             about = "I'm mysterious.",
-            gender = "",
+            gender = "default",
             marcount = 0,
             kidcount = 0,
             parcount = 0
@@ -105,6 +105,7 @@ class Marriage(commands.Cog):
         await self.config.member(member).divorced.set(False)
         await self.config.member(member).parent.set(False)
         await self.config.member(member).child.set(False)
+        await self.config.member(member).gender.set("default")
         await self.config.member(member).spouses.clear()
         await self.config.member(member).exes.clear()
         await self.config.member(member).children.clear()
