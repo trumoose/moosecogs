@@ -532,7 +532,7 @@ class Marriage(commands.Cog):
             return await ctx.send("You can't marry your own child!")
         if member.id in await self.config.member(ctx.author).parents():
             return await ctx.send("You can't marry your own parent!")
-        if self._is_member_of_family(member, ctx.author):
+        if self._is_member_of_family(ctx, member, ctx.author):
             return await ctx.send("You can't marry a member of your own family!")
         if not await self.config.guild(ctx.guild).multi():
             if await self.config.member(ctx.author).married():
@@ -662,7 +662,7 @@ class Marriage(commands.Cog):
             return await ctx.send("You've already adopted them!")
         if await self.config.member(member).parents():
             return await ctx.send("They're already adopted!")
-        if self._is_member_of_family(member, ctx.author):
+        if self._is_member_of_family(ctx, member, ctx.author):
             return await ctx.send("You can't adopt a member of your own family!")
         await ctx.send(
             f"{ctx.author.mention} has asked to adopt {member.mention}!\n"
@@ -740,7 +740,7 @@ class Marriage(commands.Cog):
             return await ctx.send("You can't ask your spouse to be your parent!")
         if member.id in await self.config.member(ctx.author).children():
             return await ctx.send("You can't ask your children to be your parent!")
-        if self._is_member_of_family(member, ctx.author):
+        if self._is_member_of_family(ctx, member, ctx.author):
             return await ctx.send("You can't ask a member of your own family to be your parent!")
         await ctx.send(
             f"{ctx.author.mention} has asked {member.mention} to be their parent!\n"
