@@ -132,6 +132,7 @@ class Marriage(commands.Cog):
                        f"divorced = {'True' if await self.config.member(member).divorced() else 'False'}\n"
                        f"parent = {'True' if await self.config.member(member).parent() else 'False'}\n"
                        f"child = {'True' if await self.config.member(member).child() else 'False'}\n"
+                       f"gender = {await self.config.member(member).gender()}\n"
                        f"spouses = {humanize_list(await self.config.member(member).spouses())}\n"
                        f"children = {humanize_list(await self.config.member(member).children())}\n"
                        f"parents = {humanize_list(await self.config.member(member).parents())}\n"
@@ -199,7 +200,7 @@ class Marriage(commands.Cog):
                             elif gender[0] == "f":
                                 rs_status = "Daughter"
                             else:
-                                rs_status = "Only Child"
+                                rs_status = "Child"
             else:
                 rs_status = "Single" 
         else:
@@ -275,12 +276,10 @@ class Marriage(commands.Cog):
                                 spouse_header = "Partner:"
                 else:
                     spouse_header = "Partners:"
-                
-            children_ids = await self.config.member(member).children()
-            kids = []
-        
+
         if is_parent:
             children_ids = await self.config.member(member).children()
+            kids = []
             for children_id in children_ids:
                 kid = discord.utils.get(ctx.guild.members, id=children_id)
                 if kid:
