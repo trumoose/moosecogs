@@ -231,7 +231,7 @@ class Marriage(commands.Cog):
                 parents_header = "Parent:" if len(parents) == 1 else "Parents:"
                 
         marcount = await self.config.member(member).marcount()
-        been_married = f"{marcount} time" if marcount == 1 else f"{marcount} times"
+        been_married = f"{marcount}"
         if marcount != 0:
             exes_ids = await self.config.member(member).exes()
             if exes_ids == []:
@@ -258,7 +258,7 @@ class Marriage(commands.Cog):
         if is_child:
             e.add_field(name=parents_header, value=parents_text)
         if marcount > 0:
-            e.add_field(name="Been married:", value=been_married)
+            e.add_field(name="Marriages:", value=been_married)
         if is_divorced or marcount > 1:
             e.add_field(name="Ex spouses:", value=ex_text)
 
