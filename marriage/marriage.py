@@ -176,7 +176,7 @@ class Marriage(commands.Cog):
     ):
         if not member2:
             member = ctx.author
-        if await is_member_of_family(member, member2):
+        if await self.is_member_of_family(member, member2):
             ctx.send(f"{member.name} is a member of {member2.name}'s family!")
         else:
             ctx.send(f"{member.name} and {member2.name} are not related!")
