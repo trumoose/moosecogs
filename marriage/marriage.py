@@ -672,9 +672,9 @@ class Marriage(commands.Cog):
                 async with self.config.member(parent).children() as children:
                     children.remove(ctx.author.id)
                     kidcount = await self.config.member(parent).kidcount()
-                    await self.config.member(spouse).kidcount.set(kidcount - 1)
+                    await self.config.member(parent).kidcount.set(kidcount - 1)
                     if kidcount == 1:
-                        await self.config.member(spouse).parent.set(False)
+                        await self.config.member(parent).parent.set(False)
                     
         await self.config.member(ctx.author).child.set(False)
         await self.config.member(ctx.author).parcount.set(0)
