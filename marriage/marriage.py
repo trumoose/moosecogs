@@ -178,7 +178,7 @@ class Marriage(commands.Cog):
         self, ctx: commands.Context, member: discord.Member, member2: typing.Optional[discord.Member]
     ):
         if not member2:
-            member = ctx.author
+            member2 = ctx.author
         if await self._is_member_of_family(member, member2):
             ctx.send(f"{member.name} is a member of {member2.name}'s family!")
         else:
