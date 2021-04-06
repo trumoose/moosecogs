@@ -298,7 +298,7 @@ class Marriage(commands.Cog):
                                     else:
                                         rs_status += "Parent"
             else:
-                if ctx.author.id == 176154416661921792 or ctx.author.id == 192677766003556352:
+                if member.id == 176154416661921792 or member.id == 192677766003556352:
                     rs_status = "Wifey"
                 elif gender[0] == "m":
                     rs_status = "Husband"
