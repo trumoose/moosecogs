@@ -143,6 +143,7 @@ class Marriage(commands.Cog):
             member = ctx.author
         is_married = await self.config.member(member).married()
         is_parent = await self.config.member(member).parent()
+        is_divorced = await self.config.member(member).divorced()
         is_child = await self.config.member(member).child()
         kids_header = "Error?"
         kids_text = "Moosey sucks at coding!"
@@ -152,12 +153,12 @@ class Marriage(commands.Cog):
         spouse_text = "Moosey sucks at coding!"
         rs_status = "Error?"
         if not is_married:
-            if await self.config.member(member).parent():
-                if await self.config.member(member).divorced():
+            if is_parent
+                if is_divorced
                     rs_status = "Widow"
                 else:
                     rs_status = "Single Parent"
-            elif await self.config.member(member).divorced(): 
+            elif is_divorced
                 rs_status = "Divorced"
             else:
                 rs_status = "Single" 
@@ -201,7 +202,8 @@ class Marriage(commands.Cog):
                 
             children_ids = await self.config.member(member).children()
             kids = []
-            
+        
+        if is_parent:
             for children_id in children_ids:
                 kid = self.bot.get_user(children_id)
                 if kid:
@@ -213,9 +215,10 @@ class Marriage(commands.Cog):
                 kids_text = humanize_list(kids)
                 kids_header = "Child:" if len(kids) == 1 else "Children:"
                 
-            parent_ids = await self.config.member(member).parents()
-            parents = []
-            
+        parent_ids = await self.config.member(member).parents()
+        parents = []
+        
+        if is_child:
             for parent_id in parent_ids:
                 parent = self.bot.get_user(parent_id)
                 if parent:
@@ -226,7 +229,6 @@ class Marriage(commands.Cog):
             else:
                 parents_text = humanize_list(parents)
                 parents_header = "Parent:" if len(parents) == 1 else "Parents:"
-                
                 
         marcount = await self.config.member(member).marcount()
         been_married = f"{marcount} time" if marcount == 1 else f"{marcount} times"
@@ -255,8 +257,9 @@ class Marriage(commands.Cog):
             e.add_field(name=kids_header, value=kids_text)
         if is_child:
             e.add_field(name=parents_header, value=parents_text)
-        e.add_field(name="Been married:", value=been_married)
-        if await self.config.member(member).marcount() != 0:
+        if marcount > 0:
+            e.add_field(name="Been married:", value=been_married)
+        if is_divorced or marcount > 1:
             e.add_field(name="Ex spouses:", value=ex_text)
 
         await ctx.send(embed=e)
