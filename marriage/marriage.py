@@ -144,11 +144,13 @@ class Marriage(commands.Cog):
                        f"kidcount = {await self.config.member(member).kidcount()}\n"
                        f"parcount = {await self.config.member(member).parcount()}\n")
     
-    async def _is_member_of_family(self, member: discord.Member, member2: discord.Member):
-        async with self.config.member(member).greatest_ancestors() as gca:
-            async with self.config.member(member2).greatest_ancestors() as gca2:
-                async with self.config.member(member).spouses() as spouses:
-                    async with self.config.member(member2).spouses() as spouses2:
+    async def _is_member_of_family(self, ctx: commands.Context, member: discord.Member, member2: discord.Member):
+        user1 = discord.utils.get(ctx.guild.members, id=member.id)
+        user2 = discord.utils.get(ctx.guild.members, id=member2.id)
+        async with self.config.member(user1).greatest_ancestors() as gca:
+            async with self.config.member(user2).greatest_ancestors() as gca2:
+                async with self.config.member(user1).spouses() as spouses:
+                    async with self.config.member(user2).spouses() as spouses2:
                         for spouse in spouses:
                             spouse = discord.utils.get(ctx.guild.members, id=spouse)
                             async with self.config.member(spouse).greatest_ancestors() as spouse_gca:
@@ -176,7 +178,7 @@ class Marriage(commands.Cog):
     ):
         if not member2:
             member2 = ctx.author
-        if await self._is_member_of_family(member, member2):
+        if await self._is_member_of_family(ctx, member, member2):
             ctx.send(f"{member.name} is a member of {member2.name}'s family!")
         else:
             ctx.send(f"{member.name} and {member2.name} are not related!")
