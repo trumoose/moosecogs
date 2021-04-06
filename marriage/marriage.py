@@ -173,7 +173,7 @@ class Marriage(commands.Cog):
                     for y in gca2:
                         if x == user2.id:
                             return True
-                        if y == user.id:
+                        if y == user1.id:
                             return True
                         if x == y:
                             return True
