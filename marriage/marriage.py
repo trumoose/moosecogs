@@ -151,6 +151,7 @@ class Marriage(commands.Cog):
         async with self.config.member(user1).spouses() as spouses:
             for spouse in spouses:
                 if spouse == user2.id:
+                    print (f"{user1.name} is {user2.name}'s spouse")
                     return True
                     
         async with self.config.member(user1).greatest_ancestors() as gca:
@@ -162,30 +163,37 @@ class Marriage(commands.Cog):
                             async with self.config.member(spouse).greatest_ancestors() as spouse_gca:
                                 for x in spouse_gca:
                                     if x == member2.id:
+                                        print (f"{user1.name} is {user2.name}'s in-law")
                                         return True 
                                 for x in gca:
                                     for y in spouse_gca:
                                         if x == y:
+                                            print (f"{user1.name} is related to {user2.name}'s spouse")
                                             return True
                         for spouse in spouses2:
                             spouse = discord.utils.get(ctx.guild.members, id=spouse)
                             async with self.config.member(spouse).greatest_ancestors() as spouse_gca:
                                 for x in spouse_gca:
                                     if x == member.id:
+                                        print (f"{user1.name} is {user2.name}'s in-law")
                                         return True
                                 for x in gca2:
                                     for y in spouse_gca:
                                         if x == y:
+                                            print (f"{user1.name} is related to {user2.name}'s spouse")
                                             return True
                 for x in gca:
                     if x == member2.id:
+                        print (f"{user2.name} is {user1.name}'s greatest common ancestor")
                         return True
                 for x in gca2:
                     if x == member.id:
+                        print (f"{user1.name} is {user2.name}'s greatest common ancestor")
                         return True
                 for x in gca:
                     for y in gca2:
                         if x == y:
+                            print (f"{user1.name} and {user2.name} share a greatest common ancestor")
                             return True
                 return False
         
