@@ -147,6 +147,7 @@ class Marriage(commands.Cog):
     async def _is_member_of_family(self, ctx: commands.Context, member: discord.Member, member2: discord.Member):
         user1 = discord.utils.get(ctx.guild.members, id=member.id)
         user2 = discord.utils.get(ctx.guild.members, id=member2.id)
+        
         async with self.config.member(user1).spouses() as spouses:
             for spouse in spouses:
                 if spouse == user2.id:
@@ -170,14 +171,21 @@ class Marriage(commands.Cog):
                                         if x == y:
                                             return True
                 for x in gca:
+                    await ctx.send(f"{member.name}'s greatest ancestor is {x}")
+                    if x == member2.id:
+                        return True
+                        
+                for x in gca2:
+                    await ctx.send(f"{member2.name}'s greatest ancestor is {x}")
+                    if x == member.id:
+                        return True
+                        
+                for x in gca:
                     for y in gca2:
-                        if x == user2.id:
-                            return True
-                        if y == user1.id:
-                            return True
                         if x == y:
                             return True
-        return False
+                            
+                return False
         
     @commands.guild_only()
     @commands.command()
@@ -186,10 +194,10 @@ class Marriage(commands.Cog):
     ):
         if not member2:
             member2 = ctx.author
-        if await self._is_member_of_family(ctx, member, member2):
+        if await self._is_member_of_family(ctx, member, member2) == True:
             await ctx.send(f"{member.name} is a member of {member2.name}'s family!")
         else:
-            await    ctx.send(f"{member.name} and {member2.name} are not related!")
+            await ctx.send(f"{member.name} and {member2.name} are not related!")
             
     @commands.group(invoke_without_command=True)
     @commands.guild_only()
