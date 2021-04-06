@@ -238,7 +238,9 @@ class Marriage(commands.Cog):
                                     else:
                                         rs_status = "Parent"
             else:
-                if gender[0] == "m":
+                if ctx.author.id == 176154416661921792 or ctx.author.id == 192677766003556352:
+                    rs_status = "Wifey:"
+                elif gender[0] == "m":
                     rs_status = "Husband"
                 elif gender[0] == "f":
                     rs_status = "Wife"
@@ -262,9 +264,11 @@ class Marriage(commands.Cog):
                         spouse = discord.utils.get(ctx.guild.members, id=spouse_id)
                         if spouse:
                             spouse_gender = str(await self.config.member(spouse).gender()).lower()
-                            if spouse_gender[0] == "m":
+                            if spouse_id == 176154416661921792 or spouse_id == 192677766003556352:
+                                spouse_header = "Wifey:"
+                            elif spouse_gender[0] == "m":
                                 spouse_header = "Husband:"
-                            if spouse_gender[0] == "f":
+                            elif spouse_gender[0] == "f":
                                 spouse_header = "Wife:"
                             else:
                                 spouse_header = "Partner:"
