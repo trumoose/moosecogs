@@ -26,7 +26,7 @@ class Marriage(commands.Cog):
             divorced = False,
             parent = False,
             child = False,
-            current = [],
+            spouses = [],
             children = [],
             parents = [],
             exes = [],
@@ -55,7 +55,7 @@ class Marriage(commands.Cog):
         if var == "married":
             await self.config.member(member).married.set(boolean)
             if boolean == False:
-                await self.config.member(member).current.clear()
+                await self.config.member(member).spouses.clear()
             await ctx.send(f"Set {member.mention}'s marriage status to {'married!' if boolean else 'unmarried!'}")
         if var == "divorced":
             await self.config.member(member).divorced.set(boolean)
@@ -90,7 +90,7 @@ class Marriage(commands.Cog):
         await self.config.member(member).divorced.set(False)
         await self.config.member(member).parent.set(False)
         await self.config.member(member).child.set(False)
-        await self.config.member(member).current.clear()
+        await self.config.member(member).spouses.clear()
         await self.config.member(member).exes.clear()
         await self.config.member(member).children.clear()
         await self.config.member(member).parents.clear()
@@ -112,7 +112,7 @@ class Marriage(commands.Cog):
                        f"divorced = {'True' if await self.config.member(member).divorced() else 'False'}\n"
                        f"parent = {'True' if await self.config.member(member).parent() else 'False'}\n"
                        f"child = {'True' if await self.config.member(member).child() else 'False'}\n"
-                       f"current = {humanize_list(await self.config.member(member).current())}\n"
+                       f"spouses = {humanize_list(await self.config.member(member).spouses())}\n"
                        f"children = {humanize_list(await self.config.member(member).children())}\n"
                        f"parents = {humanize_list(await self.config.member(member).parents())}\n"
                        f"exes = {humanize_list(await self.config.member(member).exes())}\n"
@@ -148,10 +148,12 @@ class Marriage(commands.Cog):
             if await self.config.member(member).parent():
                 async with self.config.member(ctx.author).children() as children:
                     if children != []:
-                        for child in children:
+                        for child_id in children:
+                            child = discord.utils.get(ctx.guild.members, id=child_id)
                             async with self.config.member(child).children() as grandchildren:
                                 if grandchildren != []:
-                                    for grandchild in grandchildren:
+                                    for grandchild_id in grandchildren:
+                                        grandchild = discord.utils.get(ctx.guild.members, id=grandchild_id)
                                         async with self.config.member(grandchild).children() as greatgrandchildren:
                                             if grandchild != []:
                                                 rs_status = "Old Fuck"
@@ -164,7 +166,7 @@ class Marriage(commands.Cog):
             else:
                 rs_status = "Married"
                 
-            spouse_ids = await self.config.member(member).current()
+            spouse_ids = await self.config.member(member).spouses()
             spouses = []
             
             for spouse_id in spouse_ids:
@@ -252,7 +254,7 @@ class Marriage(commands.Cog):
     ):
         if not member:
             member = ctx.author
-        spouses_ids = await self.config.member(member).current()
+        spouses_ids = await self.config.member(member).spouses()
         sp_text = ""
         for s_id in spouses_ids:
             spouse = self.bot.get_user(s_id)
@@ -296,7 +298,7 @@ class Marriage(commands.Cog):
         """Marry the love of your life!"""
         if member.id == ctx.author.id:
             return await ctx.send("You can't marry yourself!")
-        if member.id in await self.config.member(ctx.author).current():
+        if member.id in await self.config.member(ctx.author).spouses():
             return await ctx.send("You two are already married!")
         if member.id in await self.config.member(ctx.author).children():
             return await ctx.send("You can't marry your own child!")
@@ -333,9 +335,9 @@ class Marriage(commands.Cog):
         await self.config.member(ctx.author).divorced.clear()
         await self.config.member(member).divorced.clear()
 
-        async with self.config.member(ctx.author).current() as acurrent:
+        async with self.config.member(ctx.author).spouses() as acurrent:
             acurrent.append(member.id)
-        async with self.config.member(member).current() as tcurrent:
+        async with self.config.member(member).spouses() as tcurrent:
             tcurrent.append(ctx.author.id)
             
         author_kidcount = await self.config.member(ctx.author).kidcount()
@@ -358,6 +360,7 @@ class Marriage(commands.Cog):
         async with self.config.member(member).children() as children:
             for x in children:
                 kid = discord.utils.get(ctx.guild.members, id=x)
+                await self.config.member(kid).parcount.set(len(await self.config.member(member).spouses()))
                 async with self.config.member(kid).parents() as parents:
                     if member.id not in parents:
                         parents.append(member.id)
@@ -375,7 +378,7 @@ class Marriage(commands.Cog):
         """Divorce your current spouse"""
         if member.id == ctx.author.id:
             return await ctx.send("You can't divorce yourself!")
-        if member.id not in await self.config.member(ctx.author).current():
+        if member.id not in await self.config.member(ctx.author).spouses():
             return await ctx.send("You two aren't married!")
         await ctx.send(
             f"{ctx.author.mention} wants to divorce you, {member.mention}, do you accept?\n"
@@ -384,9 +387,9 @@ class Marriage(commands.Cog):
         await self.bot.wait_for("message", check=pred)
         if not pred.result:
             await ctx.send(f"Too bad! Proceeding with divorce...\n")
-        async with self.config.member(ctx.author).current() as acurrent:
+        async with self.config.member(ctx.author).spouses() as acurrent:
             acurrent.remove(member.id)
-        async with self.config.member(member).current() as tcurrent:
+        async with self.config.member(member).spouses() as tcurrent:
             tcurrent.remove(ctx.author.id)
         async with self.config.member(ctx.author).exes() as aexes:
             aexes.append(member.id)
@@ -399,12 +402,12 @@ class Marriage(commands.Cog):
                     parents.clear()
                 await self.config.member(kid).parcount.set(0)
                 await self.config.member(kid).child.set(False)
-        if len(await self.config.member(ctx.author).current()) == 0:
+        if len(await self.config.member(ctx.author).spouses()) == 0:
             await self.config.member(ctx.author).married.clear()
             await self.config.member(ctx.author).divorced.set(True)
             await self.config.member(ctx.author).parent.set(False)
             await self.config.member(ctx.author).kidcount.set(0)
-        if len(await self.config.member(member).current()) == 0:
+        if len(await self.config.member(member).spouses()) == 0:
             await self.config.member(member).married.clear()
             await self.config.member(member).divorced.set(True)
             await self.config.member(member).parent.set(False)
@@ -422,7 +425,7 @@ class Marriage(commands.Cog):
             return await ctx.send("You can't adopt yourself!")
         if member.id in await self.config.member(ctx.author).parents():
             return await ctx.send("You can't adopt your own parent!")
-        if member.id in await self.config.member(ctx.author).current():
+        if member.id in await self.config.member(ctx.author).spouses():
             return await ctx.send("You can't adopt your own spouse!")
         if member.id in await self.config.member(ctx.author).children():
             return await ctx.send("You've already adopted them!")
@@ -444,7 +447,7 @@ class Marriage(commands.Cog):
         target_parcount = await self.config.member(member).parcount()
 
         await self.config.member(ctx.author).kidcount.set(author_kidcount + 1)
-        await self.config.member(member).parcount.set(target_parcount + len(await self.config.member(ctx.author).current()))
+        await self.config.member(member).parcount.set(1 + len(await self.config.member(ctx.author).spouses()))
 
         await self.config.member(ctx.author).parent.set(True)
         await self.config.member(member).child.set(True)
@@ -458,7 +461,7 @@ class Marriage(commands.Cog):
             parents.append(ctx.author.id)
             
         # add CHILD to PARENT'S SPOUSE(S) children
-        async with self.config.member(ctx.author).current() as spouses:
+        async with self.config.member(ctx.author).spouses() as spouses:
             for x in spouses:
                 spouse = discord.utils.get(ctx.guild.members, id=x)
                 async with self.config.member(spouse).children() as children:
@@ -467,7 +470,7 @@ class Marriage(commands.Cog):
         
         # add PARENT'S SPOUSE(S) to CHILD'S parents 
         async with self.config.member(member).parents() as parents:
-            async with self.config.member(ctx.author).current() as spouses:
+            async with self.config.member(ctx.author).spouses() as spouses:
                 for x in spouses:
                     spouse = discord.utils.get(ctx.guild.members, id=x)
                     async with self.config.member(spouse).children() as children:
