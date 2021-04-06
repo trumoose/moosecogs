@@ -510,7 +510,7 @@ class Marriage(commands.Cog):
             async with self.config.member(ctx.author).spouses() as spouses:
                 for x in spouses:
                     spouse = discord.utils.get(ctx.guild.members, id=x)
-                    parents.append(spouse)
+                    parents.append(spouse.id)
         await ctx.send(f":baby: {ctx.author.mention} has adopted {member.mention}! ")
         
     @commands.max_concurrency(1, commands.BucketType.channel, wait=True)
