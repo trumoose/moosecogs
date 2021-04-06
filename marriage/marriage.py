@@ -213,6 +213,7 @@ class Marriage(commands.Cog):
         is_parent = await self.config.member(member).parent()
         is_divorced = await self.config.member(member).divorced()
         is_child = await self.config.member(member).child()
+        is_sibling = False
         gender = str(await self.config.member(member).gender()).lower()
         kids_header = "Error?"
         kids_text = "Moosey sucks at coding!"
@@ -220,6 +221,8 @@ class Marriage(commands.Cog):
         parents_text = "Moosey sucks at coding!"
         spouse_header = "Error?"
         spouse_text = "Moosey sucks at coding!"
+        siblings_header = "Error?"
+        siblings_text = "Moosey sucks at coding!"
         rs_status = "Error?"
         if not is_married:
             if is_parent:
@@ -357,16 +360,38 @@ class Marriage(commands.Cog):
                     kids_header = "Children:"
                 
         parent_ids = await self.config.member(member).parents()
+        sibling_ids = []
         parents = []
+        siblings = []
+        all_females = True
+        all_males = True
         
         if is_child:
             for parent_id in parent_ids:
                 parent = discord.utils.get(ctx.guild.members, id=parent_id)
+                if await self.config.member(parent).kidcount() > 1:
+                    sibling_ids = await self.config.member(parent).children()
+                    for sibling_id in sibling_ids:
+                        sibling = discord.utils.get(ctx.guild.members, id=sibling_id)
+                        if sibling:
+                            if sibling not in siblings and sibling != member.id:
+                                is_sibling = True
+                                siblings.append(sibling.name)
+                                sibling_gender = str(await self.config.member(sibling).gender()).lower()
+                                if siblings_gender[0] == "m":
+                                    all_females = False
+                                if siblings_gender[0] == "f":
+                                    all_males = False
+                                else:
+                                    all_females = False
+                                    all_males = False
                 if parent:
                     parents.append(parent.name)
+                    
             if parents == []:
                 parents_header = "Parents:"
                 parents_text = "None"
+                
             else:
                 parents_text = humanize_list(parents)
                 if len(parents) == 1:
@@ -382,6 +407,27 @@ class Marriage(commands.Cog):
                                 parents_header = "Parent:"
                 else:
                     parents_header = "Parents:"
+                    
+            if siblings == []:
+                siblings_header = "Siblings:"
+                siblings_text = "None"
+                
+            else:
+                siblings_text = humanize_list(siblings)
+                if len(siblings) == 1:
+                    if all_female
+                        siblings_header = "Sister:"
+                    elif all_male
+                        siblings_header = "Brother:"
+                    else:
+                        siblings_header = "Sibling:"
+                else:
+                    if all_female
+                        siblings_header = "Sisters:"
+                    elif all_male
+                        siblings_header = "Brothers:"
+                    else:
+                        siblings_header = "Siblings:"
                 
         marcount = await self.config.member(member).marcount()
         been_married = f"{marcount}"
@@ -397,6 +443,8 @@ class Marriage(commands.Cog):
             e.add_field(name=kids_header, value=kids_text)
         if is_child:
             e.add_field(name=parents_header, value=parents_text)
+        if is_sibling:
+            e.add_field(name=siblings_header, value=siblings_text)
         if marcount > 1:
             e.add_field(name="Marriages:", value=been_married)
 
@@ -482,6 +530,8 @@ class Marriage(commands.Cog):
             return await ctx.send("You can't marry your own child!")
         if member.id in await self.config.member(ctx.author).parents():
             return await ctx.send("You can't marry your own parent!")
+        if self._is_member_of_family(member, ctx.author):
+            return await ctx.send("You can't marry a member of your own family!")
         if not await self.config.guild(ctx.guild).multi():
             if await self.config.member(ctx.author).married():
                 return await ctx.send("You're already married!")
@@ -610,6 +660,8 @@ class Marriage(commands.Cog):
             return await ctx.send("You've already adopted them!")
         if await self.config.member(member).parents():
             return await ctx.send("They're already adopted!")
+        if self._is_member_of_family(member, ctx.author):
+            return await ctx.send("You can't adopt a member of your own family!")
         await ctx.send(
             f"{ctx.author.mention} has asked to adopt {member.mention}!\n"
             f"{member.mention}, what do you say?"
@@ -686,6 +738,8 @@ class Marriage(commands.Cog):
             return await ctx.send("You can't ask your spouse to be your parent!")
         if member.id in await self.config.member(ctx.author).children():
             return await ctx.send("You can't ask your children to be your parent!")
+        if self._is_member_of_family(member, ctx.author):
+            return await ctx.send("You can't ask a member of your own family to be your parent!")
         await ctx.send(
             f"{ctx.author.mention} has asked {member.mention} to be their parent!\n"
             f"{member.mention}, what do you say?"
