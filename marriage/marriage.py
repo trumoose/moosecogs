@@ -239,7 +239,7 @@ class Marriage(commands.Cog):
                                         rs_status = "Parent"
             else:
                 if ctx.author.id == 176154416661921792 or ctx.author.id == 192677766003556352:
-                    rs_status = "Wifey:"
+                    rs_status = "Wifey"
                 elif gender[0] == "m":
                     rs_status = "Husband"
                 elif gender[0] == "f":
@@ -332,19 +332,6 @@ class Marriage(commands.Cog):
                 
         marcount = await self.config.member(member).marcount()
         been_married = f"{marcount}"
-        if marcount != 0:
-            exes_ids = await self.config.member(member).exes()
-            if exes_ids == []:
-                ex_text = "None"
-            else:
-                exes = list()
-                for ex_id in exes_ids:
-                    ex = discord.utils.get(ctx.guild.members, id=ex_id)
-                    if not ex:
-                        continue
-                    ex = ex.name
-                    exes.append(ex)
-                ex_text = "None" if exes == [] else humanize_list(exes)
         e = discord.Embed(colour=member.color)
         e.set_author(name=f"{member.name}'s Profile", icon_url=member.avatar_url)
         e.set_footer(text=f"{member.name}#{member.discriminator} ({member.id})")
@@ -359,8 +346,6 @@ class Marriage(commands.Cog):
             e.add_field(name=parents_header, value=parents_text)
         if marcount > 1:
             e.add_field(name="Marriages:", value=been_married)
-        if is_divorced or marcount > 1:
-            e.add_field(name="Ex spouses:", value=ex_text)
 
         await ctx.send(embed=e)
 
