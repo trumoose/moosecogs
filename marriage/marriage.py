@@ -188,7 +188,7 @@ class Marriage(commands.Cog):
                         elif self.config.member(parent).kidcount() > 1:
                             if gender[0] == "m":
                                 rs_status = "Brother"
-                            elif gender[0] == "f"
+                            elif gender[0] == "f":
                                 rs_status = "Sister"
                             else:
                                 rs_status = "Sibling"
