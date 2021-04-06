@@ -153,12 +153,12 @@ class Marriage(commands.Cog):
         spouse_text = "Moosey sucks at coding!"
         rs_status = "Error?"
         if not is_married:
-            if is_parent
-                if is_divorced
+            if is_parent:
+                if is_divorced:
                     rs_status = "Widow"
                 else:
                     rs_status = "Single Parent"
-            elif is_divorced
+            elif is_divorced:
                 rs_status = "Divorced"
             else:
                 rs_status = "Single" 
