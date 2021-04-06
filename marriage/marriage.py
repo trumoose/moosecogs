@@ -300,7 +300,7 @@ class Marriage(commands.Cog):
             return await ctx.send("You two are already married!")
         if member.id in await self.config.member(ctx.author).children():
             return await ctx.send("You can't marry your own child!")
-        if member.id in await self.config.member(ctx.author).parent():
+        if member.id in await self.config.member(ctx.author).parents():
             return await ctx.send("You can't marry your own parent!")
         if not await self.config.guild(ctx.guild).multi():
             if await self.config.member(ctx.author).married():
