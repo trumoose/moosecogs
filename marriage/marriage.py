@@ -144,7 +144,7 @@ class Marriage(commands.Cog):
                        f"kidcount = {await self.config.member(member).kidcount()}\n"
                        f"parcount = {await self.config.member(member).parcount()}\n")
     
-    async def is_member_of_family(member: discord.Member, member2: discord.Member):
+    async def is_member_of_family(self, member: discord.Member, member2: discord.Member):
         async with self.config.member(member).greatest_ancestors() as gca:
             async with self.config.member(member2).greatest_ancestors() as gca2:
                 async with self.config.member(member).spouses() as spouses:
