@@ -145,7 +145,7 @@ class Marriage(commands.Cog):
                        f"parcount = {await self.config.member(member).parcount()}\n")
     
     @staticmethod
-    async def _is_member_of_family(self, member: discord.Member, member2: discord.Member):
+    async def _is_member_of_family(member: discord.Member, member2: discord.Member):
         user1 = discord.utils.get(ctx.guild.members, id=member.id)
         user2 = discord.utils.get(ctx.guild.members, id=member2.id)
         async with self.config.member(user1).greatest_ancestors() as gca:
