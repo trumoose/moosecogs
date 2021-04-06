@@ -362,7 +362,7 @@ class Marriage(commands.Cog):
                     if member.id not in parents:
                         parents.append(member.id)
                     if ctx.author.id not in parents:
-                        parents.append(member.id)
+                        parents.append(ctx.author.id)
             
         await ctx.send(f":church: {ctx.author.mention} and {member.mention} are now a happy married couple! ")
 
@@ -392,12 +392,23 @@ class Marriage(commands.Cog):
             aexes.append(member.id)
         async with self.config.member(member).exes() as texes:
             texes.append(ctx.author.id)
+        async with self.config.member(member).children() as kids:
+            for x in children:
+                kid = discord.utils.get(ctx.guild.members, id=x)
+                async with self.config.member(kid).parents() as parents:
+                    parents.clear()
+                await self.config.member(kid).parcount.set(0)
+                await self.config.member(kid).child.set(False)
         if len(await self.config.member(ctx.author).current()) == 0:
             await self.config.member(ctx.author).married.clear()
             await self.config.member(ctx.author).divorced.set(True)
+            await self.config.member(ctx.author).parent.set(False)
+            await self.config.member(ctx.author).kidcount.set(0)
         if len(await self.config.member(member).current()) == 0:
             await self.config.member(member).married.clear()
             await self.config.member(member).divorced.set(True)
+            await self.config.member(member).parent.set(False)
+            await self.config.member(member).kidcount.set(0)
         await ctx.send(
             f":broken_heart: {ctx.author.mention} and {member.mention} got divorced...\n"
         )
