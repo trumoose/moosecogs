@@ -172,7 +172,7 @@ class Marriage(commands.Cog):
     @commands.guild_only()
     @commands.command()
     async def relationship(
-        self, ctx: commands.Context, member: discord.member, member2: typing.Optional[discord.Member]
+        self, ctx: commands.Context, member: discord.Member, member2: typing.Optional[discord.Member]
     ):
         if not member2:
             member = ctx.author
