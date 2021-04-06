@@ -275,6 +275,7 @@ class Marriage(commands.Cog):
             kids = []
         
         if is_parent:
+            children_ids = await self.config.member(member).children()
             for children_id in children_ids:
                 kid = discord.utils.get(ctx.guild.members, id=children_id)
                 if kid:
