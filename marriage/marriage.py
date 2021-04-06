@@ -267,7 +267,7 @@ class Marriage(commands.Cog):
                                 spouse_header = "Husband:"
                             if spouse_gender[0] == "f":
                                 spouse_header = "Wife:"
-                            if spouse_gender[0] == "f":
+                            else:
                                 spouse_header = "Partner:"
                 else:
                     spouse_header = "Partners:"
