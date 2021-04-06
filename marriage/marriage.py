@@ -339,7 +339,7 @@ class Marriage(commands.Cog):
             tcurrent.append(ctx.author.id)
             
         author_kidcount = await self.config.member(ctx.author).kidcount()
-        target_parcount = await self.config.member(member).kidcount()
+        target_kidcount = await self.config.member(member).kidcount()
         total_kidcount = author_kidcount + target_kidcount
         new_kids = await self.config.member(ctx.author).children() + await self.config.member(member).children()
         
