@@ -236,7 +236,7 @@ class Marriage(commands.Cog):
             ex = self.bot.get_user(ex_id)
             if ex:
                 ex_text += f"{ex.name}\n"
-        if ex_test == "":
+        if ex_text == "":
             ex_text = "None"
         await ctx.send(
             box(
