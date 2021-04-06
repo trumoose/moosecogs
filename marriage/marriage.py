@@ -161,7 +161,7 @@ class Marriage(commands.Cog):
                             spouse = discord.utils.get(ctx.guild.members, id=spouse)
                             async with self.config.member(spouse).greatest_ancestors() as spouse_gca:
                                 for x in spouse_gca:
-                                    if x == member.id:
+                                    if x == member2.id:
                                         return True 
                                 for x in gca:
                                     for y in spouse_gca:
@@ -171,7 +171,7 @@ class Marriage(commands.Cog):
                             spouse = discord.utils.get(ctx.guild.members, id=spouse)
                             async with self.config.member(spouse).greatest_ancestors() as spouse_gca:
                                 for x in spouse_gca:
-                                    if x == member2.id:
+                                    if x == member.id:
                                         return True
                                 for x in gca2:
                                     for y in spouse_gca:
