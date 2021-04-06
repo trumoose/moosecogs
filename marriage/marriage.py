@@ -215,15 +215,15 @@ class Marriage(commands.Cog):
         is_child = await self.config.member(member).child()
         is_sibling = False
         gender = str(await self.config.member(member).gender()).lower()
-        kids_header = "Error?"
-        kids_text = "Moosey sucks at coding!"
-        parents_header = "Error?"
-        parents_text = "Moosey sucks at coding!"
-        spouse_header = "Error?"
-        spouse_text = "Moosey sucks at coding!"
-        siblings_header = "Error?"
-        siblings_text = "Moosey sucks at coding!"
-        rs_status = "Error?"
+        kids_header = ""
+        kids_text = ""
+        parents_header = ""
+        parents_text = ""
+        spouse_header = ""
+        spouse_text = ""
+        siblings_header = ""
+        siblings_text = ""
+        rs_status = ""
         if not is_married:
             if is_parent:
                 if is_divorced:
@@ -231,6 +231,8 @@ class Marriage(commands.Cog):
                         rs_status = "Widowed "
                     else:
                         rs_status = "Widowed "
+                else:
+                    rs_status = "Single "
             elif is_divorced:
                 if gender[0] == "m":
                     rs_status = "Divorced Husband"
@@ -258,7 +260,7 @@ class Marriage(commands.Cog):
                             else:
                                 rs_status = "Child"
             else:
-                rs_status = "Single " 
+                rs_status = "Single" 
         if not is_divorced:
             if await self.config.member(member).parent():
                 async with self.config.member(member).children() as children:
