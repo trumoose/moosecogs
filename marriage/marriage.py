@@ -415,16 +415,16 @@ class Marriage(commands.Cog):
             else:
                 siblings_text = humanize_list(siblings)
                 if len(siblings) == 1:
-                    if all_female
+                    if all_female:
                         siblings_header = "Sister:"
-                    elif all_male
+                    elif all_male:
                         siblings_header = "Brother:"
                     else:
                         siblings_header = "Sibling:"
                 else:
-                    if all_female
+                    if all_female:
                         siblings_header = "Sisters:"
-                    elif all_male
+                    elif all_male:
                         siblings_header = "Brothers:"
                     else:
                         siblings_header = "Siblings:"
