@@ -673,7 +673,7 @@ class Marriage(commands.Cog):
     @commands.command()
     async def emancipate(self, ctx: commands.Context):
         """Emancipate yourself from your shitty parents!"""
-        if self.config.member(ctx.author).child() == False:
+        if await self.config.member(ctx.author).child() == False:
             return await ctx.send("You don't have parents!")
 
         async with self.config.member(ctx.author).parents() as parents:
@@ -681,7 +681,7 @@ class Marriage(commands.Cog):
                 parent = discord.utils.get(ctx.guild.members, id=x)
                 async with self.config.member(parent).children() as children:
                     children.remove(ctx.author.id)
-                    kidcount = await self.config.member(parent).kidcount
+                    kidcount = await self.config.member(parent).kidcount()
                     await self.config.member(spouse).kidcount.set(kidcount - 1)
                     if kidcount == 1:
                         await self.config.member(spouse).parent.set(False)
