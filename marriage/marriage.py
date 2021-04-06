@@ -225,16 +225,9 @@ class Marriage(commands.Cog):
             if is_parent:
                 if is_divorced:
                     if gender[0] == "m":
-                        rs_status = "Widower"
+                        rs_status = "Widowed "
                     else:
-                        rs_status = "Widow"
-                else:
-                    if gender[0] == "m":
-                        rs_status = "Single Father"
-                    elif gender[0] == "f":
-                        rs_status = "Single Mother"
-                    else:
-                        rs_status = "Single Parent"
+                        rs_status = "Widowed "
             elif is_divorced:
                 if gender[0] == "m":
                     rs_status = "Divorced Husband"
@@ -262,8 +255,8 @@ class Marriage(commands.Cog):
                             else:
                                 rs_status = "Child"
             else:
-                rs_status = "Single" 
-        else:
+                rs_status = "Single " 
+        if not is_divorced:
             if await self.config.member(member).parent():
                 async with self.config.member(member).children() as children:
                     if children != []:
@@ -280,25 +273,25 @@ class Marriage(commands.Cog):
                                                     async with self.config.member(greatgrandchild).children() as greatgreatgrandchildren:
                                                         if greatgreatgrandchildren != []:
                                                             if gender[0] == "m":
-                                                                rs_status = "Great-Grandfather"
+                                                                rs_status += "Great-Grandfather"
                                                             elif gender[0] == "f":
-                                                                rs_status = "Great-Grandmother"
+                                                                rs_status += "Great-Grandmother"
                                                             else:
-                                                                rs_status = "Great-Grandparent"
+                                                                rs_status += "Great-Grandparent"
                                             else:
                                                 if gender[0] == "m":
-                                                    rs_status = "Grandfather"
+                                                    rs_status += "Grandfather"
                                                 elif gender[0] == "f":
-                                                    rs_status = "Grandmother"
+                                                    rs_status += "Grandmother"
                                                 else:
-                                                    rs_status = "Grandparent"
+                                                    rs_status += "Grandparent"
                                 else:
                                     if gender[0] == "m":
-                                        rs_status = "Father"
+                                        rs_status += "Father"
                                     elif gender[0] == "f":
-                                        rs_status = "Mother"
+                                        rs_status += "Mother"
                                     else:
-                                        rs_status = "Parent"
+                                        rs_status += "Parent"
             else:
                 if ctx.author.id == 176154416661921792 or ctx.author.id == 192677766003556352:
                     rs_status = "Wifey"
