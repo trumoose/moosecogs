@@ -673,7 +673,7 @@ class Marriage(commands.Cog):
     @commands.command()
     async def emancipate(self, ctx: commands.Context):
         """Emancipate yourself from your shitty parents!"""
-        if self.config.member(ctx.author).child() == false:
+        if self.config.member(ctx.author).child() == False:
             return await ctx.send("You don't have parents!")
 
         async with self.config.member(ctx.author).parents() as parents:
