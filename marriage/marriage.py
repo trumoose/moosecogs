@@ -344,7 +344,7 @@ class Marriage(commands.Cog):
         new_kids = await self.config.member(ctx.author).children() + await self.config.member(member).children()
         
         await self.config.member(ctx.author).kidcount.set(total_kidcount)
-        await self.config.member(member).parcount.set(total_kidcount)
+        await self.config.member(member).kidcount.set(total_kidcount)
         
         # set NEW CHILDREN
         await self.config.member(ctx.author).children.set(new_kids)
@@ -359,7 +359,10 @@ class Marriage(commands.Cog):
             for x in children:
                 kid = discord.utils.get(ctx.guild.members, id=x)
                 async with self.config.member(kid).parents() as parents:
-                    parents.append(member.id)
+                    if member.id not in parents:
+                        parents.append(member.id)
+                    if ctx.author.id not in parents:
+                        parents.append(member.id)
             
         await ctx.send(f":church: {ctx.author.mention} and {member.mention} are now a happy married couple! ")
 
@@ -446,14 +449,16 @@ class Marriage(commands.Cog):
         # add CHILD to PARENT'S SPOUSE(S) children
         async with self.config.member(ctx.author).current() as spouses:
             for x in spouses:
-                async with self.config.member(self.bot.get_user(x)).children() as children:
+                spouse = discord.utils.get(ctx.guild.members, id=x)
+                async with self.config.member(spouse).children() as children:
                     children.append(member.id)
-                    await self.config.member(self.bot.get_user(x)).parent.set(True)
+                    await self.config.member(spouse).parent.set(True)
         
         # add PARENT'S SPOUSE(S) to CHILD'S parents 
         async with self.config.member(member).parents() as parents:
             async with self.config.member(ctx.author).current() as spouses:
                 for x in spouses:
-                    async with self.config.member(self.bot.get_user(x)).children() as children:
+                    spouse = discord.utils.get(ctx.guild.members, id=x)
+                    async with self.config.member(spouse).children() as children:
                         children.append(member.id)
         await ctx.send(f":baby: {ctx.author.mention} has adopted {member.mention}! ")
