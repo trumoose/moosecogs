@@ -38,20 +38,27 @@ class Marriage(commands.Cog):
             
     @commands.group(autohelp=True)
     @commands.guild_only()
-    @checks.admin()
     async def marriage(self, ctx: commands.Context):
         f"""Various Marriage settings."""
 
     @marriage.command(name="set")
-    async def marriage_set(self, ctx: commands.Context, member: typing.Optional[discord.Member], var, state):
+    async def marriage_set(self, ctx: commands.Context, arg, value):
         """Set member variables for a user."""
+        
+        if arg == "about":
+            await self.config.member(ctx.author).about.set(value)
+            ctx.tick()
+        
+        """
         boolean = False
+        
         
         if state == "True" or state == "true":
             boolean = True
         else:
             boolean = False
-            
+        
+        
         if var == "married":
             await self.config.member(member).married.set(boolean)
             if boolean == False:
@@ -81,9 +88,12 @@ class Marriage(commands.Cog):
         if var == "parcount":
             await self.config.member(member).parcount.set(state)
             await ctx.send(f"Set {member.mention}'s number of parents to {state}!")
+        """
         
+    @checks.admin()
     @marriage.command(name="reset")
     async def marriage_reset(self, ctx: commands.Context, member: typing.Optional[discord.Member]):
+        """Reset member variables for a user."""
         if not member:
             member = ctx.author
         await self.config.member(member).married.set(False)
@@ -97,15 +107,18 @@ class Marriage(commands.Cog):
         await self.config.member(member).marcount.set(0)
         await self.config.member(member).kidcount.set(0)
         await self.config.member(member).parcount.set(0)
-        
+    
+    @checks.admin()
     @marriage.command(name="multiple")
     async def marriage_multiple(self, ctx: commands.Context, state: bool):
         """Enable/disable whether members can be married to multiple people at once."""
         await self.config.guild(ctx.guild).multi.set(state)
         await ctx.send(f"Members {'can' if state else 'cannot'} marry multiple people.")
-
+    
+    @checks.admin()
     @marriage.command(name="debug")
     async def marriage_debug(self, ctx: commands.Context, member: typing.Optional[discord.Member]):
+        """Display information about a user."""
         if not member:
             member = ctx.author
         await ctx.send(f"married = {'True' if await self.config.member(member).married() else 'False'}\n"
@@ -130,8 +143,11 @@ class Marriage(commands.Cog):
             member = ctx.author
         is_married = await self.config.member(member).married()
         is_parent = await self.config.member(member).parent()
+        is_child = await self.config.member(member).child()
         kids_header = "Error?"
         kids_text = "Moosey sucks at coding!"
+        parents_header = "Error?"
+        parents_text = "Moosey sucks at coding!"
         spouse_header = "Error?"
         spouse_text = "Moosey sucks at coding!"
         rs_status = "Error?"
@@ -196,6 +212,22 @@ class Marriage(commands.Cog):
             else:
                 kids_text = humanize_list(kids)
                 kids_header = "Child:" if len(kids) == 1 else "Children:"
+                
+            parent_ids = await self.config.member(member).parents()
+            parents = []
+            
+            for parent_id in parent_ids:
+                parent = self.bot.get_user(parent_id)
+                if parent:
+                    parents.append(parent.name)
+            if parents == []:
+                parents_header = "Parents:"
+                parents_text = "None"
+            else:
+                parents_text = humanize_list(parents)
+                parents_header = "Parent:" if len(parents) == 1 else "Parents:"
+                
+                
         marcount = await self.config.member(member).marcount()
         been_married = f"{marcount} time" if marcount == 1 else f"{marcount} times"
         if marcount != 0:
@@ -221,6 +253,8 @@ class Marriage(commands.Cog):
             e.add_field(name=spouse_header, value=spouse_text)
         if is_parent:
             e.add_field(name=kids_header, value=kids_text)
+        if is_child:
+            e.add_field(name=parents_header, value=parents_text)
         e.add_field(name="Been married:", value=been_married)
         if await self.config.member(member).marcount() != 0:
             e.add_field(name="Ex spouses:", value=ex_text)
