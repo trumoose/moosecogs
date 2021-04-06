@@ -150,7 +150,7 @@ class Marriage(commands.Cog):
         is_parent = await self.config.member(member).parent()
         is_divorced = await self.config.member(member).divorced()
         is_child = await self.config.member(member).child()
-        gender = await self.config.member(member).gender().lower()
+        gender = str(await self.config.member(member).gender()).lower()
         kids_header = "Error?"
         kids_text = "Moosey sucks at coding!"
         parents_header = "Error?"
@@ -261,7 +261,7 @@ class Marriage(commands.Cog):
                     for spouse_id in spouse_ids:
                         spouse = self.bot.get_user(spouse_id)
                         if spouse:
-                            spouse_gender = await self.config.member(spouse).gender().lower()
+                            spouse_gender = str(await self.config.member(spouse).gender()).lower()
                             if spouse_gender[0] == "m":
                                 spouse_header = "Husband:"
                             if spouse_gender[0] == "f":
@@ -288,7 +288,7 @@ class Marriage(commands.Cog):
                     for children_id in children_ids:
                         kid = self.bot.get_user(children_id)
                         if kid:
-                            kid_gender = await self.config.member(kid).gender().lower()
+                            kid_gender = str(await self.config.member(kid).gender()).lower()
                             if kid_gender[0] == "m":
                                 kids_header = "Son:"
                             if spouse_gender[0] == "f":
@@ -315,7 +315,7 @@ class Marriage(commands.Cog):
                     for parent_id in parent_ids:
                         parent = self.bot.get_user(parent_id)
                         if parent:
-                            parent_gender = await self.config.member(parent).gender().lower()
+                            parent_gender = str(await self.config.member(parent).gender()).lower()
                             if parent_gender[0] == "m":
                                 parents_header = "Mom:"
                             if parent_gender[0] == "f":
@@ -674,7 +674,7 @@ class Marriage(commands.Cog):
     async def emancipate(self, ctx: commands.Context):
         """Emancipate yourself from your shitty parents!"""
         if await self.config.member(ctx.author).child() == False:
-            return await ctx.send("You don't have parents!")
+            return await ctx.send("You don't have parents to emancipate yourself from!")
 
         async with self.config.member(ctx.author).parents() as parents:
             for x in parents:
