@@ -113,6 +113,7 @@ class Marriage(commands.Cog):
         await self.config.member(member).marcount.set(0)
         await self.config.member(member).kidcount.set(0)
         await self.config.member(member).parcount.set(0)
+        await ctx.tick()
     
     @checks.admin()
     @marriage.command(name="multiple")
