@@ -183,10 +183,9 @@ class Marriage(commands.Cog):
             elif is_child:
                 async with self.config.member(member).parents() as parents:
                     for parent_id in parents:
+                        kidcount = await self.config.member(parent).kidcount()
                         parent = discord.utils.get(ctx.guild.members, id=parent_id)
-                        if await self.config.member(parent).kidcount() == 1:
-                            rs_status = "Only Child"
-                        elif self.config.member(parent).kidcount() > 1:
+                        if kidcount > 1:
                             if gender[0] == "m":
                                 rs_status = "Brother"
                             elif gender[0] == "f":
@@ -199,7 +198,7 @@ class Marriage(commands.Cog):
                             elif gender[0] == "f":
                                 rs_status = "Daughter"
                             else:
-                                rs_status = "Child"
+                                rs_status = "Only Child"
             else:
                 rs_status = "Single" 
         else:
