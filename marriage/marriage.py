@@ -249,7 +249,7 @@ class Marriage(commands.Cog):
             spouses = []
             
             for spouse_id in spouse_ids:
-                spouse = self.bot.get_user(spouse_id)
+                spouse = discord.utils.get(ctx.guild.members, id=spouse_id)
                 if spouse:
                     spouses.append(spouse.name)
             if spouses == []:
@@ -259,7 +259,7 @@ class Marriage(commands.Cog):
                 spouse_text = humanize_list(spouses)
                 if len(spouses) == 1:
                     for spouse_id in spouse_ids:
-                        spouse = self.bot.get_user(spouse_id)
+                        spouse = discord.utils.get(ctx.guild.members, id=spouse_id)
                         if spouse:
                             spouse_gender = str(await self.config.member(spouse).gender()).lower()
                             if spouse_gender[0] == "m":
@@ -276,7 +276,7 @@ class Marriage(commands.Cog):
         
         if is_parent:
             for children_id in children_ids:
-                kid = self.bot.get_user(children_id)
+                kid = discord.utils.get(ctx.guild.members, id=children_id)
                 if kid:
                     kids.append(kid.name)
             if kids == []:
@@ -286,7 +286,7 @@ class Marriage(commands.Cog):
                 kids_text = humanize_list(kids)
                 if len(kids) == 1:
                     for children_id in children_ids:
-                        kid = self.bot.get_user(children_id)
+                        kid = discord.utils.get(ctx.guild.members, id=children_id)
                         if kid:
                             kid_gender = str(await self.config.member(kid).gender()).lower()
                             if kid_gender[0] == "m":
@@ -303,7 +303,7 @@ class Marriage(commands.Cog):
         
         if is_child:
             for parent_id in parent_ids:
-                parent = self.bot.get_user(parent_id)
+                parent = discord.utils.get(ctx.guild.members, id=parent_id)
                 if parent:
                     parents.append(parent.name)
             if parents == []:
@@ -313,7 +313,7 @@ class Marriage(commands.Cog):
                 parents_text = humanize_list(parents)
                 if len(parents) == 1:
                     for parent_id in parent_ids:
-                        parent = self.bot.get_user(parent_id)
+                        parent = discord.utils.get(ctx.guild.members, id=parent_id)
                         if parent:
                             parent_gender = str(await self.config.member(parent).gender()).lower()
                             if parent_gender[0] == "m":
@@ -334,7 +334,7 @@ class Marriage(commands.Cog):
             else:
                 exes = list()
                 for ex_id in exes_ids:
-                    ex = self.bot.get_user(ex_id)
+                    ex = discord.utils.get(ctx.guild.members, id=ex_id)
                     if not ex:
                         continue
                     ex = ex.name
@@ -370,7 +370,7 @@ class Marriage(commands.Cog):
         exes_ids = await self.config.member(member).exes()
         ex_text = ""
         for ex_id in exes_ids:
-            ex = self.bot.get_user(ex_id)
+            ex = discord.utils.get(ctx.guild.members, id=ex_id)
             if ex:
                 ex_text += f"{ex.name}\n"
         if ex_text == "":
@@ -392,7 +392,7 @@ class Marriage(commands.Cog):
         spouses_ids = await self.config.member(member).spouses()
         sp_text = ""
         for s_id in spouses_ids:
-            spouse = self.bot.get_user(s_id)
+            spouse = discord.utils.get(ctx.guild.members, id=s_id)
             if spouse:
                 sp_text += f"{spouse.name}\n"
         if sp_text == "":
@@ -414,7 +414,7 @@ class Marriage(commands.Cog):
         children_ids = await self.config.member(member).children()
         ch_text = ""
         for c_id in children_ids:
-            kid = self.bot.get_user(c_id)
+            kid = discord.utils.get(ctx.guild.members, id=c_id)
             if kid:
                 ch_text += f"{kid.name}\n"
         if ch_text == "":
