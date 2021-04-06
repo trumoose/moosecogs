@@ -134,6 +134,7 @@ class Marriage(commands.Cog):
         kids_text = "Moosey sucks at coding!"
         spouse_header = "Error?"
         spouse_text = "Moosey sucks at coding!"
+        rs_status = "Error?"
         if not is_married:
             if await self.config.member(member).parent():
                 if await self.config.member(member).divorced():
@@ -165,8 +166,8 @@ class Marriage(commands.Cog):
                                                 rs_status = "Grandparent"
                                 else:
                                     rs_status = "Parent"
-                    else:
-                        rs_status = "Married"
+            else:
+                rs_status = "Married"
                 
             spouse_ids = await self.config.member(member).spouses()
             spouses = []
