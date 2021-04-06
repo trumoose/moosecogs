@@ -257,7 +257,7 @@ class Marriage(commands.Cog):
             e.add_field(name=kids_header, value=kids_text)
         if is_child:
             e.add_field(name=parents_header, value=parents_text)
-        if marcount > 0:
+        if marcount > 1:
             e.add_field(name="Marriages:", value=been_married)
         if is_divorced or marcount > 1:
             e.add_field(name="Ex spouses:", value=ex_text)
