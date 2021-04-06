@@ -47,7 +47,7 @@ class Marriage(commands.Cog):
         
         if arg == "about":
             await self.config.member(ctx.author).about.set(value)
-            ctx.tick()
+            await ctx.tick()
         
         """
         boolean = False
@@ -331,7 +331,7 @@ class Marriage(commands.Cog):
     @commands.max_concurrency(1, commands.BucketType.channel, wait=True)
     @commands.guild_only()
     @commands.command()
-    async def marry(self, ctx: commands.Context, member: discord.Member):
+    async def propose(self, ctx: commands.Context, member: discord.Member):
         """Marry the love of your life!"""
         if member.id == ctx.author.id:
             return await ctx.send("You can't marry yourself!")
@@ -510,6 +510,70 @@ class Marriage(commands.Cog):
             async with self.config.member(ctx.author).spouses() as spouses:
                 for x in spouses:
                     spouse = discord.utils.get(ctx.guild.members, id=x)
-                    async with self.config.member(spouse).children() as children:
-                        children.append(member.id)
+                    parents.append(spouse)
         await ctx.send(f":baby: {ctx.author.mention} has adopted {member.mention}! ")
+        
+    @commands.max_concurrency(1, commands.BucketType.channel, wait=True)
+    @commands.guild_only()
+    @commands.command()
+    async def emancipate(self, ctx: commands.Context):
+        """Emancipate yourself from your shitty parents!"""
+        if not self.config.member(ctx.author).child():
+            return await ctx.send("You don't have parents!")
+
+        async with self.config.member(ctx.author).parents() as parents:
+            for x in parents:
+                parent = discord.utils.get(ctx.guild.members, id=x)
+                async with self.config.member(parent).children() as children:
+                    children.remove(ctx.author.id)
+                    kidcount = await self.config.member(parent).kidcount
+                    await self.config.member(spouse).kidcount.set(kidcount - 1)
+                    if kidcount == 1:
+                        await self.config.member(spouse).parent.set(False)
+                    
+        await self.config.member(ctx.author).child.set(False)
+        await self.config.member(ctx.author).parcount.set(0)
+
+        async with self.config.member(ctx.author).parents() as parents:
+            parents.clear()
+            
+        await ctx.send(f":railroad_track: {ctx.author.mention} has been emancipated!")
+    @commands.max_concurrency(1, commands.BucketType.channel, wait=True)
+    @commands.guild_only()
+    @commands.command()
+    async def disown(self, ctx: commands.Context, member: discord.Member):
+        """Disown your very own child!"""
+        if member.id == ctx.author.id:
+            return await ctx.send("You can't disown yourself!")
+        if member.id in await self.config.member(ctx.author).parents():
+            return await ctx.send("You can't disown your parents!")
+        if member.id in await self.config.member(ctx.author).spouses():
+            return await ctx.send("You can't disown your spouse!")
+        if member.id not in await self.config.member(ctx.author).children():
+            return await ctx.send("You've can't disown someone who's not your child!")
+
+        author_kidcount = await self.config.member(ctx.author).kidcount()
+
+        await self.config.member(ctx.author).kidcount.set(author_kidcount - 1)
+        
+        async with self.config.member(ctx.author).children() as children:
+            children.remove(member.id)
+        
+        async with self.config.member(ctx.author).spouses() as spouses:
+            for x in spouses:
+                spouse = discord.utils.get(ctx.guild.members, id=x)
+                async with self.config.member(spouse).children() as children:
+                    children.remove(member.id)
+                    await self.config.member(spouse).kidcount.set(author_kidcount - 1)
+                    await self.config.member(spouse).parent.set(False)
+                    
+        await self.config.member(ctx.author).parent.set(False)
+        
+        await self.config.member(member).parcount.set(0)
+        
+        await self.config.member(member).child.set(False)
+
+        async with self.config.member(member).parents() as parents:
+            parents.clear()
+            
+        await ctx.send(f":railroad_track: {ctx.author.mention} has disowned {member.mention}... ")
