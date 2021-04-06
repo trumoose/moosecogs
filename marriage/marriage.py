@@ -152,6 +152,7 @@ class Marriage(commands.Cog):
             for spouse in spouses:
                 if spouse == user2.id:
                     return True
+                    
         async with self.config.member(user1).greatest_ancestors() as gca:
             async with self.config.member(user2).greatest_ancestors() as gca2:
                 async with self.config.member(user1).spouses() as spouses:
@@ -159,6 +160,9 @@ class Marriage(commands.Cog):
                         for spouse in spouses:
                             spouse = discord.utils.get(ctx.guild.members, id=spouse)
                             async with self.config.member(spouse).greatest_ancestors() as spouse_gca:
+                                for x in spouse_gca:
+                                    if x == member.id:
+                                        return True 
                                 for x in gca:
                                     for y in spouse_gca:
                                         if x == y:
@@ -166,25 +170,23 @@ class Marriage(commands.Cog):
                         for spouse in spouses2:
                             spouse = discord.utils.get(ctx.guild.members, id=spouse)
                             async with self.config.member(spouse).greatest_ancestors() as spouse_gca:
+                                for x in spouse_gca:
+                                    if x == member2.id:
+                                        return True
                                 for x in gca2:
                                     for y in spouse_gca:
                                         if x == y:
                                             return True
                 for x in gca:
-                    await ctx.send(f"{member.name}'s greatest ancestor is {x}")
                     if x == member2.id:
                         return True
-                        
                 for x in gca2:
-                    await ctx.send(f"{member2.name}'s greatest ancestor is {x}")
                     if x == member.id:
                         return True
-                        
                 for x in gca:
                     for y in gca2:
                         if x == y:
                             return True
-                            
                 return False
         
     @commands.guild_only()
