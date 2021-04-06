@@ -155,16 +155,18 @@ class Marriage(commands.Cog):
                                     for grandchild_id in grandchildren:
                                         grandchild = discord.utils.get(ctx.guild.members, id=grandchild_id)
                                         async with self.config.member(grandchild).children() as greatgrandchildren:
-                                            if grandchild != []:
-                                                rs_status = "Old Fuck"
+                                            if greatgrandchildren != []:
+                                                for greatgrandchild_id in greatgrandchildren:
+                                                    greatgrandchild = discord.utils.get(ctx.guild.members, id=greatgrandchild_id)
+                                                    async with self.config.member(greatgrandchild).children() as greatgreatgrandchildren:
+                                                        if greatgreatgrandchildren != []:
+                                                            rs_status = "Old Fuck"
                                             else:
-                                                rs_status = "Great-Grandparent"
+                                                rs_status = "Grandparent"
                                 else:
-                                    rs_status = "Grandparent"
+                                    rs_status = "Parent"
                     else:
-                        rs_status = "Parent"
-            else:
-                rs_status = "Married"
+                        rs_status = "Married"
                 
             spouse_ids = await self.config.member(member).spouses()
             spouses = []
@@ -317,9 +319,9 @@ class Marriage(commands.Cog):
         try:
             await self.bot.wait_for("message", timeout=120, check=pred)
         except asyncio.TimeoutError:
-            return await ctx.send("Oh no... I was looking forward to the cerenomy...")
+            return await ctx.send("Oh no... I was looking forward to the ceremony...")
         if not pred.result:
-            return await ctx.send("Oh no... I was looking forward to the cerenomy...")
+            return await ctx.send("Oh no... I was looking forward to the ceremony...")
         author_marcount = await self.config.member(ctx.author).marcount()
         target_marcount = await self.config.member(member).marcount()
 
@@ -386,7 +388,7 @@ class Marriage(commands.Cog):
         pred = MessagePredicate.yes_or_no(ctx, ctx.channel, member)
         await self.bot.wait_for("message", check=pred)
         if not pred.result:
-            await ctx.send(f"Too bad! Proceeding with divorce...\n")
+            return await ctx.send("Okay, calling off the divorce.")
         async with self.config.member(ctx.author).spouses() as acurrent:
             acurrent.remove(member.id)
         async with self.config.member(member).spouses() as tcurrent:
@@ -395,7 +397,7 @@ class Marriage(commands.Cog):
             aexes.append(member.id)
         async with self.config.member(member).exes() as texes:
             texes.append(ctx.author.id)
-        async with self.config.member(member).children() as kids:
+        async with self.config.member(member).children() as children:
             for x in children:
                 kid = discord.utils.get(ctx.guild.members, id=x)
                 async with self.config.member(kid).parents() as parents:
