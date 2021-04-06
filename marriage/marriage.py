@@ -357,7 +357,8 @@ class Marriage(commands.Cog):
         # add PARENT to CHILD'S parents
         async with self.config.member(member).children() as children:
             for x in children:
-                async with self.config.member(self.bot.get_user(x)).parents() as parents:
+                kid = self.bot.get_user(x)
+                async with self.config.member(kid).parents() as parents:
                     parents.append(member.id)
             
         await ctx.send(f":church: {ctx.author.mention} and {member.mention} are now a happy married couple! ")
