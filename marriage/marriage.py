@@ -30,7 +30,7 @@ class Marriage(commands.Cog):
             children = [],
             parents = [],
             exes = [],
-            greatest_ancestors = []
+            greatest_ancestors = [],
             about = "I'm mysterious.",
             gender = "default",
             marcount = 0,
