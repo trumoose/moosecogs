@@ -614,7 +614,7 @@ class Marriage(commands.Cog):
     @commands.max_concurrency(1, commands.BucketType.channel, wait=True)
     @commands.guild_only()
     @commands.command()
-    async def adopt(self, ctx: commands.Context, member: discord.Member):
+    async def makeparent(self, ctx: commands.Context, member: discord.Member):
         """Ask someone to be your parent!"""
         if member.id == ctx.author.id:
             return await ctx.send("You can't be your own parent!")
