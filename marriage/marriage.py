@@ -323,9 +323,9 @@ class Marriage(commands.Cog):
                             parent_gender = str(await self.config.member(parent).gender()).lower()
                             if parent_gender[0] == "m":
                                 parents_header = "Mom:"
-                            if parent_gender[0] == "f":
+                            elif parent_gender[0] == "f":
                                 parents_header = "Dad:"
-                            if parent_gender[0] == "f":
+                            else:
                                 parents_header = "Parent:"
                 else:
                     parents_header = "Parents:"
