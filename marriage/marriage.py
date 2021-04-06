@@ -357,7 +357,7 @@ class Marriage(commands.Cog):
         # add PARENT to CHILD'S parents
         async with self.config.member(member).children() as children:
             for x in children:
-                kid = self.bot.get_user(x)
+                kid = discord.utils.get(ctx.guild.members, id=x)
                 async with self.config.member(kid).parents() as parents:
                     parents.append(member.id)
             
