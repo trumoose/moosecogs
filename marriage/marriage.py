@@ -30,6 +30,7 @@ class Marriage(commands.Cog):
             children = [],
             parents = [],
             exes = [],
+            greatest_ancestors = []
             about = "I'm mysterious.",
             gender = "default",
             marcount = 0,
@@ -110,6 +111,7 @@ class Marriage(commands.Cog):
         await self.config.member(member).exes.clear()
         await self.config.member(member).children.clear()
         await self.config.member(member).parents.clear()
+        await self.config.member(member).greatest_ancestors.clear()
         await self.config.member(member).marcount.set(0)
         await self.config.member(member).kidcount.set(0)
         await self.config.member(member).parcount.set(0)
@@ -137,10 +139,48 @@ class Marriage(commands.Cog):
                        f"children = {humanize_list(await self.config.member(member).children())}\n"
                        f"parents = {humanize_list(await self.config.member(member).parents())}\n"
                        f"exes = {humanize_list(await self.config.member(member).exes())}\n"
+                       f"greatest_ancestors = {humanize_list(await self.config.member(member).greatest_ancestors())}\n"
                        f"marcount = {await self.config.member(member).marcount()}\n"
                        f"kidcount = {await self.config.member(member).kidcount()}\n"
                        f"parcount = {await self.config.member(member).parcount()}\n")
-
+    
+    async def is_member_of_family(member: discord.Member, member2: discord.Member):
+        async with self.config.member(member).greatest_ancestors() as gca:
+            async with self.config.member(member2).greatest_ancestors() as gca2:
+                async with self.config.member(member).spouses() as spouses:
+                    async with self.config.member(member2).spouses() as spouses2:
+                        for spouse in spouses:
+                            spouse = discord.utils.get(ctx.guild.members, id=spouse)
+                            async with self.config.member(spouse).greatest_ancestors() as spouse_gca:
+                                for x in gca:
+                                    for y in spouse_gca:
+                                        if x == y:
+                                            return True
+                        for spouse in spouses2:
+                            spouse = discord.utils.get(ctx.guild.members, id=spouse)
+                            async with self.config.member(spouse).greatest_ancestors() as spouse_gca:
+                                for x in gca2:
+                                    for y in spouse_gca:
+                                        if x == y:
+                                            return True
+                for x in gca:
+                    for y in gca2:
+                        if x == y:
+                            return True
+        return False
+        
+    @commands.guild_only()
+    @commands.command()
+    async def relationship(
+        self, ctx: commands.Context, member: discord.member, member2: typing.Optional[discord.Member]
+    ):
+        if not member2:
+            member = ctx.author
+        if is_member_of_family(member, member2):
+            ctx.send(f"{member.name} is a member of {member2.name}'s family!")
+        else:
+            ctx.send(f"{member.name} and {member2.name} are not related!")
+            
     @commands.group(invoke_without_command=True)
     @commands.guild_only()
     async def about(
@@ -526,6 +566,7 @@ class Marriage(commands.Cog):
                 async with self.config.member(kid).parents() as parents:
                     parents.clear()
                 await self.config.member(kid).parcount.set(0)
+                await self.config.member(kid).greatest_ancestors.clear()
                 await self.config.member(kid).child.set(False)
         if len(await self.config.member(ctx.author).spouses()) == 0:
             await self.config.member(ctx.author).married.clear()
@@ -599,6 +640,24 @@ class Marriage(commands.Cog):
                 for x in spouses:
                     spouse = discord.utils.get(ctx.guild.members, id=x)
                     parents.append(spouse.id)
+                    
+        # calculate GREATEST COMMON ANCESTORS
+        async with self.config.member(member).parents() as parents:
+            async with self.config.member(member).greatest_ancestors() as child_gca:
+                async with self.config.member(ctx.author).greatest_ancestors() as parent_gca:
+                    if parent_gca == []:
+                        child_gca.append(ctx.author.id)
+                    else:
+                        child_gca += parent_gca
+                async with self.config.member(ctx.author).spouses() as spouses:
+                    for spouse in spouses:
+                        spouse = discord.utils.get(ctx.guild.members, id=spouse)
+                        async with self.config.member(spouse).greatest_ancestors() as spouse_gca:
+                                    if spouse_gca == []:
+                                        child_gca.append(spouse.id)
+                                    else:
+                                        child_gca += spouse_gca
+                            
         await ctx.send(f":baby: {ctx.author.mention} has adopted {member.mention}! ")
         
     @commands.max_concurrency(1, commands.BucketType.channel, wait=True)
@@ -656,6 +715,23 @@ class Marriage(commands.Cog):
                 for x in spouses:
                     spouse = discord.utils.get(ctx.guild.members, id=x)
                     parents.append(spouse.id)
+                    
+        # calculate GREATEST COMMON ANCESTORS
+        async with self.config.member(ctx.author).parents() as parents:
+            async with self.config.member(ctx.author).greatest_ancestors() as child_gca:
+                async with self.config.member(member).greatest_ancestors() as parent_gca:
+                    if parent_gca == []:
+                        child_gca.append(member.id)
+                    else:
+                        child_gca += parent_gca
+                async with self.config.member(member).spouses() as spouses:
+                    for spouse in spouses:
+                        spouse = discord.utils.get(ctx.guild.members, id=spouse)
+                        async with self.config.member(spouse).greatest_ancestors() as spouse_gca:
+                                    if spouse_gca == []:
+                                        child_gca.append(spouse.id)
+                                    else:
+                                        child_gca += spouse_gca
         await ctx.send(f":baby: {member.mention} has adopted {ctx.author.mention}! ")
         
     @commands.max_concurrency(1, commands.BucketType.channel, wait=True)
@@ -678,6 +754,7 @@ class Marriage(commands.Cog):
                     
         await self.config.member(ctx.author).child.set(False)
         await self.config.member(ctx.author).parcount.set(0)
+        await self.config.member(ctx.author).greatest_ancestors.clear()
 
         async with self.config.member(ctx.author).parents() as parents:
             parents.clear()
@@ -717,6 +794,8 @@ class Marriage(commands.Cog):
         await self.config.member(member).parcount.set(0)
         
         await self.config.member(member).child.set(False)
+        
+        await self.config.member(member).greatest_ancestors.clear()
 
         async with self.config.member(member).parents() as parents:
             parents.clear()
