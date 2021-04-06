@@ -673,7 +673,7 @@ class Marriage(commands.Cog):
     @commands.command()
     async def emancipate(self, ctx: commands.Context):
         """Emancipate yourself from your shitty parents!"""
-        if not self.config.member(ctx.author).child():
+        if self.config.member(ctx.author).child() == false:
             return await ctx.send("You don't have parents!")
 
         async with self.config.member(ctx.author).parents() as parents:
@@ -692,7 +692,7 @@ class Marriage(commands.Cog):
         async with self.config.member(ctx.author).parents() as parents:
             parents.clear()
             
-        await ctx.send(f":railroad_track: {ctx.author.mention} has been emancipated!")
+        await ctx.send(f":sunrise_over_mountains: {ctx.author.mention} has been emancipated!")
     @commands.max_concurrency(1, commands.BucketType.channel, wait=True)
     @commands.guild_only()
     @commands.command()
