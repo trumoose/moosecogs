@@ -84,6 +84,8 @@ class Marriage(commands.Cog):
         
     @marriage.command(name="reset")
     async def marriage_reset(self, ctx: commands.Context, member: typing.Optional[discord.Member]):
+        if not member:
+            member = ctx.author
         await self.config.member(member).married.set(False)
         await self.config.member(member).divorced.set(False)
         await self.config.member(member).parent.set(False)
@@ -104,6 +106,8 @@ class Marriage(commands.Cog):
 
     @marriage.command(name="debug")
     async def marriage_debug(self, ctx: commands.Context, member: typing.Optional[discord.Member]):
+        if not member:
+            member = ctx.author
         await ctx.send(f"married = {'True' if await self.config.member(member).married() else 'False'}\n"
                        f"divorced = {'True' if await self.config.member(member).divorced() else 'False'}\n"
                        f"parent = {'True' if await self.config.member(member).parent() else 'False'}\n"
@@ -227,13 +231,19 @@ class Marriage(commands.Cog):
         if not member:
             member = ctx.author
         exes_ids = await self.config.member(member).exes()
-        exes = list()
+        ex_text = ""
         for ex_id in exes_ids:
             ex = self.bot.get_user(ex_id)
             if ex:
-                exes.append(ex.name)
-        ex_text = "None" if exes == [] else humanize_list(exes)
-        await ctx.send(f"{member.mention}'s exes are: {ex_text}")
+                ex_text += f"{ex.name}\n"
+        if ex_test == "":
+            ex_text = "None"
+        await ctx.send(
+            box(
+                f"""= {member.name}'s exes = {ex_text.strip()}""",
+                lang="asciidoc",
+            )
+        )
 
     @commands.guild_only()
     @commands.command()
@@ -253,6 +263,28 @@ class Marriage(commands.Cog):
         await ctx.send(
             box(
                 f"""= {member.name}'s spouses = {sp_text.strip()}""",
+                lang="asciidoc",
+            )
+        )
+        
+    @commands.guild_only()
+    @commands.command()
+    async def children(
+        self, ctx: commands.Context, member: typing.Optional[discord.Member]
+    ):
+        if not member:
+            member = ctx.author
+        children_ids = await self.config.member(member).children()
+        ch_text = ""
+        for c_id in children_ids:
+            kid = self.bot.get_user(c_id)
+            if kid:
+                ch_text += f"{kid.name}\n"
+        if ch_text == "":
+            ch_text = "None"
+        await ctx.send(
+            box(
+                f"""= {member.name}'s children = {ch_text.strip()}""",
                 lang="asciidoc",
             )
         )
