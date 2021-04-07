@@ -248,10 +248,10 @@ class Marriage(commands.Cog):
                             rs_status = "Wife"
                         else:
                             rs_status = "Partner"
-                            
+                            """
             async with self.config.member(member2).parents() as parents:
                 distance2 = await self._find_grandparent(ctx, member2, member, 0)
-                
+
                 if distance2:
                     if distance2 == 1:
                         if gender[0] == "m":
@@ -276,9 +276,11 @@ class Marriage(commands.Cog):
                             rs_status += "Grandmother"
                         else:
                             rs_status += "Grandparent"
-                        
+                        """
             async with self.config.member(member2).children() as children:
                 distance2 = await self._find_grandchild(ctx, member2, member, 0)
+                                
+                rs_status = str(distance2)
                 
                 if distance2:                
                     if distance2 == 1:
@@ -304,6 +306,7 @@ class Marriage(commands.Cog):
                             rs_status += "Granddaughter"
                         else:
                             rs_status += "Grandchild"
+                            """
         else:
             rs_status = "Unrelated"
         
