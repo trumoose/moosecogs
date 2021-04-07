@@ -144,6 +144,13 @@ class Marriage(commands.Cog):
                        f"kidcount = {await self.config.member(member).kidcount()}\n"
                        f"parcount = {await self.config.member(member).parcount()}\n")
     
+    async def _update_greatest_ancestors(self, ctx: commands.Context, member: discord.Member, greatest_ancestors):
+        async with self.config.member(member).children() as children:
+            for child_id in children:
+                child = discord.utils.get(ctx.guild.members, id=child_id)
+                await self.config.member(child).greatest_ancestors.set(greatest_ancestors)
+                await self._update_greatest_ancestors(ctx, child, greatest_ancestors)
+    
     async def _is_member_of_family(self, ctx: commands.Context, member: discord.Member, member2: discord.Member):
         user1 = discord.utils.get(ctx.guild.members, id=member.id)
         user2 = discord.utils.get(ctx.guild.members, id=member2.id)
@@ -761,7 +768,8 @@ class Marriage(commands.Cog):
                                         child_gca.append(spouse.id)
                                     else:
                                         child_gca += spouse_gca
-                            
+                await self._update_greatest_ancestors(ctx, member, child_gca)
+        
         await ctx.send(f":baby: {ctx.author.mention} has adopted {member.mention}! ")
         
     @commands.max_concurrency(1, commands.BucketType.channel, wait=True)
