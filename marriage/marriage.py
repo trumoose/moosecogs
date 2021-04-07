@@ -306,7 +306,6 @@ class Marriage(commands.Cog):
                             rs_status += "Granddaughter"
                         else:
                             rs_status += "Grandchild"
-                            """
         else:
             rs_status = "Unrelated"
         
