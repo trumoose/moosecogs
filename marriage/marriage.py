@@ -236,8 +236,8 @@ class Marriage(commands.Cog):
         if not member2:
             member2 = ctx.author
             
-        gender = str(await self.config.member(user).gender()).lower()
-        gender2 = str(await self.config.member(user2).gender()).lower()
+        gender = str(await self.config.member(member).gender()).lower()
+        gender2 = str(await self.config.member(member2).gender()).lower()
         
         if await self._is_member_of_family(ctx, member, member2) == True:
             async with self.config.member(member2).spouses() as spouses:
