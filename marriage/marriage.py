@@ -153,6 +153,24 @@ class Marriage(commands.Cog):
                 child = discord.utils.get(ctx.guild.members, id=child_id)
                 await self.config.member(child).greatest_ancestors.set(greatest_ancestors)
                 await self._update_greatest_ancestors(ctx, child, greatest_ancestors)
+                
+    async def _find_grandparent(self, ctx: commands.Context, member: discord.Member, target: discord.Member, distance):
+        distance++
+        async with self.config.member(member).parents() as parents:
+            for parent_id in parents:
+                parent = discord.utils.get(ctx.guild.members, id=parent_id)
+                if parent_id is target.id:
+                    return distance
+                await self._find_grandparent(ctx, parent, target, distance)
+                
+    async def _find_grandchild(self, ctx: commands.Context, member: discord.Member, target: discord.Member, distance):
+        distance++
+        async with self.config.member(member).children() as children:
+            for child_id in children:
+                child = discord.utils.get(ctx.guild.members, id=child_id)
+                if child_id is target.id:
+                    return distance
+                await self._find_grandchild(ctx, child, target, distance)
     
     async def _is_member_of_family(self, ctx: commands.Context, member: discord.Member, member2: discord.Member):
         user1 = discord.utils.get(ctx.guild.members, id=member.id)
@@ -213,10 +231,81 @@ class Marriage(commands.Cog):
         self, ctx: commands.Context, member: discord.Member, member2: typing.Optional[discord.Member]
     ):
         rs_status = ""
+        distance = 0
+        gender = str(await self.config.member(member).gender()).lower()
+        gender2 = str(await self.config.member(member2).gender()).lower()
+        
         if not member2:
             member2 = ctx.author
+            
         if await self._is_member_of_family(ctx, member, member2) == True:
-            rs_status = "Related"
+            async with self.config.member(member2).spouses() as spouses:
+                for spouse_id in spouses:
+                    if spouse_id == member.id:
+                        if gender[0] == "m":
+                            rs_status = "Husband"
+                        if gender[0] == "f":
+                            rs_status = "Wife"
+                        else:
+                            rs_status = "Partner"
+                            
+            async with self.config.member(member2).parents() as parents:
+                for parent_id in parents:
+                    parent = discord.utils.get(ctx.guild.members, id=parent_id)
+                    distance = await self._find_grandparent(ctx, member, target)
+                    
+                if distance == 1:
+                    if gender[0] == "m":
+                        rs_status = "Father"
+                    if gender[0] == "f":
+                        rs_status = "Mother"
+                    else:
+                        rs_status = "Parent"
+                if distance == 2:
+                    if gender[0] == "m":
+                        rs_status = "Grandfather"
+                    if gender[0] == "f":
+                        rs_status = "Grandmother"
+                    else:
+                        rs_status = "Grandparent"
+                if distance > 2:
+                    for i in range(distance) - 2:
+                        rs_status += "Great-"
+                    if gender[0] == "m":
+                        rs_status += "Grandfather"
+                    if gender[0] == "f":
+                        rs_status += "Grandmother"
+                    else:
+                        rs_status += "Grandparent"
+                        
+            async with self.config.member(member2).children() as children:
+                for child_id in children:
+                    child = discord.utils.get(ctx.guild.members, id=child_id)
+                    distance = await self._find_grandchild(ctx, member, target)
+                    
+                if distance == 1:
+                    if gender[0] == "m":
+                        rs_status = "Son"
+                    if gender[0] == "f":
+                        rs_status = "Daughter"
+                    else:
+                        rs_status = "Child"
+                if distance == 2:
+                    if gender[0] == "m":
+                        rs_status = "Grandson"
+                    if gender[0] == "f":
+                        rs_status = "Granddaughter"
+                    else:
+                        rs_status = "Grandchild"
+                if distance > 2:
+                    for i in range(distance) - 2:
+                        rs_status += "Great-"
+                    if gender[0] == "m":
+                        rs_status += "Grandson"
+                    if gender[0] == "f":
+                        rs_status += "Granddaughter"
+                    else:
+                        rs_status += "Grandchild"
         else:
             rs_status = "Unrelated"
         
