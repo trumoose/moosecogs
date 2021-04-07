@@ -253,7 +253,7 @@ class Marriage(commands.Cog):
             async with self.config.member(member2).parents() as parents:
                 for parent_id in parents:
                     parent = discord.utils.get(ctx.guild.members, id=parent_id)
-                    distance = await self._find_grandparent(ctx, member, target)
+                    distance = await self._find_grandparent(ctx, member2, member, distance)
                     
                 if distance == 1:
                     if gender[0] == "m":
@@ -282,7 +282,7 @@ class Marriage(commands.Cog):
             async with self.config.member(member2).children() as children:
                 for child_id in children:
                     child = discord.utils.get(ctx.guild.members, id=child_id)
-                    distance = await self._find_grandchild(ctx, member, target)
+                    distance = await self._find_grandchild(ctx, member2, member, distance)
                     
                 if distance == 1:
                     if gender[0] == "m":
