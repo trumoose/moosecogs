@@ -209,7 +209,8 @@ class Marriage(commands.Cog):
             rs_status = "Related"
         else:
             rs_status = "Unrelated"
-            
+        
+        e = discord.Embed(colour=member.color)
         e.set_author(name=f"{member.name}'s Profile", icon_url=member.avatar_url)
         e.set_footer(text=f"{member.name}#{member.discriminator} ({member.id})")
         e.set_thumbnail(url=member2.avatar_url)
