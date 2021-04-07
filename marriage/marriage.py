@@ -69,33 +69,33 @@ class Marriage(commands.Cog):
             boolean = False
         
         
-        if var == "married":
+        if arg == "married":
             await self.config.member(member).married.set(boolean)
             if boolean == False:
                 await self.config.member(member).spouses.clear()
             await ctx.send(f"Set {member.mention}'s marriage status to {'married!' if boolean else 'unmarried!'}")
-        if var == "divorced":
+        if arg == "divorced":
             await self.config.member(member).divorced.set(boolean)
             if boolean == False:
                 await self.config.member(member).exes.clear()
             await ctx.send(f"Set {member.mention}'s divorce status to {'divorced!' if boolean else 'undivorced!'}")
-        if var == "parent":
+        if arg == "parent":
             await self.config.member(member).parent.set(boolean)
             if boolean == False:
                 await self.config.member(member).children.clear()
             await ctx.send(f"Set {member.mention}'s parental status to {'parent!' if boolean else 'not a parent!'}")
-        if var == "child":
+        if arg == "child":
             await self.config.member(member).child.set(boolean)
             if boolean == False:
                 await self.config.member(member).parents.clear()
             await ctx.send(f"Set {member.mention}'s child status to {'child!' if boolean else 'orphan!'}")
-        if var == "marcount":
+        if arg == "marcount":
             await self.config.member(member).marcount.set(value)
             await ctx.send(f"Set {member.mention}'s number of marriages to {value}!")
-        if var == "kidcount":
+        if arg == "kidcount":
             await self.config.member(member).kidcount.set(value)
             await ctx.send(f"Set {member.mention}'s number of kids to {value}!")
-        if var == "parcount":
+        if arg == "parcount":
             await self.config.member(member).parcount.set(value)
             await ctx.send(f"Set {member.mention}'s number of parents to {value}!")
         
