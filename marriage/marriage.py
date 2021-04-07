@@ -156,21 +156,25 @@ class Marriage(commands.Cog):
                 
     async def _find_grandparent(self, ctx: commands.Context, member: discord.Member, target: discord.Member, distance):
         distance += 1
+        print(f"distance: {distance}")
         parents = await self.config.member(member).parents()
         for parent_id in parents:
             parent = discord.utils.get(ctx.guild.members, id=parent_id)
             if parent_id is target.id:
+                print(f"returning distance with value of {distance}")
                 return distance
-            await self._find_grandparent(ctx, parent, target, distance)
+            return await self._find_grandparent(ctx, parent, target, distance)
                 
     async def _find_grandchild(self, ctx: commands.Context, member: discord.Member, target: discord.Member, distance):
         distance += 1
+        print(f"distance: {distance}")
         children = await self.config.member(member).children()
         for child_id in children:
             child = discord.utils.get(ctx.guild.members, id=child_id)
             if child_id is target.id:
+                print(f"returning distance with value of {distance}")
                 return distance
-            await self._find_grandchild(ctx, child, target, distance)
+            return await self._find_grandchild(ctx, child, target, distance)
     
     async def _is_member_of_family(self, ctx: commands.Context, member: discord.Member, member2: discord.Member):
         user1 = discord.utils.get(ctx.guild.members, id=member.id)
@@ -248,7 +252,7 @@ class Marriage(commands.Cog):
                             rs_status = "Wife"
                         else:
                             rs_status = "Partner"
-                            """
+
             async with self.config.member(member2).parents() as parents:
                 distance2 = await self._find_grandparent(ctx, member2, member, 0)
 
@@ -276,12 +280,10 @@ class Marriage(commands.Cog):
                             rs_status += "Grandmother"
                         else:
                             rs_status += "Grandparent"
-                        """
+
             async with self.config.member(member2).children() as children:
                 distance2 = await self._find_grandchild(ctx, member2, member, 0)
-                                
-                rs_status = str(distance2)
-                
+
                 if distance2:                
                     if distance2 == 1:
                         if gender[0] == "m":
