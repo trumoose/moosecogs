@@ -31,7 +31,7 @@ class Marriage(commands.Cog):
             parents = [],
             exes = [],
             greatest_ancestors = [],
-            about = "I'm mysterious.",
+            about = "im vegan btw.",
             gender = "default",
             marcount = 0,
             kidcount = 0,
@@ -345,7 +345,10 @@ class Marriage(commands.Cog):
                                 spouse_header = "Partner:"
                 else:
                     spouse_header = "Partners:"
-
+                    
+        children_all_females = True
+        children_all_males = True
+        
         if is_parent:
             children_ids = await self.config.member(member).children()
             kids = []
@@ -370,14 +373,30 @@ class Marriage(commands.Cog):
                             else:
                                 kids_header = "Child:"
                 else:
-                    kids_header = "Children:"
+                    for children_id in children_ids:
+                        kid = discord.utils.get(ctx.guild.members, id=children_id)
+                        if kid:
+                            kid_gender = str(await self.config.member(kid).gender()).lower()
+                            if kid_gender[0] == "m":
+                                children_all_females = False
+                            elif kid_gender[0] == "f":
+                                children_all_males = False
+                            else:
+                                children_all_females = False
+                                children_all_males = False
+                    if children_all_females:
+                        kids_header = "Daughters:"
+                    elif children_all_males:
+                        kids_header = "Sons:"
+                    else:
+                        kids_header = "Children:"
                 
         parent_ids = await self.config.member(member).parents()
         sibling_ids = []
         parents = []
         siblings = []
-        all_females = True
-        all_males = True
+        siblings_all_females = True
+        siblings_all_males = True
         
         if is_child:
             for parent_id in parent_ids:
@@ -392,12 +411,12 @@ class Marriage(commands.Cog):
                                 siblings.append(sibling.name)
                                 sibling_gender = str(await self.config.member(sibling).gender()).lower()
                                 if sibling_gender[0] == "m":
-                                    all_females = False
+                                    siblings_all_females = False
                                 if sibling_gender[0] == "f":
-                                    all_males = False
+                                    siblings_all_males = False
                                 else:
-                                    all_females = False
-                                    all_males = False
+                                    siblings_all_females = False
+                                    siblings_all_males = False
                 if parent:
                     parents.append(parent.name)
                     
@@ -428,16 +447,16 @@ class Marriage(commands.Cog):
             else:
                 siblings_text = humanize_list(siblings)
                 if len(siblings) == 1:
-                    if all_females:
+                    if siblings_all_females:
                         siblings_header = "Sister:"
-                    elif all_males:
+                    elif siblings_all_males:
                         siblings_header = "Brother:"
                     else:
                         siblings_header = "Sibling:"
                 else:
-                    if all_females:
+                    if siblings_all_females:
                         siblings_header = "Sisters:"
-                    elif all_males:
+                    elif siblings_all_males:
                         siblings_header = "Brothers:"
                     else:
                         siblings_header = "Siblings:"
