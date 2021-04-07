@@ -202,6 +202,7 @@ class Marriage(commands.Cog):
     async def relationship(
         self, ctx: commands.Context, member: discord.Member, member2: typing.Optional[discord.Member]
     ):
+        rs_status = ""
         if not member2:
             member2 = ctx.author
         if await self._is_member_of_family(ctx, member, member2) == True:
