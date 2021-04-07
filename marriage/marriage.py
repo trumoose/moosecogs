@@ -251,25 +251,25 @@ class Marriage(commands.Cog):
                             rs_status = "Partner"
                             
             async with self.config.member(member2).parents() as parents:
-                distance = await self._find_grandparent(ctx, member2, member, distance)
+                distance2 = await self._find_grandparent(ctx, member2, member, distance)
                 
-                if distance:
-                    if distance == 1:
+                if distance2:
+                    if distance2 == 1:
                         if gender[0] == "m":
                             rs_status = "Father"
                         if gender[0] == "f":
                             rs_status = "Mother"
                         else:
                             rs_status = "Parent"
-                    if distance == 2:
+                    if distance2 == 2:
                         if gender[0] == "m":
                             rs_status = "Grandfather"
                         if gender[0] == "f":
                             rs_status = "Grandmother"
                         else:
                             rs_status = "Grandparent"
-                    if distance > 2:
-                        for i in range(distance) - 2:
+                    if distance2 > 2:
+                        for i in range(distance2) - 2:
                             rs_status += "Great-"
                         if gender[0] == "m":
                             rs_status += "Grandfather"
@@ -279,25 +279,25 @@ class Marriage(commands.Cog):
                             rs_status += "Grandparent"
                         
             async with self.config.member(member2).children() as children:
-                distance = await self._find_grandchild(ctx, member2, member, distance)
+                distance2 = await self._find_grandchild(ctx, member2, member, distance)
                 
-                if distance:                
-                    if distance == 1:
+                if distance2:                
+                    if distance2 == 1:
                         if gender[0] == "m":
                             rs_status = "Son"
                         if gender[0] == "f":
                             rs_status = "Daughter"
                         else:
                             rs_status = "Child"
-                    if distance == 2:
+                    if distance2 == 2:
                         if gender[0] == "m":
                             rs_status = "Grandson"
                         if gender[0] == "f":
                             rs_status = "Granddaughter"
                         else:
                             rs_status = "Grandchild"
-                    if distance > 2:
-                        for i in range(distance) - 2:
+                    if distance2 > 2:
+                        for i in range(distance2) - 2:
                             rs_status += "Great-"
                         if gender[0] == "m":
                             rs_status += "Grandson"
