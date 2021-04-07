@@ -160,7 +160,7 @@ class Marriage(commands.Cog):
         parents = await self.config.member(member).parents()
         for parent_id in parents:
             parent = discord.utils.get(ctx.guild.members, id=parent_id)
-            if parent_id is target.id:
+            if parent.id == target.id:
                 print(f"returning distance with value of {distance}")
                 return distance
             return await self._find_grandparent(ctx, parent, target, distance)
@@ -171,7 +171,7 @@ class Marriage(commands.Cog):
         children = await self.config.member(member).children()
         for child_id in children:
             child = discord.utils.get(ctx.guild.members, id=child_id)
-            if child_id is target.id:
+            if child.id == target.id:
                 print(f"returning distance with value of {distance}")
                 return distance
             return await self._find_grandchild(ctx, child, target, distance)
@@ -308,6 +308,7 @@ class Marriage(commands.Cog):
                             rs_status += "Granddaughter"
                         else:
                             rs_status += "Grandchild"
+                rs_status = "temp"
         else:
             rs_status = "Unrelated"
         
