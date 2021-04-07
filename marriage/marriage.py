@@ -63,7 +63,7 @@ class Marriage(commands.Cog):
         boolean = False
         
         
-        if state == "True" or state == "true":
+        if value == "True" or value == "true":
             boolean = True
         else:
             boolean = False
@@ -90,14 +90,14 @@ class Marriage(commands.Cog):
                 await self.config.member(member).parents.clear()
             await ctx.send(f"Set {member.mention}'s child status to {'child!' if boolean else 'orphan!'}")
         if var == "marcount":
-            await self.config.member(member).marcount.set(state)
-            await ctx.send(f"Set {member.mention}'s number of marriages to {state}!")
+            await self.config.member(member).marcount.set(value)
+            await ctx.send(f"Set {member.mention}'s number of marriages to {value}!")
         if var == "kidcount":
-            await self.config.member(member).kidcount.set(state)
-            await ctx.send(f"Set {member.mention}'s number of kids to {state}!")
+            await self.config.member(member).kidcount.set(value)
+            await ctx.send(f"Set {member.mention}'s number of kids to {value}!")
         if var == "parcount":
-            await self.config.member(member).parcount.set(state)
-            await ctx.send(f"Set {member.mention}'s number of parents to {state}!")
+            await self.config.member(member).parcount.set(value)
+            await ctx.send(f"Set {member.mention}'s number of parents to {value}!")
         
     @checks.admin()
     @marriage.command(name="reset")
