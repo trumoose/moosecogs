@@ -211,7 +211,7 @@ class Marriage(commands.Cog):
             rs_status = "Unrelated"
         
         e = discord.Embed(colour=member.color)
-        e.set_author(name=f"{member.name} and {member2.name}", icon_url=member2.avatar_url)
+        e.set_author(name=f"{member2.name} and {member.name}", icon_url=member2.avatar_url)
         e.set_thumbnail(url=member.avatar_url)
         e.add_field(name="Relationship:", value=rs_status)
         await ctx.send(embed=e)
