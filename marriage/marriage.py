@@ -272,7 +272,7 @@ class Marriage(commands.Cog):
                         else:
                             rs_status = "Grandparent"
                     if distance2 > 2:
-                        for i in range(distance2) - 2:
+                        for i in range(distance2 - 2):
                             rs_status += "Great-"
                         if gender[0] == "m":
                             rs_status += "Grandfather"
@@ -300,7 +300,7 @@ class Marriage(commands.Cog):
                         else:
                             rs_status = "Grandchild"
                     if distance2 > 2:
-                        for i in range(distance2) - 2:
+                        for i in range(distance2 - 2):
                             rs_status += "Great-"
                         if gender[0] == "m":
                             rs_status += "Grandson"
