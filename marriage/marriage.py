@@ -387,13 +387,13 @@ class Marriage(commands.Cog):
                     for sibling_id in sibling_ids:
                         sibling = discord.utils.get(ctx.guild.members, id=sibling_id)
                         if sibling:
-                            if sibling not in siblings and sibling != member.id:
+                            if sibling not in siblings and sibling_id != member.id:
                                 is_sibling = True
                                 siblings.append(sibling.name)
                                 sibling_gender = str(await self.config.member(sibling).gender()).lower()
-                                if siblings_gender[0] == "m":
+                                if sibling_gender[0] == "m":
                                     all_females = False
-                                if siblings_gender[0] == "f":
+                                if sibling_gender[0] == "f":
                                     all_males = False
                                 else:
                                     all_females = False
