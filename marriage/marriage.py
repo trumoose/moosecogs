@@ -216,6 +216,7 @@ class Marriage(commands.Cog):
         e.set_thumbnail(url=member2.avatar_url)
         e.add_field(name="About:", value=await self.config.member(member).about(), inline=False)
         e.add_field(name="Relationship:", value=rs_status)
+        await ctx.send(embed=e)
             
     @commands.group(invoke_without_command=True)
     @commands.guild_only()
