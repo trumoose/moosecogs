@@ -234,7 +234,7 @@ class Marriage(commands.Cog):
     async def relationship(
         self, ctx: commands.Context, member: discord.Member, member2: typing.Optional[discord.Member]
     ):
-        rs_status = "Moosey sucks at coding!"
+        rs_status = ""
 
         if not member2:
             member2 = ctx.author
