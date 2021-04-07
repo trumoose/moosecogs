@@ -54,8 +54,12 @@ class Marriage(commands.Cog):
         if arg == "gender":
             await self.config.member(ctx.author).gender.set(value)
             await ctx.tick()
+            
+    @checks.admin()
+    @marriage.command(name="set admin")
+    async def marriage_set_admin(self, ctx: commands.Context, arg, value):
+        """Set member variables for a user."""
         
-        """
         boolean = False
         
         
@@ -94,7 +98,6 @@ class Marriage(commands.Cog):
         if var == "parcount":
             await self.config.member(member).parcount.set(state)
             await ctx.send(f"Set {member.mention}'s number of parents to {state}!")
-        """
         
     @checks.admin()
     @marriage.command(name="reset")
