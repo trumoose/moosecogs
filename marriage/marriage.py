@@ -232,8 +232,12 @@ class Marriage(commands.Cog):
     ):
         rs_status = ""
         distance = 0
-        gender = str(await self.config.member(member).gender()).lower()
-        gender2 = str(await self.config.member(member2).gender()).lower()
+        
+        user = discord.utils.get(ctx.guild.members, id=member.id)
+        user2 = discord.utils.get(ctx.guild.members, id=member2.id)
+        
+        gender = str(await self.config.member(user).gender()).lower()
+        gender2 = str(await self.config.member(user2).gender()).lower()
         
         if not member2:
             member2 = ctx.author
