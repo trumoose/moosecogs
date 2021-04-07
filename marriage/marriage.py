@@ -205,9 +205,15 @@ class Marriage(commands.Cog):
         if not member2:
             member2 = ctx.author
         if await self._is_member_of_family(ctx, member, member2) == True:
-            await ctx.send(f"{member.name} is a member of {member2.name}'s family!")
+            rs_status = "Related"
         else:
-            await ctx.send(f"{member.name} and {member2.name} are not related!")
+            rs_status = "Unrelated"
+            
+        e.set_author(name=f"{member.name}'s Profile", icon_url=member.avatar_url)
+        e.set_footer(text=f"{member.name}#{member.discriminator} ({member.id})")
+        e.set_thumbnail(url=member2.avatar_url)
+        e.add_field(name="About:", value=await self.config.member(member).about(), inline=False)
+        e.add_field(name="Relationship:", value=rs_status)
             
     @commands.group(invoke_without_command=True)
     @commands.guild_only()
