@@ -232,16 +232,13 @@ class Marriage(commands.Cog):
     ):
         rs_status = ""
         distance = 0
-        
-        user = discord.utils.get(ctx.guild.members, id=member.id)
-        user2 = discord.utils.get(ctx.guild.members, id=member2.id)
-        
-        gender = str(await self.config.member(user).gender()).lower()
-        gender2 = str(await self.config.member(user2).gender()).lower()
-        
+
         if not member2:
             member2 = ctx.author
             
+        gender = str(await self.config.member(user).gender()).lower()
+        gender2 = str(await self.config.member(user2).gender()).lower()
+        
         if await self._is_member_of_family(ctx, member, member2) == True:
             async with self.config.member(member2).spouses() as spouses:
                 for spouse_id in spouses:
