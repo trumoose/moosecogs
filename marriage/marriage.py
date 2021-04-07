@@ -846,6 +846,7 @@ class Marriage(commands.Cog):
                                         child_gca.append(spouse.id)
                                     else:
                                         child_gca += spouse_gca
+                await self._update_greatest_ancestors(ctx, member, child_gca)
         await ctx.send(f":baby: {member.mention} has adopted {ctx.author.mention}! ")
         
     @commands.max_concurrency(1, commands.BucketType.channel, wait=True)
@@ -869,6 +870,14 @@ class Marriage(commands.Cog):
         await self.config.member(ctx.author).child.set(False)
         await self.config.member(ctx.author).parcount.set(0)
         await self.config.member(ctx.author).greatest_ancestors.clear()
+        
+        child_gca = [ctx.author.id]
+        
+        async with self.config.member(ctx.author).spouses() as spouses:
+            for x in spouses:
+                child_gca.append(x)
+                
+        await self._update_greatest_ancestors(ctx, member, child_gca)
 
         async with self.config.member(ctx.author).parents() as parents:
             parents.clear()
