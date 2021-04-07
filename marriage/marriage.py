@@ -232,6 +232,7 @@ class Marriage(commands.Cog):
         siblings_header = ""
         siblings_text = ""
         rs_status = ""
+        descriptor = ""
         if not is_married:
             if is_parent:
                 if is_divorced:
@@ -286,25 +287,25 @@ class Marriage(commands.Cog):
                                                     async with self.config.member(greatgrandchild).children() as greatgreatgrandchildren:
                                                         if greatgreatgrandchildren != []:
                                                             if gender[0] == "m":
-                                                                rs_status += "Great-Grandfather"
+                                                                descriptor = "Great-Grandfather"
                                                             elif gender[0] == "f":
-                                                                rs_status += "Great-Grandmother"
+                                                                descriptor = "Great-Grandmother"
                                                             else:
-                                                                rs_status += "Great-Grandparent"
+                                                                descriptor = "Great-Grandparent"
                                             else:
                                                 if gender[0] == "m":
-                                                    rs_status += "Grandfather"
+                                                    descriptor = "Grandfather"
                                                 elif gender[0] == "f":
-                                                    rs_status += "Grandmother"
+                                                    descriptor = "Grandmother"
                                                 else:
-                                                    rs_status += "Grandparent"
+                                                    descriptor = "Grandparent"
                                 else:
                                     if gender[0] == "m":
-                                        rs_status += "Father"
+                                        descriptor = "Father"
                                     elif gender[0] == "f":
-                                        rs_status += "Mother"
+                                        descriptor = "Mother"
                                     else:
-                                        rs_status += "Parent"
+                                        descriptor = "Parent"
             else:
                 if member.id == 176154416661921792 or member.id == 192677766003556352:
                     rs_status = "Wifey"
@@ -314,7 +315,9 @@ class Marriage(commands.Cog):
                     rs_status = "Wife"
                 else:
                     rs_status = "Married"
-                
+            
+            rs_status = rs_status + descriptor
+            
             spouse_ids = await self.config.member(member).spouses()
             spouses = []
             
