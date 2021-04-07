@@ -164,7 +164,7 @@ class Marriage(commands.Cog):
                 await self._find_grandparent(ctx, parent, target, distance)
                 
     async def _find_grandchild(self, ctx: commands.Context, member: discord.Member, target: discord.Member, distance):
-        distance++
+        distance += 1
         async with self.config.member(member).children() as children:
             for child_id in children:
                 child = discord.utils.get(ctx.guild.members, id=child_id)
