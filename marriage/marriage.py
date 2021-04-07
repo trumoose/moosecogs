@@ -877,7 +877,7 @@ class Marriage(commands.Cog):
             for x in spouses:
                 child_gca.append(x)
                 
-        await self._update_greatest_ancestors(ctx, member, child_gca)
+        await self._update_greatest_ancestors(ctx, ctx.author, child_gca)
 
         async with self.config.member(ctx.author).parents() as parents:
             parents.clear()
