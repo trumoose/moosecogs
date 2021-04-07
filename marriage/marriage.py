@@ -56,8 +56,8 @@ class Marriage(commands.Cog):
             await ctx.tick()
             
     @checks.admin()
-    @marriage.command(name="set admin")
-    async def marriage_set_admin(self, ctx: commands.Context, arg, value):
+    @marriage.command(name="admin")
+    async def marriage_admin(self, ctx: commands.Context, arg, value):
         """Set member variables for a user."""
         
         boolean = False
