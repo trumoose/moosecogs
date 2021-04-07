@@ -231,7 +231,6 @@ class Marriage(commands.Cog):
         self, ctx: commands.Context, member: discord.Member, member2: typing.Optional[discord.Member]
     ):
         rs_status = ""
-        distance = 0
 
         if not member2:
             member2 = ctx.author
@@ -251,7 +250,7 @@ class Marriage(commands.Cog):
                             rs_status = "Partner"
                             
             async with self.config.member(member2).parents() as parents:
-                distance2 = await self._find_grandparent(ctx, member2, member, distance)
+                distance2 = await self._find_grandparent(ctx, member2, member, 0)
                 
                 if distance2:
                     if distance2 == 1:
@@ -279,7 +278,7 @@ class Marriage(commands.Cog):
                             rs_status += "Grandparent"
                         
             async with self.config.member(member2).children() as children:
-                distance2 = await self._find_grandchild(ctx, member2, member, distance)
+                distance2 = await self._find_grandchild(ctx, member2, member, 0)
                 
                 if distance2:                
                     if distance2 == 1:
