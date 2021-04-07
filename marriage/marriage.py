@@ -306,7 +306,7 @@ class Marriage(commands.Cog):
                                         descriptor = "Mother"
                                     else:
                                         descriptor = "Parent"
-            else:
+            elif is_married:
                 if member.id == 176154416661921792 or member.id == 192677766003556352:
                     rs_status = "Wifey"
                 elif gender[0] == "m":
