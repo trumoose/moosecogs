@@ -70,34 +70,34 @@ class Marriage(commands.Cog):
         
         
         if arg == "married":
-            await self.config.member(member).married.set(boolean)
+            await self.config.member(ctx.author).married.set(boolean)
             if boolean == False:
-                await self.config.member(member).spouses.clear()
-            await ctx.send(f"Set {member.mention}'s marriage status to {'married!' if boolean else 'unmarried!'}")
+                await self.config.member(ctx.author).spouses.clear()
+            await ctx.send(f"Set {ctx.author.mention}'s marriage status to {'married!' if boolean else 'unmarried!'}")
         if arg == "divorced":
-            await self.config.member(member).divorced.set(boolean)
+            await self.config.member(ctx.author).divorced.set(boolean)
             if boolean == False:
-                await self.config.member(member).exes.clear()
-            await ctx.send(f"Set {member.mention}'s divorce status to {'divorced!' if boolean else 'undivorced!'}")
+                await self.config.member(ctx.author).exes.clear()
+            await ctx.send(f"Set {ctx.author.mention}'s divorce status to {'divorced!' if boolean else 'undivorced!'}")
         if arg == "parent":
-            await self.config.member(member).parent.set(boolean)
+            await self.config.member(ctx.author).parent.set(boolean)
             if boolean == False:
-                await self.config.member(member).children.clear()
-            await ctx.send(f"Set {member.mention}'s parental status to {'parent!' if boolean else 'not a parent!'}")
+                await self.config.member(ctx.author).children.clear()
+            await ctx.send(f"Set {ctx.author.mention}'s parental status to {'parent!' if boolean else 'not a parent!'}")
         if arg == "child":
-            await self.config.member(member).child.set(boolean)
+            await self.config.member(ctx.author).child.set(boolean)
             if boolean == False:
-                await self.config.member(member).parents.clear()
-            await ctx.send(f"Set {member.mention}'s child status to {'child!' if boolean else 'orphan!'}")
+                await self.config.member(ctx.author).parents.clear()
+            await ctx.send(f"Set {ctx.author.mention}'s child status to {'child!' if boolean else 'orphan!'}")
         if arg == "marcount":
-            await self.config.member(member).marcount.set(value)
-            await ctx.send(f"Set {member.mention}'s number of marriages to {value}!")
+            await self.config.member(ctx.author).marcount.set(value)
+            await ctx.send(f"Set {ctx.author.mention}'s number of marriages to {value}!")
         if arg == "kidcount":
-            await self.config.member(member).kidcount.set(value)
-            await ctx.send(f"Set {member.mention}'s number of kids to {value}!")
+            await self.config.member(ctx.author).kidcount.set(value)
+            await ctx.send(f"Set {ctx.author.mention}'s number of kids to {value}!")
         if arg == "parcount":
-            await self.config.member(member).parcount.set(value)
-            await ctx.send(f"Set {member.mention}'s number of parents to {value}!")
+            await self.config.member(ctx.author).parcount.set(value)
+            await ctx.send(f"Set {ctx.author.mention}'s number of parents to {value}!")
         
     @checks.admin()
     @marriage.command(name="reset")
