@@ -3,6 +3,7 @@ import asyncio
 import random
 import datetime
 import typing
+import inflect
 
 from redbot.core import Config, checks, commands
 from redbot.core.utils.chat_formatting import humanize_list, box
@@ -28,14 +29,13 @@ class Marriage(commands.Cog):
             child = False,
             spouses = [],
             children = [],
+            siblings = [],
             parents = [],
             exes = [],
             greatest_ancestors = [],
             about = "im vegan btw.",
             gender = "default",
             marcount = 0,
-            kidcount = 0,
-            parcount = 0
         )
             
     @commands.group(autohelp=True)
@@ -92,12 +92,6 @@ class Marriage(commands.Cog):
         if arg == "marcount":
             await self.config.member(ctx.author).marcount.set(value)
             await ctx.send(f"Set {ctx.author.mention}'s number of marriages to {value}!")
-        if arg == "kidcount":
-            await self.config.member(ctx.author).kidcount.set(value)
-            await ctx.send(f"Set {ctx.author.mention}'s number of kids to {value}!")
-        if arg == "parcount":
-            await self.config.member(ctx.author).parcount.set(value)
-            await ctx.send(f"Set {ctx.author.mention}'s number of parents to {value}!")
         
     @checks.admin()
     @marriage.command(name="reset")
@@ -114,10 +108,9 @@ class Marriage(commands.Cog):
         await self.config.member(member).exes.clear()
         await self.config.member(member).children.clear()
         await self.config.member(member).parents.clear()
+        await self.config.member(member).siblings.clear()
         await self.config.member(member).greatest_ancestors.clear()
         await self.config.member(member).marcount.set(0)
-        await self.config.member(member).kidcount.set(0)
-        await self.config.member(member).parcount.set(0)
         await ctx.tick()
     
     @checks.admin()
@@ -140,12 +133,11 @@ class Marriage(commands.Cog):
                        f"gender = {await self.config.member(member).gender()}\n"
                        f"spouses = {humanize_list(await self.config.member(member).spouses())}\n"
                        f"children = {humanize_list(await self.config.member(member).children())}\n"
+                       f"siblings = {humanize_list(await self.config.member(member).siblings())}\n"
                        f"parents = {humanize_list(await self.config.member(member).parents())}\n"
                        f"exes = {humanize_list(await self.config.member(member).exes())}\n"
                        f"greatest_ancestors = {humanize_list(await self.config.member(member).greatest_ancestors())}\n"
                        f"marcount = {await self.config.member(member).marcount()}\n"
-                       f"kidcount = {await self.config.member(member).kidcount()}\n"
-                       f"parcount = {await self.config.member(member).parcount()}\n")
     
     async def _update_greatest_ancestors(self, ctx: commands.Context, member: discord.Member, greatest_ancestors):
         async with self.config.member(member).children() as children:
@@ -154,25 +146,38 @@ class Marriage(commands.Cog):
                 await self.config.member(child).greatest_ancestors.set(greatest_ancestors)
                 await self._update_greatest_ancestors(ctx, child, greatest_ancestors)
                 
-    async def _find_grandparent(self, ctx: commands.Context, member: discord.Member, target: discord.Member, distance):
+    async def _find_ancestor(self, ctx: commands.Context, member: discord.Member, target: discord.Member, distance):
         distance += 1
-        print(f"distance: {distance}")
         parents = await self.config.member(member).parents()
         for parent_id in parents:
             parent = discord.utils.get(ctx.guild.members, id=parent_id)
             if parent.id == target.id:
-                print(f"returning distance with value of {distance}")
                 return distance
             return await self._find_grandparent(ctx, parent, target, distance)
+            
+    async def _find_cousin(self, ctx: commands.Context, member: discord.Member, target: discord.Member, distance):
+        siblings = await self.config.member(member).siblings()
+        for sibling_id in siblings:
+            sibling = discord.utils.get(ctx.guild.members, id=sibling_id)
+            if sibling.id == target.id:
+                return distance
+            distance[1] = self._find_descendant(ctx, sibling, target, 0)
+            if distance[1] > 0:
+                return distance
+        parents = await self.config.member(member).parents()
+        distance[0]++
+        for parent_id in parents:
+            parent = discord.utils.get(ctx.guild.members, id=parent_id)
+            return await self._find_cousin(ctx, parent, target, distance)
+        
                 
-    async def _find_grandchild(self, ctx: commands.Context, member: discord.Member, target: discord.Member, distance):
+    async def _find_descendant(self, ctx: commands.Context, member: discord.Member, target: discord.Member, distance):
         distance += 1
-        print(f"distance: {distance}")
+        parents = await self.config.member(member).children()
         children = await self.config.member(member).children()
         for child_id in children:
             child = discord.utils.get(ctx.guild.members, id=child_id)
             if child.id == target.id:
-                print(f"returning distance with value of {distance}")
                 return distance
             return await self._find_grandchild(ctx, child, target, distance)
     
@@ -183,7 +188,6 @@ class Marriage(commands.Cog):
         async with self.config.member(user1).spouses() as spouses:
             for spouse in spouses:
                 if spouse == user2.id:
-                    print (f"{user1.name} is {user2.name}'s spouse")
                     return True
                     
         async with self.config.member(user1).greatest_ancestors() as gca:
@@ -195,40 +199,33 @@ class Marriage(commands.Cog):
                             async with self.config.member(spouse).greatest_ancestors() as spouse_gca:
                                 for x in spouse_gca:
                                     if x == member2.id:
-                                        print (f"{user1.name} is {user2.name}'s in-law")
                                         return True 
                                 for x in gca:
                                     for y in spouse_gca:
                                         if x == y:
-                                            print (f"{user1.name} is related to {user2.name}'s spouse")
                                             return True
                         for spouse in spouses2:
                             spouse = discord.utils.get(ctx.guild.members, id=spouse)
                             async with self.config.member(spouse).greatest_ancestors() as spouse_gca:
                                 for x in spouse_gca:
                                     if x == member.id:
-                                        print (f"{user1.name} is {user2.name}'s in-law")
                                         return True
                                 for x in gca2:
                                     for y in spouse_gca:
                                         if x == y:
-                                            print (f"{user1.name} is related to {user2.name}'s spouse")
                                             return True
                 for x in gca:
                     if x == member2.id:
-                        print (f"{user2.name} is {user1.name}'s greatest common ancestor")
                         return True
                 for x in gca2:
                     if x == member.id:
-                        print (f"{user1.name} is {user2.name}'s greatest common ancestor")
                         return True
                 for x in gca:
                     for y in gca2:
                         if x == y:
-                            print (f"{user1.name} and {user2.name} share a greatest common ancestor")
                             return True
                 return False
-        
+    
     @commands.guild_only()
     @commands.command()
     async def relationship(
@@ -253,61 +250,109 @@ class Marriage(commands.Cog):
                         else:
                             rs_status = "Partner"
 
-            async with self.config.member(member2).parents() as parents:
-                distance2 = await self._find_grandparent(ctx, member2, member, 0)
-
-                if distance2:
-                    if distance2 == 1:
-                        if gender[0] == "m":
-                            rs_status = "Father"
+            distance_cousin = await self._find_cousin(ctx, member2, member, [0,0])
+            
+            if distance_cousin:
+                if distance_cousin[0] == 0 and distance_cousin[1] == 0:
+                    if gender[0] == "m":
+                            rs_status = "Brother"
                         if gender[0] == "f":
-                            rs_status = "Mother"
+                            rs_status = "Sister"
                         else:
-                            rs_status = "Parent"
-                    if distance2 == 2:
+                            rs_status = "Sibling"
+                elif distance_cousin[0] > 0 and distance_cousin[1] == 0:
+                    for i in range(distance_cousin[0] - 1):
+                        rs_status += "Great-"
+                    if gender[0] == "f":
+                        rs_status += "Aunt"
+                    else:
+                        rs_status += "Uncle"
+                elif distance_cousin[0] == 0:
+                    if distance_cousin[1] == 1:
                         if gender[0] == "m":
-                            rs_status = "Grandfather"
+                            rs_status = "Nephew"
                         if gender[0] == "f":
-                            rs_status = "Grandmother"
+                            rs_status = "Niece"
                         else:
-                            rs_status = "Grandparent"
-                    if distance2 > 2:
-                        for i in range(distance2 - 2):
+                            rs_status = "Nibling"
+                    if distance_cousin[1] == 2:
+                        if gender[0] == "m":
+                            rs_status = "Grandnephew"
+                        if gender[0] == "f":
+                            rs_status = "Grandniece"
+                        else:
+                            rs_status = "Grandnibling"
+                    if distance_cousin[1] > 2:
+                        for i in range(distance_cousin - 2):
                             rs_status += "Great-"
                         if gender[0] == "m":
-                            rs_status += "Grandfather"
+                            rs_status += "Grandnephew"
                         if gender[0] == "f":
-                            rs_status += "Grandmother"
+                            rs_status += "Grandniece"
                         else:
-                            rs_status += "Grandparent"
+                            rs_status += "Grandnibling"
+                elif if distance_cousin[0] > 0:
+                    if distance_cousin[0] == distance_cousin[1]:
+                        rs_status = p.number_to_words(p.ordinal(distance_cousin[1])) + " cousin"
+                    elif distance_cousin[0] > distance_cousin[1]:
+                        if (distance_cousin[0] - distance_cousin[1]) == 1:
+                            rs_status = p.number_to_words(p.ordinal(distance_cousin[1])) + " cousin, one time removed"
+                        else:
+                            rs_status = p.number_to_words(p.ordinal(distance_cousin[1])) + " cousin, " + p.number_to_words(distance_cousin[0] - distance_cousin[1]) + " times removed"
 
-            async with self.config.member(member2).children() as children:
-                distance2 = await self._find_grandchild(ctx, member2, member, 0)
+            distance_parent = await self._find_ancestor(ctx, member2, member, 0)
 
-                if distance2:                
-                    if distance2 == 1:
-                        if gender[0] == "m":
-                            rs_status = "Son"
-                        if gender[0] == "f":
-                            rs_status = "Daughter"
-                        else:
-                            rs_status = "Child"
-                    if distance2 == 2:
-                        if gender[0] == "m":
-                            rs_status = "Grandson"
-                        if gender[0] == "f":
-                            rs_status = "Granddaughter"
-                        else:
-                            rs_status = "Grandchild"
-                    if distance2 > 2:
-                        for i in range(distance2 - 2):
-                            rs_status += "Great-"
-                        if gender[0] == "m":
-                            rs_status += "Grandson"
-                        if gender[0] == "f":
-                            rs_status += "Granddaughter"
-                        else:
-                            rs_status += "Grandchild"
+            if distance_parent:
+                if distance_parent == 1:
+                    if gender[0] == "m":
+                        rs_status = "Father"
+                    if gender[0] == "f":
+                        rs_status = "Mother"
+                    else:
+                        rs_status = "Parent"
+                if distance_parent == 2:
+                    if gender[0] == "m":
+                        rs_status = "Grandfather"
+                    if gender[0] == "f":
+                        rs_status = "Grandmother"
+                    else:
+                        rs_status = "Grandparent"
+                if distance_parent > 2:
+                    for i in range(distance_parent - 2):
+                        rs_status += "Great-"
+                    if gender[0] == "m":
+                        rs_status += "Grandfather"
+                    if gender[0] == "f":
+                        rs_status += "Grandmother"
+                    else:
+                        rs_status += "Grandparent"
+
+            distance_child = await self._find_descendant(ctx, member2, member, 0)
+
+            if distance_child:                
+                if distance_child == 1:
+                    if gender[0] == "m":
+                        rs_status = "Son"
+                    if gender[0] == "f":
+                        rs_status = "Daughter"
+                    else:
+                        rs_status = "Child"
+                if distance_child == 2:
+                    if gender[0] == "m":
+                        rs_status = "Grandson"
+                    if gender[0] == "f":
+                        rs_status = "Granddaughter"
+                    else:
+                        rs_status = "Grandchild"
+                if distance_child > 2:
+                    for i in range(distance_child - 2):
+                        rs_status += "Great-"
+                    if gender[0] == "m":
+                        rs_status += "Grandson"
+                    if gender[0] == "f":
+                        rs_status += "Granddaughter"
+                    else:
+                        rs_status += "Grandchild"
         else:
             rs_status = "Unrelated"
         
@@ -316,7 +361,28 @@ class Marriage(commands.Cog):
         e.set_thumbnail(url=member.avatar_url)
         e.add_field(name="Relationship:", value=rs_status)
         await ctx.send(embed=e)
+    
+    @commands.guild_only()
+    @commands.command()
+    async def ship(
+        self, ctx: commands.Context, member: discord.Member, member2: typing.Optional[discord.Member]
+    ):
+        if not member2:
+            member2 = ctx.author
             
+        total = str(((member.id + member2.id) % 1000))
+        string = total[:2] + "." + total[2:] + "%"
+        
+        if total < 3500:
+            ctx.send(f"{member2.mention} :broken_heart: {string} :broken_heart: {member.mention}")
+        elif total < 7000:
+            ctx.send(f"{member2.mention} :heart: {string} :heart: {member.mention}")
+        else:
+            ctx.send(f"{member2.mention} :revolving_hearts: {string} :revolving_hearts: {member.mention}")
+            
+        if member.id + member2.id == 368832182665478144:
+            ctx.send(f"{member2.mention} :revolving_hearts: 100.00% :revolving_hearts: {member.mention}")
+    
     @commands.group(invoke_without_command=True)
     @commands.guild_only()
     async def about(
@@ -329,7 +395,7 @@ class Marriage(commands.Cog):
         is_parent = await self.config.member(member).parent()
         is_divorced = await self.config.member(member).divorced()
         is_child = await self.config.member(member).child()
-        is_sibling = False
+        is_sibling = await self.config.member(member).siblings() > 1
         gender = str(await self.config.member(member).gender()).lower()
         kids_header = ""
         kids_text = ""
@@ -358,24 +424,20 @@ class Marriage(commands.Cog):
                 else:
                     rs_status = "Divorced"
             elif is_child:
-                async with self.config.member(member).parents() as parents:
-                    for parent_id in parents:
-                        parent = discord.utils.get(ctx.guild.members, id=parent_id)
-                        kidcount = await self.config.member(parent).kidcount()
-                        if kidcount > 1:
-                            if gender[0] == "m":
-                                rs_status = "Brother"
-                            elif gender[0] == "f":
-                                rs_status = "Sister"
-                            else:
-                                rs_status = "Sibling"
-                        else: 
-                            if gender[0] == "m":
-                                rs_status = "Son"
-                            elif gender[0] == "f":
-                                rs_status = "Daughter"
-                            else:
-                                rs_status = "Child"
+                if len(await self.config.member(member).siblings()) > 1:
+                    if gender[0] == "m":
+                        rs_status = "Brother"
+                    elif gender[0] == "f":
+                        rs_status = "Sister"
+                    else:
+                        rs_status = "Sibling"
+                else: 
+                    if gender[0] == "m":
+                        rs_status = "Son"
+                    elif gender[0] == "f":
+                        rs_status = "Daughter"
+                    else:
+                        rs_status = "Child"
             else:
                 rs_status = "Single" 
         if not is_divorced:
@@ -500,7 +562,7 @@ class Marriage(commands.Cog):
                         kids_header = "Children:"
                 
         parent_ids = await self.config.member(member).parents()
-        sibling_ids = []
+        sibling_ids = await self.config.member(member).siblings()
         parents = []
         siblings = []
         siblings_all_females = True
@@ -509,22 +571,18 @@ class Marriage(commands.Cog):
         if is_child:
             for parent_id in parent_ids:
                 parent = discord.utils.get(ctx.guild.members, id=parent_id)
-                if await self.config.member(parent).kidcount() > 1:
-                    sibling_ids = await self.config.member(parent).children()
                     for sibling_id in sibling_ids:
                         sibling = discord.utils.get(ctx.guild.members, id=sibling_id)
                         if sibling:
-                            if sibling not in siblings and sibling_id != member.id:
-                                is_sibling = True
-                                siblings.append(sibling.name)
-                                sibling_gender = str(await self.config.member(sibling).gender()).lower()
-                                if sibling_gender[0] == "m":
-                                    siblings_all_females = False
-                                if sibling_gender[0] == "f":
-                                    siblings_all_males = False
-                                else:
-                                    siblings_all_females = False
-                                    siblings_all_males = False
+                            siblings.append(sibling.name)
+                            sibling_gender = str(await self.config.member(sibling).gender()).lower()
+                            if sibling_gender[0] == "m":
+                                siblings_all_females = False
+                            if sibling_gender[0] == "f":
+                                siblings_all_males = False
+                            else:
+                                siblings_all_females = False
+                                siblings_all_males = False
                 if parent:
                     parents.append(parent.name)
                     
@@ -708,19 +766,13 @@ class Marriage(commands.Cog):
         async with self.config.member(member).spouses() as tcurrent:
             tcurrent.append(ctx.author.id)
             
-        author_kidcount = await self.config.member(ctx.author).kidcount()
-        target_kidcount = await self.config.member(member).kidcount()
-        total_kidcount = author_kidcount + target_kidcount
         new_kids = await self.config.member(ctx.author).children() + await self.config.member(member).children()
-        
-        await self.config.member(ctx.author).kidcount.set(total_kidcount)
-        await self.config.member(member).kidcount.set(total_kidcount)
         
         # set NEW CHILDREN
         await self.config.member(ctx.author).children.set(new_kids)
         await self.config.member(member).children.set(new_kids)
         
-        if total_kidcount > 0:
+        if len(new_kids) > 0:
             await self.config.member(ctx.author).parent.set(True)
             await self.config.member(member).parent.set(True)
             
@@ -728,7 +780,10 @@ class Marriage(commands.Cog):
         async with self.config.member(member).children() as children:
             for x in children:
                 kid = discord.utils.get(ctx.guild.members, id=x)
-                await self.config.member(kid).parcount.set(len(await self.config.member(member).spouses()))
+                async with self.config.member(kid).siblings() as siblings:
+                    siblings.clear()
+                    siblings = new_kids
+                    new_kids.remove(kid.id)
                 async with self.config.member(kid).parents() as parents:
                     if member.id not in parents:
                         parents.append(member.id)
@@ -768,19 +823,17 @@ class Marriage(commands.Cog):
                 kid = discord.utils.get(ctx.guild.members, id=x)
                 async with self.config.member(kid).parents() as parents:
                     parents.clear()
-                await self.config.member(kid).parcount.set(0)
                 await self.config.member(kid).greatest_ancestors.clear()
+                await self.config.member(kid).siblings.clear()
                 await self.config.member(kid).child.set(False)
         if len(await self.config.member(ctx.author).spouses()) == 0:
             await self.config.member(ctx.author).married.clear()
             await self.config.member(ctx.author).divorced.set(True)
             await self.config.member(ctx.author).parent.set(False)
-            await self.config.member(ctx.author).kidcount.set(0)
         if len(await self.config.member(member).spouses()) == 0:
             await self.config.member(member).married.clear()
             await self.config.member(member).divorced.set(True)
             await self.config.member(member).parent.set(False)
-            await self.config.member(member).kidcount.set(0)
         await ctx.send(
             f":broken_heart: {ctx.author.mention} and {member.mention} got divorced...\n"
         )
@@ -814,12 +867,6 @@ class Marriage(commands.Cog):
         if not pred.result:
             return await ctx.send("Oh no... hopefully they'll find a good home soon...")
             
-        author_kidcount = await self.config.member(ctx.author).kidcount()
-        target_parcount = await self.config.member(member).parcount()
-
-        await self.config.member(ctx.author).kidcount.set(author_kidcount + 1)
-        await self.config.member(member).parcount.set(1 + len(await self.config.member(ctx.author).spouses()))
-
         await self.config.member(ctx.author).parent.set(True)
         await self.config.member(member).child.set(True)
 
@@ -845,7 +892,15 @@ class Marriage(commands.Cog):
                 for x in spouses:
                     spouse = discord.utils.get(ctx.guild.members, id=x)
                     parents.append(spouse.id)
-                    
+        
+        # add PARENT'S CHILDREN to CHILD'S SIBLINGS
+        async with self.config.member(ctx.author).children() as children:
+            async with self.config.member(member).siblings() as siblings:
+                for x in children:
+                    if member.id != x:
+                        siblings.append(x)
+                
+        
         # calculate GREATEST COMMON ANCESTORS
         async with self.config.member(member).greatest_ancestors() as child_gca:
             async with self.config.member(ctx.author).greatest_ancestors() as parent_gca:
@@ -893,11 +948,6 @@ class Marriage(commands.Cog):
             return await ctx.send("Oh no... that's too bad...")
         if not pred.result:
             return await ctx.send("Oh no... that's too bad...")
-            
-        target_kidcount = await self.config.member(member).kidcount()
-
-        await self.config.member(member).kidcount.set(target_kidcount + 1)
-        await self.config.member(ctx.author).parcount.set(1 + len(await self.config.member(member).spouses()))
 
         await self.config.member(member).parent.set(True)
         await self.config.member(ctx.author).child.set(True)
@@ -924,7 +974,14 @@ class Marriage(commands.Cog):
                 for x in spouses:
                     spouse = discord.utils.get(ctx.guild.members, id=x)
                     parents.append(spouse.id)
-                    
+        
+        # add PARENT'S CHILDREN to CHILD'S SIBLINGS
+        async with self.config.member(member).children() as children:
+            async with self.config.member(ctx.author).siblings() as siblings:
+                for x in children:
+                    if ctx.author.id != x:
+                        siblings.append(x)     
+                        
         # calculate GREATEST COMMON ANCESTORS
         async with self.config.member(ctx.author).greatest_ancestors() as child_gca:
             async with self.config.member(member).greatest_ancestors() as parent_gca:
@@ -958,14 +1015,12 @@ class Marriage(commands.Cog):
                 parent = discord.utils.get(ctx.guild.members, id=x)
                 async with self.config.member(parent).children() as children:
                     children.remove(ctx.author.id)
-                    kidcount = await self.config.member(parent).kidcount()
-                    await self.config.member(parent).kidcount.set(kidcount - 1)
-                    if kidcount == 1:
+                    if len(children) == 0
                         await self.config.member(parent).parent.set(False)
                     
         await self.config.member(ctx.author).child.set(False)
-        await self.config.member(ctx.author).parcount.set(0)
         await self.config.member(ctx.author).greatest_ancestors.clear()
+        await self.config.member(ctx.author).siblings.clear()
         
         child_gca = [ctx.author.id]
         
@@ -993,28 +1048,26 @@ class Marriage(commands.Cog):
         if member.id not in await self.config.member(ctx.author).children():
             return await ctx.send("You've can't disown someone who's not your child!")
 
-        author_kidcount = await self.config.member(ctx.author).kidcount()
-
-        await self.config.member(ctx.author).kidcount.set(author_kidcount - 1)
-        
         async with self.config.member(ctx.author).children() as children:
             children.remove(member.id)
+            if len(children) == 0
+                await self.config.member(spouse).parent.set(False)
         
         async with self.config.member(ctx.author).spouses() as spouses:
             for x in spouses:
                 spouse = discord.utils.get(ctx.guild.members, id=x)
                 async with self.config.member(spouse).children() as children:
                     children.remove(member.id)
-                    await self.config.member(spouse).kidcount.set(author_kidcount - 1)
-                    await self.config.member(spouse).parent.set(False)
+                    if len(children) == 0
+                        await self.config.member(spouse).parent.set(False)
                     
         await self.config.member(ctx.author).parent.set(False)
-        
-        await self.config.member(member).parcount.set(0)
         
         await self.config.member(member).child.set(False)
         
         await self.config.member(member).greatest_ancestors.clear()
+        
+        await self.config.member(member).siblings.clear()
 
         async with self.config.member(member).parents() as parents:
             parents.clear()
