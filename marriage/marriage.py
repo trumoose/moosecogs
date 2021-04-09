@@ -291,7 +291,7 @@ class Marriage(commands.Cog):
                             rs_status += "Grandniece"
                         else:
                             rs_status += "Grandnibling"
-                elif if distance_cousin[0] > 0:
+                elif distance_cousin[0] > 0:
                     if distance_cousin[0] == distance_cousin[1]:
                         rs_status = p.number_to_words(p.ordinal(distance_cousin[1])) + " cousin"
                     elif distance_cousin[0] > distance_cousin[1]:
