@@ -1015,7 +1015,7 @@ class Marriage(commands.Cog):
                 parent = discord.utils.get(ctx.guild.members, id=x)
                 async with self.config.member(parent).children() as children:
                     children.remove(ctx.author.id)
-                    if len(children) == 0
+                    if not children:
                         await self.config.member(parent).parent.set(False)
                     
         await self.config.member(ctx.author).child.set(False)
@@ -1050,7 +1050,7 @@ class Marriage(commands.Cog):
 
         async with self.config.member(ctx.author).children() as children:
             children.remove(member.id)
-            if len(children) == 0
+            if not children:
                 await self.config.member(spouse).parent.set(False)
         
         async with self.config.member(ctx.author).spouses() as spouses:
@@ -1058,7 +1058,7 @@ class Marriage(commands.Cog):
                 spouse = discord.utils.get(ctx.guild.members, id=x)
                 async with self.config.member(spouse).children() as children:
                     children.remove(member.id)
-                    if len(children) == 0
+                    if not children:
                         await self.config.member(spouse).parent.set(False)
                     
         await self.config.member(ctx.author).parent.set(False)
