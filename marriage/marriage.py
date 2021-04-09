@@ -231,6 +231,7 @@ class Marriage(commands.Cog):
     async def relationship(
         self, ctx: commands.Context, member: discord.Member, member2: typing.Optional[discord.Member]
     ):
+        p = inflect.engine()
         rs_status = ""
 
         if not member2:
