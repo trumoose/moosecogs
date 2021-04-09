@@ -165,7 +165,7 @@ class Marriage(commands.Cog):
             if distance[1] > 0:
                 return distance
         parents = await self.config.member(member).parents()
-        distance[0]++
+        distance[0] = distance[0] + 1
         for parent_id in parents:
             parent = discord.utils.get(ctx.guild.members, id=parent_id)
             return await self._find_cousin(ctx, parent, target, distance)
