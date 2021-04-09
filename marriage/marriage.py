@@ -137,7 +137,7 @@ class Marriage(commands.Cog):
                        f"parents = {humanize_list(await self.config.member(member).parents())}\n"
                        f"exes = {humanize_list(await self.config.member(member).exes())}\n"
                        f"greatest_ancestors = {humanize_list(await self.config.member(member).greatest_ancestors())}\n"
-                       f"marcount = {await self.config.member(member).marcount()}\n"
+                       f"marcount = {await self.config.member(member).marcount()}\n")
     
     async def _update_greatest_ancestors(self, ctx: commands.Context, member: discord.Member, greatest_ancestors):
         async with self.config.member(member).children() as children:
