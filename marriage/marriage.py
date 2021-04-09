@@ -255,11 +255,11 @@ class Marriage(commands.Cog):
             if distance_cousin:
                 if distance_cousin[0] == 0 and distance_cousin[1] == 0:
                     if gender[0] == "m":
-                            rs_status = "Brother"
-                        if gender[0] == "f":
-                            rs_status = "Sister"
-                        else:
-                            rs_status = "Sibling"
+                        rs_status = "Brother"
+                    if gender[0] == "f":
+                        rs_status = "Sister"
+                    else:
+                        rs_status = "Sibling"
                 elif distance_cousin[0] > 0 and distance_cousin[1] == 0:
                     for i in range(distance_cousin[0] - 1):
                         rs_status += "Great-"
