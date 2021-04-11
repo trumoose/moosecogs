@@ -124,8 +124,6 @@ class Study(commands.Cog):
                         roleArray.append(serverbooster)
                     if botwrangler in ctx.author.roles:
                         roleArray.append(botwrangler)
-                    if admin in ctx.author.roles:
-                        roleArray.append(admin)
                     await ctx.author.edit(roles=roleArray)
                     await ctx.author.remove_roles(studying)
                     await self.config.member(ctx.author).studyInProgess.set(False)
