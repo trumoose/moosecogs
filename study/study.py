@@ -216,8 +216,4 @@ class Study(commands.Cog):
         e.set_footer(text=f"{member.name}#{member.discriminator} ({member.id})")
         e.set_thumbnail(url=member.avatar_url)
         rs_status = " "
-        if await self.config.member(member).studyInProgress():
-            rs_status = "True"
-        else:
-            rs_status = "False"
         e.add_field(name="Studying:", value=rs_status)
