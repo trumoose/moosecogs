@@ -38,7 +38,7 @@ class Study(commands.Cog):
 
         everyone1 = ctx.guild.get_role(776052319271911434)
         serverbooster = ctx.guild.get_role(767011709155672095)
-        botwrangler = ctx.guild.get_role(801850754565537874)
+        botwrangler = ctx.guild.get_role(768348291527737345)
         everyone2 = ctx.guild.get_role(766870004086865930)
         
         userroles = ctx.author.roles
@@ -124,6 +124,8 @@ class Study(commands.Cog):
                         roleArray.append(serverbooster)
                     if botwrangler in ctx.author.roles:
                         roleArray.append(botwrangler)
+                    if admin in ctx.author.roles:
+                        roleArray.append(admin)
                     await ctx.author.edit(roles=roleArray)
                     await ctx.author.remove_roles(studying)
                     await self.config.member(ctx.author).studyInProgess.set(False)
