@@ -216,7 +216,7 @@ class Study(commands.Cog):
         e.set_footer(text=f"{member.name}#{member.discriminator} ({member.id})")
         e.set_thumbnail(url=member.avatar_url)
         rs_status = " "
-        if await self.config.member(member).studyInProgress() is false:
+        if await self.config.member(member).studyInProgress() is False:
             rs_status = "False"
         else:
             rs_status = "True"
