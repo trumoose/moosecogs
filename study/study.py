@@ -217,3 +217,4 @@ class Study(commands.Cog):
         e.set_thumbnail(url=member.avatar_url)
         rs_status = " "
         e.add_field(name="Studying:", value=rs_status)
+        await ctx.send(embed=e)
