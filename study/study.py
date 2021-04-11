@@ -5,6 +5,7 @@ import asyncio
 import discord.utils 
 import discord
 import os
+import typing
 import time
 
 class Study(commands.Cog):
@@ -159,23 +160,7 @@ class Study(commands.Cog):
             for r in ctx.author.roles:
                 roles.append(r.id)
             await ctx.tick()
-    
-    @checks.mod_or_permissions(manage_messages=True)
-    @commands.command()
-    async def removestudy(self, ctx):
-        studying = discord.utils.get(ctx.guild.roles, name='study')
-        await ctx.author.remove_roles(studying)
-        await self.config.member(ctx.author).studyInProgess.set(False)
-        await self.config.member(ctx.author).timerInProgress.set(False)
 
-    @checks.mod_or_permissions(manage_messages=True)
-    @commands.command()
-    async def removemyroles(self, ctx):
-        async with self.config.member(ctx.author).roles() as roles:
-            for r in roles:
-                roles.clear()
-            await ctx.tick()
-    
     @checks.mod_or_permissions(manage_messages=True)
     @commands.command()
     async def printmyroles(self, ctx):
@@ -184,6 +169,7 @@ class Study(commands.Cog):
                 await ctx.send('roleid: {}'.format(r))
             await ctx.tick()
             
+    @checks.mod_or_permissions(manage_messages=True)
     @commands.command()
     async def addstudyroles(self, ctx):
         studying = discord.utils.get(ctx.guild.roles, name='study')
@@ -211,9 +197,27 @@ class Study(commands.Cog):
             
     @checks.mod_or_permissions(manage_messages=True)
     @commands.command()
-    async def resetall(self, ctx):
-        await self.config.member(ctx.author).recursion.set(False)
-        await self.config.member(ctx.author).studyInProgess.set(False)
-        await self.config.member(ctx.author).timerInProgress.set(False)
-        async with self.config.member(ctx.author).roles() as roles:
+    async def resetall(self, ctx, member: typing.Optional[discord.Member]):
+        if not member:
+            member = ctx.author
+        await self.config.member(member).recursion.set(False)
+        await self.config.member(member).studyInProgess.set(False)
+        await self.config.member(member).timerInProgress.set(False)
+        async with self.config.member(member).roles() as roles:
             roles.clear()
+            
+    @checks.mod_or_permissions(manage_messages=True)
+    @commands.command()
+    async def studydebug(self, ctx, member: typing.Optional[discord.Member]):
+        if not member:
+            member = ctx.author
+        e = discord.Embed(colour=member.color)
+        e.set_author(name=f"{member.name}", icon_url=member.avatar_url)
+        e.set_footer(text=f"{member.name}#{member.discriminator} ({member.id})")
+        e.set_thumbnail(url=member.avatar_url)
+        rs_status = " "
+        if await self.config.member(member).studyInProgress is false:
+            rs_status = "False"
+        else:
+            rs_status = "True"
+        e.add_field(name="Studying:", value=rs_status)
