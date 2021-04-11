@@ -215,6 +215,5 @@ class Study(commands.Cog):
         e.set_author(name=f"{member.name}", icon_url=member.avatar_url)
         e.set_footer(text=f"{member.name}#{member.discriminator} ({member.id})")
         e.set_thumbnail(url=member.avatar_url)
-        rs_status = "err"
-        e.add_field(name="Studying:", value=rs_status)
+        e.add_field(name="Studying:", value=str(await self.config.member(member).studyInProgess()))
         await ctx.send(embed=e)
