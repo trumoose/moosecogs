@@ -909,6 +909,7 @@ class Marriage(commands.Cog):
                     spouse = discord.utils.get(ctx.guild.members, id=x)
                     parents.append(spouse.id)
         
+        """
         # add PARENT'S CHILDREN to CHILD'S SIBLINGS
         async with self.config.member(ctx.author).children() as children:
             async with self.config.member(member).siblings() as siblings:
@@ -924,6 +925,7 @@ class Marriage(commands.Cog):
                     async with self.config.member(child).siblings() as siblings2:
                         if ctx.author.id != x:
                             siblings2.append(member.id)   
+        """
         
         # calculate GREATEST COMMON ANCESTORS
         async with self.config.member(member).greatest_ancestors() as child_gca:
@@ -1000,6 +1002,7 @@ class Marriage(commands.Cog):
                     spouse = discord.utils.get(ctx.guild.members, id=x)
                     parents.append(spouse.id)
         
+        """
         # add PARENT'S CHILDREN to CHILD'S SIBLINGS
         async with self.config.member(member).children() as children:
             async with self.config.member(ctx.author).siblings() as siblings:
@@ -1015,7 +1018,8 @@ class Marriage(commands.Cog):
                     async with self.config.member(child).siblings() as siblings2:
                         if ctx.author.id != x:
                             siblings2.append(ctx.author.id)     
-                
+        """
+        
         # calculate GREATEST COMMON ANCESTORS
         async with self.config.member(ctx.author).greatest_ancestors() as child_gca:
             async with self.config.member(member).greatest_ancestors() as parent_gca:
