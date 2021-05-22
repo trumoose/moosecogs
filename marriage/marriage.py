@@ -160,7 +160,7 @@ class Marriage(commands.Cog):
             parent = discord.utils.get(ctx.guild.members, id=parent_id)
             if parent.id == target.id:
                 return distance
-            return await self._find_grandparent(ctx, parent, target, distance)
+            return await self._find_ancestor(ctx, parent, target, distance)
             
     async def _find_cousin(self, ctx: commands.Context, member: discord.Member, target: discord.Member, distance):
         siblings = await self.config.member(member).siblings()
@@ -186,7 +186,7 @@ class Marriage(commands.Cog):
             child = discord.utils.get(ctx.guild.members, id=child_id)
             if child.id == target.id:
                 return distance
-            return await self._find_grandchild(ctx, child, target, distance)
+            return await self._find_descendant(ctx, child, target, distance)
     
     async def _is_member_of_family(self, ctx: commands.Context, member: discord.Member, member2: discord.Member):
         user1 = discord.utils.get(ctx.guild.members, id=member.id)
