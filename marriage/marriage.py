@@ -239,7 +239,7 @@ class Marriage(commands.Cog):
         self, ctx: commands.Context, member: discord.Member, member2: typing.Optional[discord.Member]
     ):
     
-        rs_status = ""
+        rs_status = "Moosey sucks at coding!"
 
         if not member2:
             member2 = ctx.author
