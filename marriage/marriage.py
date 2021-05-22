@@ -408,7 +408,7 @@ class Marriage(commands.Cog):
         is_parent = await self.config.member(member).parent()
         is_divorced = await self.config.member(member).divorced()
         is_child = await self.config.member(member).child()
-        is_sibling = await self.config.member(member).siblings() > 1
+        is_sibling = await self.config.member(member).siblings()
         gender = str(await self.config.member(member).gender()).lower()
         kids_header = ""
         kids_text = ""
