@@ -18,7 +18,8 @@ class Marriage(commands.Cog):
         self.config = Config.get_conf(self, identifier=1234580008135, force_registration=True)
 
         self.config.register_guild(
-            multi=False
+            multi=False,
+            dev=False
         )
 
         self.config.register_member(
@@ -375,9 +376,9 @@ class Marriage(commands.Cog):
         
         if member.id + member2.id == 368832182665478144:
             await ctx.send(f"{member2.mention} :revolving_hearts: 100.00% :revolving_hearts: {member.mention}")
-        elif int(total) < 350:
+        elif int(total) < 5000:
             await ctx.send(f"{member2.mention} :broken_heart: {string} :broken_heart: {member.mention}")
-        elif int(total) < 700:
+        elif int(total) < 8000:
             await ctx.send(f"{member2.mention} :heart: {string} :heart: {member.mention}")
         else:
             await ctx.send(f"{member2.mention} :revolving_hearts: {string} :revolving_hearts: {member.mention}")
