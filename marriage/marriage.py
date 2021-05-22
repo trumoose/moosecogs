@@ -915,8 +915,8 @@ class Marriage(commands.Cog):
                 for x in children:
                     sibling = discord.utils.get(ctx.guild.members, id=x)
                     async with self.config.member(sibling).siblings() as siblings2:
-                        if ctx.author.id != x:
-                            siblings2.append(member.id)  
+                        if member.id != x:
+                            siblings2.append(member.id)
                     if member.id != x:
                         siblings.append(x)
                 
