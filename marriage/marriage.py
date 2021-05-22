@@ -370,7 +370,7 @@ class Marriage(commands.Cog):
         if not member2:
             member2 = ctx.author
             
-        total = str(((member.id + member2.id) % 1000))
+        total = str(((member.id + member2.id) % 10000))
         string = total[:2] + "." + total[2:] + "%"
         
         if member.id + member2.id == 368832182665478144:
