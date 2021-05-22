@@ -373,15 +373,15 @@ class Marriage(commands.Cog):
         total = str(((member.id + member2.id) % 1000))
         string = total[:2] + "." + total[2:] + "%"
         
-        if total < 3500:
+        if member.id + member2.id == 368832182665478144:
+            ctx.send(f"{member2.mention} :revolving_hearts: 100.00% :revolving_hearts: {member.mention}")
+            
+        elif int(total) < 3500:
             ctx.send(f"{member2.mention} :broken_heart: {string} :broken_heart: {member.mention}")
-        elif total < 7000:
+        elif int(total) < 7000:
             ctx.send(f"{member2.mention} :heart: {string} :heart: {member.mention}")
         else:
             ctx.send(f"{member2.mention} :revolving_hearts: {string} :revolving_hearts: {member.mention}")
-            
-        if member.id + member2.id == 368832182665478144:
-            ctx.send(f"{member2.mention} :revolving_hearts: 100.00% :revolving_hearts: {member.mention}")
     
     @commands.group(invoke_without_command=True)
     @commands.guild_only()
