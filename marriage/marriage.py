@@ -119,6 +119,13 @@ class Marriage(commands.Cog):
         """Enable/disable whether members can be married to multiple people at once."""
         await self.config.guild(ctx.guild).multi.set(state)
         await ctx.send(f"Members {'can' if state else 'cannot'} marry multiple people.")
+        
+    @checks.admin()
+    @marriage.command(name="dev")
+    async def marriage_dev(self, ctx: commands.Context, state: bool):
+        """Enable/disable dev mode."""
+        await self.config.guild(ctx.guild).dev.set(state)
+        await ctx.send(f"Dev mode has been turned {'on' if state else 'off'}.")
     
     @checks.admin()
     @marriage.command(name="debug")
@@ -375,13 +382,19 @@ class Marriage(commands.Cog):
         string = total[:2] + "." + total[2:] + "%"
         
         if member.id + member2.id == 368832182665478144:
-            await ctx.send(f"{member2.mention} :revolving_hearts: 100.00% :revolving_hearts: {member.mention}")
-        elif int(total) < 5000:
+            await ctx.send(f"{member2.mention} :cupid: 100.00% :cupid: {member.mention}")
+        elif int(total) < 5500:
             await ctx.send(f"{member2.mention} :broken_heart: {string} :broken_heart: {member.mention}")
-        elif int(total) < 8000:
+        elif int(total) < 7500:
             await ctx.send(f"{member2.mention} :heart: {string} :heart: {member.mention}")
-        else:
+        elif int(total) < 8500:
+            await ctx.send(f"{member2.mention} :sparkling_heart: {string} :sparkling_heart: {member.mention}")
+        elif int(total) < 9000:
+            await ctx.send(f"{member2.mention} :two_hearts: {string} :two_hearts: {member.mention}")
+        elif int(total) < 9000:
             await ctx.send(f"{member2.mention} :revolving_hearts: {string} :revolving_hearts: {member.mention}")
+        else:
+            await ctx.send(f"{member2.mention} :cupid: {string} :cupid: {member.mention}")
     
     @commands.group(invoke_without_command=True)
     @commands.guild_only()
@@ -735,17 +748,18 @@ class Marriage(commands.Cog):
                 return await ctx.send("You're already married!")
             if await self.config.member(member).married():
                 return await ctx.send("They're already married!")
-        await ctx.send(
-            f"{ctx.author.mention} has asked {member.mention} to marry them!\n"
-            f"{member.mention}, what do you say?"
-        )
-        pred = MessagePredicate.yes_or_no(ctx, ctx.channel, member)
-        try:
-            await self.bot.wait_for("message", timeout=120, check=pred)
-        except asyncio.TimeoutError:
-            return await ctx.send("Oh no... I was looking forward to the ceremony...")
-        if not pred.result:
-            return await ctx.send("Oh no... I was looking forward to the ceremony...")
+        if not await self.config.guild(ctx.guild).dev():
+            await ctx.send(
+                f"{ctx.author.mention} has asked {member.mention} to marry them!\n"
+                f"{member.mention}, what do you say?"
+            )
+            pred = MessagePredicate.yes_or_no(ctx, ctx.channel, member)
+            try:
+                await self.bot.wait_for("message", timeout=120, check=pred)
+            except asyncio.TimeoutError:
+                return await ctx.send("Oh no... I was looking forward to the ceremony...")
+            if not pred.result:
+                return await ctx.send("Oh no... I was looking forward to the ceremony...")
         author_marcount = await self.config.member(ctx.author).marcount()
         target_marcount = await self.config.member(member).marcount()
 
@@ -803,13 +817,14 @@ class Marriage(commands.Cog):
             return await ctx.send("You can't divorce yourself!")
         if member.id not in await self.config.member(ctx.author).spouses():
             return await ctx.send("You two aren't married!")
-        await ctx.send(
-            f"{ctx.author.mention} wants to divorce you, {member.mention}, do you accept?\n"
-        )
-        pred = MessagePredicate.yes_or_no(ctx, ctx.channel, member)
-        await self.bot.wait_for("message", check=pred)
-        if not pred.result:
-            return await ctx.send("Okay, calling off the divorce.")
+        if not await self.config.guild(ctx.guild).dev():
+            await ctx.send(
+                f"{ctx.author.mention} wants to divorce you, {member.mention}, do you accept?\n"
+            )
+            pred = MessagePredicate.yes_or_no(ctx, ctx.channel, member)
+            await self.bot.wait_for("message", check=pred)
+            if not pred.result:
+                return await ctx.send("Okay, calling off the divorce.")
         async with self.config.member(ctx.author).spouses() as acurrent:
             acurrent.remove(member.id)
         async with self.config.member(member).spouses() as tcurrent:
@@ -855,17 +870,18 @@ class Marriage(commands.Cog):
             return await ctx.send("They're already adopted!")
         if await self._is_member_of_family(ctx, member, ctx.author):
             return await ctx.send("You can't adopt a member of your own family!")
-        await ctx.send(
-            f"{ctx.author.mention} has asked to adopt {member.mention}!\n"
-            f"{member.mention}, what do you say?"
-        )
-        pred = MessagePredicate.yes_or_no(ctx, ctx.channel, member)
-        try:
-            await self.bot.wait_for("message", timeout=120, check=pred)
-        except asyncio.TimeoutError:
-            return await ctx.send("Oh no... hopefully they'll find a good home soon...")
-        if not pred.result:
-            return await ctx.send("Oh no... hopefully they'll find a good home soon...")
+        if not await self.config.guild(ctx.guild).dev():
+            await ctx.send(
+                f"{ctx.author.mention} has asked to adopt {member.mention}!\n"
+                f"{member.mention}, what do you say?"
+            )
+            pred = MessagePredicate.yes_or_no(ctx, ctx.channel, member)
+            try:
+                await self.bot.wait_for("message", timeout=120, check=pred)
+            except asyncio.TimeoutError:
+                return await ctx.send("Oh no... hopefully they'll find a good home soon...")
+            if not pred.result:
+                return await ctx.send("Oh no... hopefully they'll find a good home soon...")
             
         await self.config.member(ctx.author).parent.set(True)
         await self.config.member(member).child.set(True)
@@ -937,17 +953,18 @@ class Marriage(commands.Cog):
             return await ctx.send("You can't ask your children to be your parent!")
         if await self._is_member_of_family(ctx, member, ctx.author):
             return await ctx.send("You can't ask a member of your own family to be your parent!")
-        await ctx.send(
-            f"{ctx.author.mention} has asked {member.mention} to be their parent!\n"
-            f"{member.mention}, what do you say?"
-        )
-        pred = MessagePredicate.yes_or_no(ctx, ctx.channel, member)
-        try:
-            await self.bot.wait_for("message", timeout=120, check=pred)
-        except asyncio.TimeoutError:
-            return await ctx.send("Oh no... that's too bad...")
-        if not pred.result:
-            return await ctx.send("Oh no... that's too bad...")
+        if not await self.config.guild(ctx.guild).dev():
+            await ctx.send(
+                f"{ctx.author.mention} has asked {member.mention} to be their parent!\n"
+                f"{member.mention}, what do you say?"
+            )
+            pred = MessagePredicate.yes_or_no(ctx, ctx.channel, member)
+            try:
+                await self.bot.wait_for("message", timeout=120, check=pred)
+            except asyncio.TimeoutError:
+                return await ctx.send("Oh no... that's too bad...")
+            if not pred.result:
+                return await ctx.send("Oh no... that's too bad...")
 
         await self.config.member(member).parent.set(True)
         await self.config.member(ctx.author).child.set(True)
