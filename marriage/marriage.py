@@ -913,12 +913,17 @@ class Marriage(commands.Cog):
         async with self.config.member(ctx.author).children() as children:
             async with self.config.member(member).siblings() as siblings:
                 for x in children:
-                    sibling = discord.utils.get(ctx.guild.members, id=x)
-                    async with self.config.member(sibling).siblings() as siblings2:
-                        if member.id != x:
-                            siblings2.append(member.id)
                     if member.id != x:
                         siblings.append(x)
+                        
+        # add CHILD to PARENT'S CHILDREN'S SIBLINGS
+        async with self.config.member(ctx.author).children() as children:
+            async with self.config.member(member).siblings() as siblings:
+                for x in children:
+                    child = discord.utils.get(ctx.guild.members, id=x)
+                    async with self.config.member(child).siblings() as siblings2:
+                        if ctx.author.id != x:
+                            siblings2.append(member.id)   
                 
         
         # calculate GREATEST COMMON ANCESTORS
@@ -1000,13 +1005,18 @@ class Marriage(commands.Cog):
         async with self.config.member(member).children() as children:
             async with self.config.member(ctx.author).siblings() as siblings:
                 for x in children:
-                    sibling = discord.utils.get(ctx.guild.members, id=x)
-                    async with self.config.member(sibling).siblings() as siblings2:
-                        if ctx.author.id != x:
-                            siblings2.append(ctx.author.id)     
                     if ctx.author.id != x:
                         siblings.append(x)     
                         
+        # add CHILD to PARENT'S CHILDREN'S SIBLINGS
+        async with self.config.member(member).children() as children:
+            async with self.config.member(ctx.author).siblings() as siblings:
+                for x in children:
+                    child = discord.utils.get(ctx.guild.members, id=x)
+                    async with self.config.member(child).siblings() as siblings2:
+                        if ctx.author.id != x:
+                            siblings2.append(ctx.author.id)     
+                
         # calculate GREATEST COMMON ANCESTORS
         async with self.config.member(ctx.author).greatest_ancestors() as child_gca:
             async with self.config.member(member).greatest_ancestors() as parent_gca:
