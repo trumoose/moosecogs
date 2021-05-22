@@ -375,9 +375,9 @@ class Marriage(commands.Cog):
         
         if member.id + member2.id == 368832182665478144:
             await ctx.send(f"{member2.mention} :revolving_hearts: 100.00% :revolving_hearts: {member.mention}")
-        elif int(total) < 3500:
+        elif int(total) < 350:
             await ctx.send(f"{member2.mention} :broken_heart: {string} :broken_heart: {member.mention}")
-        elif int(total) < 7000:
+        elif int(total) < 700:
             await ctx.send(f"{member2.mention} :heart: {string} :heart: {member.mention}")
         else:
             await ctx.send(f"{member2.mention} :revolving_hearts: {string} :revolving_hearts: {member.mention}")
