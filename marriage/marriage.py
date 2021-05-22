@@ -924,7 +924,6 @@ class Marriage(commands.Cog):
                     async with self.config.member(child).siblings() as siblings2:
                         if ctx.author.id != x:
                             siblings2.append(member.id)   
-                
         
         # calculate GREATEST COMMON ANCESTORS
         async with self.config.member(member).greatest_ancestors() as child_gca:
@@ -941,7 +940,7 @@ class Marriage(commands.Cog):
                                     child_gca.append(spouse.id)
                                 else:
                                     child_gca += spouse_gca
-            async with self.config.member(ctx.author).children() as children:
+            async with self.config.member(member).children() as children:
                 if children != []:
                     await self._update_greatest_ancestors(ctx, member, child_gca)
         
