@@ -3,7 +3,6 @@ import asyncio
 import random
 import datetime
 import typing
-import inflect
 
 from redbot.core import Config, checks, commands
 from redbot.core.utils.chat_formatting import humanize_list, box
@@ -231,7 +230,7 @@ class Marriage(commands.Cog):
     async def relationship(
         self, ctx: commands.Context, member: discord.Member, member2: typing.Optional[discord.Member]
     ):
-        p = inflect.engine()
+    
         rs_status = ""
 
         if not member2:
@@ -294,12 +293,12 @@ class Marriage(commands.Cog):
                             rs_status += "Grandnibling"
                 elif distance_cousin[0] > 0:
                     if distance_cousin[0] == distance_cousin[1]:
-                        rs_status = p.number_to_words(p.ordinal(distance_cousin[1])) + " cousin"
+                        rs_status = distance_cousin[1] + " cousin"
                     elif distance_cousin[0] > distance_cousin[1]:
                         if (distance_cousin[0] - distance_cousin[1]) == 1:
-                            rs_status = p.number_to_words(p.ordinal(distance_cousin[1])) + " cousin, one time removed"
+                            rs_status = distance_cousin[1] + " cousin, 1 time removed"
                         else:
-                            rs_status = p.number_to_words(p.ordinal(distance_cousin[1])) + " cousin, " + p.number_to_words(distance_cousin[0] - distance_cousin[1]) + " times removed"
+                            rs_status = distance_cousin[1] + " cousin, " + str(distance_cousin[0] - distance_cousin[1]) + " times removed"
 
             distance_parent = await self._find_ancestor(ctx, member2, member, 0)
 
