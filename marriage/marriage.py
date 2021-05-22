@@ -913,6 +913,10 @@ class Marriage(commands.Cog):
         async with self.config.member(ctx.author).children() as children:
             async with self.config.member(member).siblings() as siblings:
                 for x in children:
+                    sibling = discord.utils.get(ctx.guild.members, id=x)
+                    async with self.config.member(sibling).siblings() as siblings2:
+                        if ctx.author.id != x:
+                            siblings2.append(member.id)  
                     if member.id != x:
                         siblings.append(x)
                 
@@ -996,6 +1000,10 @@ class Marriage(commands.Cog):
         async with self.config.member(member).children() as children:
             async with self.config.member(ctx.author).siblings() as siblings:
                 for x in children:
+                    sibling = discord.utils.get(ctx.guild.members, id=x)
+                    async with self.config.member(sibling).siblings() as siblings2:
+                        if ctx.author.id != x:
+                            siblings2.append(ctx.author.id)     
                     if ctx.author.id != x:
                         siblings.append(x)     
                         
