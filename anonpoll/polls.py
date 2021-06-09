@@ -100,13 +100,15 @@ class Poll:
                 self.tally[emoji].append(user_id)
         else:
             if user_id not in self.tally[emoji]:
-                self.tally[emoji].append(user_id)
-                try:
-                    await member.send(f"Thank you for voting on `{self.question}`! Your vote has been recorded as {emoji}.")
-                except discord.errors.Forbidden:
-                    pass
+                old_msg = await self.get_message()
                 await old_msg.remove_reaction(emoji, member)
-
+                self.tally[emoji].append(user_id)
+                if member:
+                    try:
+                        await member.send(f"Thank you for voting on `{self.question}`! Your vote has been recorded as {emoji}.")
+                    except discord.errors.Forbidden:
+                        pass
+                        
     async def remove_vote(self, user_id: int, emoji: str):
         if user_id in self.tally[emoji]:
             self.tally[emoji].remove(user_id)
