@@ -93,7 +93,7 @@ class Poll:
                             pass
                     if member:
                         try:
-                            await member.send(f"You've already voted on `{self.question}`, changing vote to {emoji}.")
+                            await member.send(f"You've already voted on `{self.question}`. Changing vote to {emoji}.")
                         except discord.errors.Forbidden:
                             pass
             if user_id not in self.tally[emoji]:
