@@ -118,8 +118,9 @@ class Poll:
                 self.tally[emoji].append(user_id)
                         
     async def remove_vote(self, user_id: int, emoji: str):
-        #if user_id in self.tally[emoji]:
+        if user_id in self.tally[emoji]:
             #self.tally[emoji].remove(user_id)
+            print("Removed vote on poll to keep anonymous.")
 
     @property
     def bot(self):
