@@ -37,7 +37,6 @@ class Poll:
         self.embed: bool = kwargs.get("embed", True)
         self.interactive: bool = kwargs.get("interactive", False)
         self.multiple_votes: bool = kwargs.get("multiple_votes", False)
-        self.anonymous: bool = kwargs.get("anonymous", False)
         self._bot: Red = bot
 
     def as_dict(self):
@@ -53,7 +52,6 @@ class Poll:
             "tally": self.tally,
             "embed": self.embed,
             "multiple_votes": self.multiple_votes,
-            "anonymous": self.anonymous
         }
 
     def parse_duration(self, duration: Optional[timedelta] = None) -> Optional[datetime]:
@@ -120,8 +118,8 @@ class Poll:
                 self.tally[emoji].append(user_id)
                         
     async def remove_vote(self, user_id: int, emoji: str):
-        if user_id in self.tally[emoji]:
-            self.tally[emoji].remove(user_id)
+        #if user_id in self.tally[emoji]:
+            #self.tally[emoji].remove(user_id)
 
     @property
     def bot(self):
