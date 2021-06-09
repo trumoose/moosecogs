@@ -108,6 +108,12 @@ class Poll:
                         await member.send(f"Thank you for voting on `{self.question}`! Your vote has been recorded as {emoji}.")
                     except discord.errors.Forbidden:
                         pass
+            else:
+                if member:
+                    try:
+                        await member.send(f"You've already cast your vote for {emoji} in the poll `{self.question}`.")
+                    except discord.errors.Forbidden:
+                        pass
                         
     async def remove_vote(self, user_id: int, emoji: str):
         if user_id in self.tally[emoji]:
