@@ -97,7 +97,6 @@ class Poll:
                         except discord.errors.Forbidden:
                             pass
             if user_id not in self.tally[emoji]:
-                self.tally[emoji].append(user_id)
                 if member:
                     old_msg = await self.get_message()
                     try:
@@ -109,6 +108,7 @@ class Poll:
                         await old_msg.remove_reaction(emoji, member)
                     except Exception:
                         pass
+                self.tally[emoji].append(user_id)
             else:
                 if member:
                     try:
