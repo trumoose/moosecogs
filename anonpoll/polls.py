@@ -113,6 +113,10 @@ class Poll:
                         await member.send(f"You've already cast your vote for {emoji} in the poll `{self.question}`.")
                     except discord.errors.Forbidden:
                         pass
+                    try:
+                        await old_msg.remove_reaction(emoji, member)
+                    except Exception:
+                        pass
         else:
             if user_id not in self.tally[emoji]:
                 self.tally[emoji].append(user_id)
