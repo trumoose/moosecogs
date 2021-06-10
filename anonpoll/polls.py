@@ -113,6 +113,8 @@ class Poll:
                         await member.send(f"You've already cast your vote for {emoji} in the poll `{self.question}`.")
                     except discord.errors.Forbidden:
                         pass
+                        
+                    old_msg = await self.get_message()
                     try:
                         await old_msg.remove_reaction(emoji, member)
                     except Exception:
