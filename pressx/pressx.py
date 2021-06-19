@@ -59,6 +59,7 @@ class PressX(commands.Cog):
     @commands.Cog.listener()
     async def on_reaction_add(self, reaction, user):
         print(str(reaction.emoji))
+        print("Hello world!")
         if str(reaction.message.channel.id) not in self.channels:
             return
         if self.channels[str(reaction.message.channel.id)]["msg_id"] != reaction.message.id:
