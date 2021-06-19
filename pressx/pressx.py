@@ -65,6 +65,7 @@ class PressX(commands.Cog):
         if user.id == self.bot.user.id:
             return
         if user.id not in self.channels[str(reaction.message.channel.id)]["reacted"]:
+            print(str(reaction.emoji))
             if str(reaction.emoji) == ":doubt:855722126186119208":
                 await reaction.message.channel.send(f"**{user.name}** has pressed x to doubt.")
                 self.channels[str(reaction.message.channel.id)]["reacted"].append(user.id)
