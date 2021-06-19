@@ -44,8 +44,7 @@ class PressX(commands.Cog):
         message = await ctx.send(
             f"Press x to doubt **{filter_mass_mentions(answer)}**."
         )
-        xdoubt = ':doubt:855722126186119208'
-        await message.add_reaction(xdoubt)
+        await message.add_reaction("\U0001f1eb")
         self.channels[str(ctx.channel.id)] = {"msg_id": message.id, "reacted": []}
         await asyncio.sleep(120)
         try:
@@ -66,6 +65,6 @@ class PressX(commands.Cog):
         if user.id == self.bot.user.id:
             return
         if user.id not in self.channels[str(reaction.message.channel.id)]["reacted"]:
-            if str(reaction.emoji) == "\U0001f1eb":
+            if str(reaction.emoji) == ":doubt:855722126186119208":
                 await reaction.message.channel.send(f"**{user.name}** has pressed x to doubt.")
                 self.channels[str(reaction.message.channel.id)]["reacted"].append(user.id)
