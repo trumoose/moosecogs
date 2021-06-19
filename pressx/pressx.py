@@ -46,6 +46,7 @@ class PressX(commands.Cog):
         )
         await message.add_reaction(":doubt:855722126186119208")
         self.channels[str(ctx.channel.id)] = {"msg_id": message.id, "reacted": []}
+        print("Hello world1!")
         await asyncio.sleep(120)
         try:
             await message.delete()
