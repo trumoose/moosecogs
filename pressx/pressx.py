@@ -57,8 +57,8 @@ class PressX(commands.Cog):
         del self.channels[str(ctx.channel.id)]
 
     @commands.Cog.listener()
-    async def on_reaction_add(self, reaction, user):
-        await ctx.send(f"str(reaction.emoji)")
+    async def on_raw_reaction_add(self, payload):
+        print(payload.emoji)
         if str(reaction.message.channel.id) not in self.channels:
             return
         if self.channels[str(reaction.message.channel.id)]["msg_id"] != reaction.message.id:
@@ -66,6 +66,6 @@ class PressX(commands.Cog):
         if user.id == self.bot.user.id:
             return
         if user.id not in self.channels[str(reaction.message.channel.id)]["reacted"]:
-            if str(reaction.emoji) == ":doubt:855722126186119208":
+            if str(payload.emoji) == ":doubt:855722126186119208":
                 await reaction.message.channel.send(f"**{user.name}** has pressed x to doubt.")
                 self.channels[str(reaction.message.channel.id)]["reacted"].append(user.id)
