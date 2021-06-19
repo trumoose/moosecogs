@@ -44,7 +44,7 @@ class PressX(commands.Cog):
         message = await ctx.send(
             f"Press x to doubt **{filter_mass_mentions(answer)}**."
         )
-        await message.add_reaction("\U0001f1eb")
+        await message.add_reaction(":doubt:855722176765755392")
         self.channels[str(ctx.channel.id)] = {"msg_id": message.id, "reacted": []}
         await asyncio.sleep(120)
         try:
