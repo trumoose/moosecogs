@@ -46,7 +46,6 @@ class PressX(commands.Cog):
         )
         await message.add_reaction(":doubt:855722126186119208")
         self.channels[str(ctx.channel.id)] = {"msg_id": message.id, "reacted": []}
-        print("Hello world1!")
         await asyncio.sleep(120)
         try:
             await message.delete()
@@ -59,8 +58,7 @@ class PressX(commands.Cog):
 
     @commands.Cog.listener()
     async def on_reaction_add(self, reaction, user):
-        print(str(reaction.emoji))
-        print("Hello world!")
+        await ctx.send(f"str(reaction.emoji)")
         if str(reaction.message.channel.id) not in self.channels:
             return
         if self.channels[str(reaction.message.channel.id)]["msg_id"] != reaction.message.id:
