@@ -45,7 +45,7 @@ class Approvalchart(commands.Cog):
             labels,
             bbox_to_anchor=(0.7, 0.5),
             loc="center",
-            fontsize=8,
+            fontsize=7,
             bbox_transform=plt.gcf().transFigure,
             facecolor="#ffffff",
         )
