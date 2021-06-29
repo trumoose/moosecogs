@@ -79,6 +79,21 @@ class Poll:
                     pass
             return
         if not self.multiple_votes:
+            for e in self.tally:
+                if user_id in self.tally[e] and emoji != e:
+                    # DM user telling them their vote has changed
+                    if self.channel.permissions_for(self.guild.me).manage_messages:
+                        old_msg = await self.get_message()
+                        self.tally[e].remove(user_id)
+                        try:
+                            await old_msg.remove_reaction(e, member)
+                        except Exception:
+                            pass
+                    if member:
+                        try:
+                            await member.send(f"You've already voted on `{self.question}`, changing vote to {emoji}.")
+                        except discord.errors.Forbidden:
+                            pass
             if user_id not in self.tally[emoji]:
                 if member:
                     old_msg = await self.get_message()
@@ -104,21 +119,6 @@ class Poll:
                         await old_msg.remove_reaction(emoji, member)
                     except Exception:
                         pass
-            for e in self.tally:
-                if user_id in self.tally[e] and emoji != e:
-                    # DM user telling them their vote has changed
-                    if self.channel.permissions_for(self.guild.me).manage_messages:
-                        old_msg = await self.get_message()
-                        self.tally[e].remove(user_id)
-                        try:
-                            await old_msg.remove_reaction(e, member)
-                        except Exception:
-                            pass
-                    if member:
-                        try:
-                            await member.send(f"You've already voted on `{self.question}`, changing vote to {emoji}.")
-                        except discord.errors.Forbidden:
-                            pass
         else:
             if user_id not in self.tally[emoji]:
                 self.tally[emoji].append(user_id)
