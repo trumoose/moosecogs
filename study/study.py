@@ -41,6 +41,7 @@ class Study(commands.Cog):
         serverbooster = ctx.guild.get_role(767011709155672095)
         botwrangler = ctx.guild.get_role(768348291527737345)
         everyone2 = ctx.guild.get_role(766870004086865930)
+        muradok = ctx.guild.get_role(824759479357931530)
         
         userroles = ctx.author.roles
         if everyone1 in userroles:
@@ -152,6 +153,9 @@ class Study(commands.Cog):
             await self.config.member(ctx.author).recursion.set(True)
             await self.study(ctx)
             await ctx.tick()
+
+        if ctx.author.id == 544696202311106571:
+        	await ctx.author.add_roles(muradok)
     
     @checks.mod_or_permissions(manage_messages=True)
     @commands.command()
