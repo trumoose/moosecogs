@@ -119,11 +119,9 @@ class Study(commands.Cog):
                         await ctx.react_quietly(":white_cross_mark:813147325840883723")
                     else:
                         for r in roles:
-                            try:
-                                roleToAdd = discord.utils.get(ctx.guild.roles, id=r)
+                            roleToAdd = discord.utils.get(ctx.guild.roles, id=r)
+                            if roleToAdd:
                                 roleArray.append(roleToAdd)
-                            except:
-                                await ctx.send('Could not get role {}'.format(roleToAdd.name))
                         if serverbooster in ctx.author.roles:
                             roleArray.append(serverbooster)
                         if botwrangler in ctx.author.roles:
@@ -180,11 +178,9 @@ class Study(commands.Cog):
                     await ctx.react_quietly(":white_cross_mark:813147325840883723")
                 else:
                     for r in roles:
-                        try:
-                            roleToAdd = discord.utils.get(ctx.guild.roles, id=r)
+                        roleToAdd = discord.utils.get(ctx.guild.roles, id=r)
+                        if roleToAdd:
                             roleArray.append(roleToAdd)
-                        except:
-                            await ctx.send('Could not get role {}'.format(roleToAdd.name))
                     if serverbooster in member.roles:
                         roleArray.append(serverbooster)
                     if botwrangler in member.roles:
@@ -221,11 +217,9 @@ class Study(commands.Cog):
         async with self.config.member(member).roles() as roles:
             if friendlychat in member.roles:
                 for r in roles:
-                    try:
-                        roleToAdd = discord.utils.get(ctx.guild.roles, id=r)
+                    roleToAdd = discord.utils.get(ctx.guild.roles, id=r)
+                    if roleToAdd:
                         roleArray.append(roleToAdd)
-                    except:
-                        await ctx.send('Could not get role {}'.format(roleToAdd.name))
                 if serverbooster in member.roles:
                     roleArray.append(serverbooster)
                 await member.edit(roles=roleArray)
