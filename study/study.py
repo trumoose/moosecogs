@@ -245,47 +245,16 @@ class Study(commands.Cog):
                         await member.edit(roles=[])
                     await member.add_roles(friendlychat)
                     await ctx.tick()
-    
+                    
     @checks.mod_or_permissions(manage_messages=True)
     @commands.command()
-    async def appendmyroles(self, ctx):
-        async with self.config.member(ctx.author).roles() as roles:
-            for r in ctx.author.roles:
-                roles.append(r.id)
-            await ctx.tick()
-
-    @checks.mod_or_permissions(manage_messages=True)
-    @commands.command()
-    async def printmyroles(self, ctx):
-        async with self.config.member(ctx.author).roles() as roles:
+    async def showroles(self, ctx: commands.Context, member: typing.Optional[discord.Member]):
+        if not member:
+            member = ctx.author
+        async with self.config.member(member.author).roles() as roles:
+            roleString = ""
             for r in roles:
-                await ctx.send('roleid: {}'.format(r))
-            await ctx.tick()
-            
-    @checks.mod_or_permissions(manage_messages=True)
-    @commands.command()
-    async def addstudyroles(self, ctx):
-        studying = discord.utils.get(ctx.guild.roles, name='study')
-
-        everyone1 = ctx.guild.get_role(776052319271911434)
-        serverbooster = ctx.guild.get_role(767011709155672095)
-        botwrangler = ctx.guild.get_role(801850754565537874)
-        everyone2 = ctx.guild.get_role(766870004086865930)
-        roleArray = []
-        async with self.config.member(ctx.author).roles() as roles:
-            for r in roles:
-                try:
-                    roleToAdd = discord.utils.get(ctx.guild.roles, id=r)
-                    roleArray.append(roleToAdd)
-                except:
-                    await ctx.send('Could not get role {}'.format(roleToAdd.name))
-            if serverbooster in ctx.author.roles:
-                roleArray.append(serverbooster)
-            if botwrangler in ctx.author.roles:
-                roleArray.append(botwrangler)
-            await ctx.author.edit(roles=roleArray)
-            await ctx.author.remove_roles(studying)
-            await self.config.member(ctx.author).studyInProgess.set(False)
+                roleString += str(r.name) + ": " + str(r.id) + "\n"
             await ctx.tick()
             
     @checks.mod_or_permissions(manage_messages=True)
@@ -298,15 +267,3 @@ class Study(commands.Cog):
         await self.config.member(member).timerInProgress.set(False)
         async with self.config.member(member).roles() as roles:
             roles.clear()
-            
-    @checks.mod_or_permissions(manage_messages=True)
-    @commands.command()
-    async def studydebug(self, ctx, member: typing.Optional[discord.Member]):
-        if not member:
-            member = ctx.author
-        e = discord.Embed(colour=member.color)
-        e.set_author(name=f"{member.name}", icon_url=member.avatar_url)
-        e.set_footer(text=f"{member.name}#{member.discriminator} ({member.id})")
-        e.set_thumbnail(url=member.avatar_url)
-        e.add_field(name="Studying:", value=str(await self.config.member(member).studyInProgess()))
-        await ctx.send(embed=e)
