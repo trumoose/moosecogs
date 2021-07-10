@@ -217,21 +217,20 @@ class Study(commands.Cog):
         roleArray = []
         
         async with self.config.member(member).roles() as roles:
-            if friendlychat not in member.roles:
-                if unstudying not in member.roles:
-                    await ctx.send("Please use .unstudy first!")
-                else:
-                    for r in roles:
-                        try:
-                            roleToAdd = discord.utils.get(ctx.guild.roles, id=r)
-                            roleArray.append(roleToAdd)
-                        except:
-                            await ctx.send('Could not get role {}'.format(roleToAdd.name))
-                    if serverbooster in member.roles:
-                        roleArray.append(serverbooster)
-                    await member.edit(roles=roleArray)
-                    await member.remove_roles(friendlychat)
-                    await ctx.tick()
+            if unstudying not in member.roles:
+                await ctx.send("Please use .unstudy first!")
+            elif friendlychat in member.roles:
+                for r in roles:
+                    try:
+                        roleToAdd = discord.utils.get(ctx.guild.roles, id=r)
+                        roleArray.append(roleToAdd)
+                    except:
+                        await ctx.send('Could not get role {}'.format(roleToAdd.name))
+                if serverbooster in member.roles:
+                    roleArray.append(serverbooster)
+                await member.edit(roles=roleArray)
+                await member.remove_roles(friendlychat)
+                await ctx.tick()
             else:
                 roles.clear()
                 for r in userroles:
