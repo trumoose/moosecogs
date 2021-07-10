@@ -217,9 +217,7 @@ class Study(commands.Cog):
         roleArray = []
         
         async with self.config.member(member).roles() as roles:
-            if unstudying not in member.roles:
-                await ctx.send("Please use .unstudy first!")
-            elif friendlychat in member.roles:
+            if friendlychat in member.roles:
                 for r in roles:
                     try:
                         roleToAdd = discord.utils.get(ctx.guild.roles, id=r)
@@ -232,16 +230,19 @@ class Study(commands.Cog):
                 await member.remove_roles(friendlychat)
                 await ctx.tick()
             else:
-                roles.clear()
-                for r in userroles:
-                    roles.append(r.id)
-                if serverbooster in member.roles:
-                    await member.edit(roles=[serverbooster])
+                if unstudying not in member.roles:
+                    await ctx.send("Please use .unstudy first!")
                 else:
-                    await member.edit(roles=[])
-                await member.add_roles(friendlychat)
-                await ctx.tick()
-                
+                    roles.clear()
+                    for r in userroles:
+                        roles.append(r.id)
+                    if serverbooster in member.roles:
+                        await member.edit(roles=[serverbooster])
+                    else:
+                        await member.edit(roles=[])
+                    await member.add_roles(friendlychat)
+                    await ctx.tick()
+                    
                 
         
     @checks.mod_or_permissions(manage_messages=True)
