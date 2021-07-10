@@ -230,7 +230,7 @@ class Study(commands.Cog):
                 await ctx.tick()
             else:
                 if unstudying not in member.roles:
-                    await ctx.send("Please use .unstudy first!")
+                    await ctx.send("Please use .unstudy first <3")
                 else:
                     roles.clear()
                     for r in userroles:
@@ -241,15 +241,6 @@ class Study(commands.Cog):
                         await member.edit(roles=[])
                     await member.add_roles(friendlychat)
                     await ctx.tick()
-                    
-                
-        
-    @checks.mod_or_permissions(manage_messages=True)
-    @commands.command()
-    async def unfriendlychat(self, ctx: commands.Context, member: typing.Optional[discord.Member]):
-        friendlychat = discord.utils.get(ctx.guild.roles, name='friendly-chat')
-        await member.remove_roles(friendlychat)
-        await ctx.tick()
     
     @checks.mod_or_permissions(manage_messages=True)
     @commands.command()
