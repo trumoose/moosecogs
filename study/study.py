@@ -168,6 +168,8 @@ class Study(commands.Cog):
         everyone2 = ctx.guild.get_role(766870004086865930)
         muradok = ctx.guild.get_role(824759479357931530)
         
+        roleArray = []
+        
         async with self.config.member(member).roles() as roles:
             if studying in member.roles:
                 if not await self.config.member(member).studyInProgess():
