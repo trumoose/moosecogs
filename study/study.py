@@ -35,6 +35,7 @@ class Study(commands.Cog):
     async def study(self, ctx, duration = None, unit_of_time = None):
         """Temporary time-out for those who lack self control."""
         
+        friendlychat = discord.utils.get(ctx.guild.roles, name='friendlychat')
         studying = discord.utils.get(ctx.guild.roles, name='study')
         unstudying = discord.utils.get(ctx.guild.roles, name='unstudy')
         everyone1 = ctx.guild.get_role(776052319271911434)
@@ -161,6 +162,7 @@ class Study(commands.Cog):
     @checks.mod_or_permissions(manage_messages=True)
     @commands.command()
     async def unstudy(self, ctx: commands.Context, member: typing.Optional[discord.Member]):
+        friendlychat = discord.utils.get(ctx.guild.roles, name='friendlychat')
         studying = discord.utils.get(ctx.guild.roles, name='study')
         unstudying = discord.utils.get(ctx.guild.roles, name='unstudy')
         everyone1 = ctx.guild.get_role(776052319271911434)
