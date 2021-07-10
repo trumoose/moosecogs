@@ -227,6 +227,7 @@ class Study(commands.Cog):
                     roleArray.append(serverbooster)
                 await member.edit(roles=roleArray)
                 await member.remove_roles(friendlychat)
+                await member.remove_roles(unstudying)
                 await ctx.tick()
             else:
                 if unstudying not in member.roles:
