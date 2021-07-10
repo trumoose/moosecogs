@@ -255,7 +255,8 @@ class Study(commands.Cog):
             roleString = ""
             for r in roles:
                 TheRole = discord.utils.get(ctx.guild.roles, id = r)
-                roleString += str(TheRole.name) + ": " + str(TheRole.id) + "\n"
+                if TheRole:
+                    roleString += str(TheRole.name) + ": " + str(TheRole.id) + "\n"
             await ctx.tick()
             
     @checks.mod_or_permissions(manage_messages=True)
