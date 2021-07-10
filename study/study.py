@@ -254,8 +254,8 @@ class Study(commands.Cog):
         async with self.config.member(member).roles() as roles:
             roleString = ""
             for r in roles:
-                TheRole = discord.utils.get(ctx.guild.roles, id = r.id)
-                roleString += str(TheRole.name) + ": " + str(r.id) + "\n"
+                TheRole = discord.utils.get(ctx.guild.roles, id = r)
+                roleString += str(TheRole.name) + ": " + str(TheRole.id) + "\n"
             await ctx.tick()
             
     @checks.mod_or_permissions(manage_messages=True)
