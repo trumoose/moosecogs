@@ -188,7 +188,7 @@ class Study(commands.Cog):
                         roleArray.append(botwrangler)
                     await member.edit(roles=roleArray)
                     await member.remove_roles(studying)
-                    await ctx.author.add_roles(unstudying)
+                    await member.add_roles(unstudying)
                     await self.config.member(member).studyInProgess.set(False)
                     await ctx.tick()
             else:
