@@ -199,7 +199,7 @@ class Study(commands.Cog):
     @checks.mod_or_permissions(manage_messages=True)
     @commands.command()
     async def friendlychat(self, ctx: commands.Context, member: typing.Optional[discord.Member]):
-        friendlychat = discord.utils.get(ctx.guild.roles, name='friendly-chat')
+        friendlychat = discord.utils.get(ctx.guild.roles, name='friendlychat')
         unstudying = discord.utils.get(ctx.guild.roles, name='unstudy')
         serverbooster = ctx.guild.get_role(767011709155672095)
         everyone1 = ctx.guild.get_role(776052319271911434)
