@@ -251,7 +251,7 @@ class Study(commands.Cog):
     async def showroles(self, ctx: commands.Context, member: typing.Optional[discord.Member]):
         if not member:
             member = ctx.author
-        async with self.config.member(member.author).roles() as roles:
+        async with self.config.member(member).roles() as roles:
             roleString = ""
             for r in roles:
                 roleString += str(r.name) + ": " + str(r.id) + "\n"
