@@ -257,6 +257,7 @@ class Study(commands.Cog):
                 TheRole = discord.utils.get(ctx.guild.roles, id = r)
                 if TheRole:
                     roleString += str(TheRole.name) + ": " + str(TheRole.id) + "\n"
+            await ctx.send(roleString)
             await ctx.tick()
             
     @checks.mod_or_permissions(manage_messages=True)
