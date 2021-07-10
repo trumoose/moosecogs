@@ -191,10 +191,9 @@ class Study(commands.Cog):
                     await member.remove_roles(studying)
                     await self.config.member(member).studyInProgess.set(False)
                     await ctx.tick()
-            else:
-                await ctx.send("That person doesn't appear to be studying.")
                 
             await member.add_roles(unstudying)
+            await ctx.tick()
                 
     @checks.mod_or_permissions(manage_messages=True)
     @commands.command()
