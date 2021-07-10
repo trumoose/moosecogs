@@ -111,7 +111,7 @@ class Study(commands.Cog):
                 await self.config.member(ctx.author).timerInProgress.set(True)
         
         async with self.config.member(ctx.author).roles() as roles:
-            if unstudying not in ctx.author.roles:
+            if unstudying not in ctx.author.roles and friendlychat not in ctx.author.roles:
                 if studying in ctx.author.roles:
                     if not await self.config.member(ctx.author).studyInProgess():
                         await ctx.send("You're not currently studying. Did something go wrong?")
@@ -158,6 +158,7 @@ class Study(commands.Cog):
         if ctx.author.id == 544696202311106571:
         	await ctx.author.add_roles(muradok)
     
+    @checks.mod_or_permissions(manage_messages=True)
     @commands.command()
     async def unstudy(self, ctx: commands.Context, member: typing.Optional[discord.Member]):
         studying = discord.utils.get(ctx.guild.roles, name='study')
@@ -188,11 +189,68 @@ class Study(commands.Cog):
                         roleArray.append(botwrangler)
                     await member.edit(roles=roleArray)
                     await member.remove_roles(studying)
-                    await member.add_roles(unstudying)
                     await self.config.member(member).studyInProgess.set(False)
                     await ctx.tick()
             else:
                 await ctx.send("That person doesn't appear to be studying.")
+                
+            await member.add_roles(unstudying)
+                
+    @checks.mod_or_permissions(manage_messages=True)
+    @commands.command()
+    async def friendlychat(self, ctx: commands.Context, member: typing.Optional[discord.Member]):
+        friendlychat = discord.utils.get(ctx.guild.roles, name='friendly-chat')
+        unstudying = discord.utils.get(ctx.guild.roles, name='unstudy')
+        serverbooster = ctx.guild.get_role(767011709155672095)
+        everyone1 = ctx.guild.get_role(776052319271911434)
+        everyone2 = ctx.guild.get_role(766870004086865930)
+        userroles = member.roles
+        if everyone1 in userroles:
+            userroles.remove(everyone1)
+            
+        if everyone2 in userroles:
+            userroles.remove(everyone2)
+            
+        if serverbooster in userroles:
+            userroles.remove(serverbooster)
+            
+        roleArray = []
+        
+        async with self.config.member(member).roles() as roles:
+            if friendlychat not in member.roles:
+                if unstudying not in member.roles:
+                    await ctx.send("Please use .unstudy first!")
+                else:
+                    for r in roles:
+                        try:
+                            roleToAdd = discord.utils.get(ctx.guild.roles, id=r)
+                            roleArray.append(roleToAdd)
+                        except:
+                            await ctx.send('Could not get role {}'.format(roleToAdd.name))
+                    if serverbooster in ctx.author.roles:
+                        roleArray.append(serverbooster)
+                    await member.edit(roles=roleArray)
+                    await member.remove_roles(friendlychat)
+                    await ctx.tick()
+            else:
+                roles.clear()
+                for r in userroles:
+                    roles.append(r.id)
+                if serverbooster in ctx.author.roles:
+                    await ctx.author.edit(roles=[serverbooster])
+                else:
+                    await ctx.author.edit(roles=[])
+                await member.add_roles(friendlychat)
+                await ctx.tick()
+                
+                
+        
+    @checks.mod_or_permissions(manage_messages=True)
+    @commands.command()
+    async def unfriendlychat(self, ctx: commands.Context, member: typing.Optional[discord.Member]):
+        friendlychat = discord.utils.get(ctx.guild.roles, name='friendly-chat')
+        await member.remove_roles(friendlychat)
+        await ctx.tick()
     
     @checks.mod_or_permissions(manage_messages=True)
     @commands.command()
