@@ -36,7 +36,7 @@ class Study(commands.Cog):
         """Temporary time-out for those who lack self control."""
         
         studying = discord.utils.get(ctx.guild.roles, name='study')
-
+        unstudying = discord.utils.get(ctx.guild.roles, name='unstudy')
         everyone1 = ctx.guild.get_role(776052319271911434)
         serverbooster = ctx.guild.get_role(767011709155672095)
         botwrangler = ctx.guild.get_role(768348291527737345)
@@ -111,39 +111,40 @@ class Study(commands.Cog):
                 await self.config.member(ctx.author).timerInProgress.set(True)
         
         async with self.config.member(ctx.author).roles() as roles:
-            if studying in ctx.author.roles:
-                if not await self.config.member(ctx.author).studyInProgess():
-                    await ctx.send("You're not currently studying. Did something go wrong?")
-                    await ctx.react_quietly(":white_cross_mark:813147325840883723")
-                else:
-                    for r in roles:
-                        try:
-                            roleToAdd = discord.utils.get(ctx.guild.roles, id=r)
-                            roleArray.append(roleToAdd)
-                        except:
-                            await ctx.send('Could not get role {}'.format(roleToAdd.name))
+            if unstudying not in ctx.author.roles:
+                if studying in ctx.author.roles:
+                    if not await self.config.member(ctx.author).studyInProgess():
+                        await ctx.send("You're not currently studying. Did something go wrong?")
+                        await ctx.react_quietly(":white_cross_mark:813147325840883723")
+                    else:
+                        for r in roles:
+                            try:
+                                roleToAdd = discord.utils.get(ctx.guild.roles, id=r)
+                                roleArray.append(roleToAdd)
+                            except:
+                                await ctx.send('Could not get role {}'.format(roleToAdd.name))
+                        if serverbooster in ctx.author.roles:
+                            roleArray.append(serverbooster)
+                        if botwrangler in ctx.author.roles:
+                            roleArray.append(botwrangler)
+                        await ctx.author.edit(roles=roleArray)
+                        await ctx.author.remove_roles(studying)
+                        await self.config.member(ctx.author).studyInProgess.set(False)
+                        await ctx.tick()
+                elif not studying in ctx.author.roles:
+                    roles.clear()
+                    for r in userroles:
+                        roles.append(r.id)
                     if serverbooster in ctx.author.roles:
-                        roleArray.append(serverbooster)
-                    if botwrangler in ctx.author.roles:
-                        roleArray.append(botwrangler)
-                    await ctx.author.edit(roles=roleArray)
-                    await ctx.author.remove_roles(studying)
-                    await self.config.member(ctx.author).studyInProgess.set(False)
-                    await ctx.tick()
-            elif not studying in ctx.author.roles:
-                roles.clear()
-                for r in userroles:
-                    roles.append(r.id)
-                if serverbooster in ctx.author.roles:
-                    await ctx.author.edit(roles=[serverbooster])
-                elif botwrangler in ctx.author.roles:
-                    await ctx.author.edit(roles=[botwrangler])
-                else:
-                    await ctx.author.edit(roles=[])
-                await ctx.author.add_roles(studying)
-                await self.config.member(ctx.author).studyInProgess.set(True)
-                if not await self.config.member(ctx.author).timerInProgress():
-                    await ctx.react_quietly("📝")
+                        await ctx.author.edit(roles=[serverbooster])
+                    elif botwrangler in ctx.author.roles:
+                        await ctx.author.edit(roles=[botwrangler])
+                    else:
+                        await ctx.author.edit(roles=[])
+                    await ctx.author.add_roles(studying)
+                    await self.config.member(ctx.author).studyInProgess.set(True)
+                    if not await self.config.member(ctx.author).timerInProgress():
+                        await ctx.react_quietly("📝")
                 
         if await self.config.member(ctx.author).timerInProgress():
             await ctx.react_quietly("⏱️")
@@ -156,6 +157,40 @@ class Study(commands.Cog):
 
         if ctx.author.id == 544696202311106571:
         	await ctx.author.add_roles(muradok)
+    
+    @commands.command()
+    async def unstudy(self, ctx: commands.Context, member: typing.Optional[discord.Member]):
+        studying = discord.utils.get(ctx.guild.roles, name='study')
+        unstudying = discord.utils.get(ctx.guild.roles, name='unstudy')
+        everyone1 = ctx.guild.get_role(776052319271911434)
+        serverbooster = ctx.guild.get_role(767011709155672095)
+        botwrangler = ctx.guild.get_role(768348291527737345)
+        everyone2 = ctx.guild.get_role(766870004086865930)
+        muradok = ctx.guild.get_role(824759479357931530)
+        
+        async with self.config.member(member).roles() as roles:
+            if studying in member.roles:
+                if not await self.config.member(member).studyInProgess():
+                    await ctx.send("That person doesn't appear to be studying.")
+                    await ctx.react_quietly(":white_cross_mark:813147325840883723")
+                else:
+                    for r in roles:
+                        try:
+                            roleToAdd = discord.utils.get(ctx.guild.roles, id=r)
+                            roleArray.append(roleToAdd)
+                        except:
+                            await ctx.send('Could not get role {}'.format(roleToAdd.name))
+                    if serverbooster in member.roles:
+                        roleArray.append(serverbooster)
+                    if botwrangler in member.roles:
+                        roleArray.append(botwrangler)
+                    await member.edit(roles=roleArray)
+                    await member.remove_roles(studying)
+                    await ctx.author.add_roles(unstudying)
+                    await self.config.member(member).studyInProgess.set(False)
+                    await ctx.tick()
+            else:
+                await ctx.send("That person doesn't appear to be studying.")
     
     @checks.mod_or_permissions(manage_messages=True)
     @commands.command()
