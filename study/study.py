@@ -200,6 +200,7 @@ class Study(commands.Cog):
     async def friendlychat(self, ctx: commands.Context, member: typing.Optional[discord.Member]):
         friendlychat = discord.utils.get(ctx.guild.roles, name='friendlychat')
         unstudying = discord.utils.get(ctx.guild.roles, name='unstudy')
+        studying = discord.utils.get(ctx.guild.roles, name='study')
         serverbooster = ctx.guild.get_role(767011709155672095)
         everyone1 = ctx.guild.get_role(776052319271911434)
         everyone2 = ctx.guild.get_role(766870004086865930)
@@ -230,7 +231,7 @@ class Study(commands.Cog):
                 await member.remove_roles(unstudying)
                 await ctx.tick()
             else:
-                if unstudying not in member.roles:
+                if studying in member.roles:
                     await ctx.send("Please use .unstudy first <3")
                 else:
                     roles.clear()
