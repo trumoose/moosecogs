@@ -227,7 +227,7 @@ class Study(commands.Cog):
                             roleArray.append(roleToAdd)
                         except:
                             await ctx.send('Could not get role {}'.format(roleToAdd.name))
-                    if serverbooster in ctx.author.roles:
+                    if serverbooster in member.roles:
                         roleArray.append(serverbooster)
                     await member.edit(roles=roleArray)
                     await member.remove_roles(friendlychat)
@@ -236,10 +236,10 @@ class Study(commands.Cog):
                 roles.clear()
                 for r in userroles:
                     roles.append(r.id)
-                if serverbooster in ctx.author.roles:
-                    await ctx.author.edit(roles=[serverbooster])
+                if serverbooster in member.roles:
+                    await member.edit(roles=[serverbooster])
                 else:
-                    await ctx.author.edit(roles=[])
+                    await member.edit(roles=[])
                 await member.add_roles(friendlychat)
                 await ctx.tick()
                 
