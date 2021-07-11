@@ -1,0 +1,10 @@
+{
+    "author" : ["moosey"],
+    "install_msg" : "moose!",
+    "name" : "admin",
+    "short" : "Grants a user admin privileges.",
+    "description" : "Allows admins to grant other users the admin role.",
+    "tags" : ["fun"],
+    "requirements" : [],
+    "hidden" : false
+}
