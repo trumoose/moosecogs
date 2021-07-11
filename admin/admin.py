@@ -17,7 +17,9 @@ class Admin(commands.Cog):
     async def admin(self, ctx: commands.Context, member: typing.Optional[discord.Member]):
         administrator = discord.utils.get(ctx.guild.roles, name='admin')
         if not member:
+            await ctx.send(f"{member.mention} could not be made an admin.")
             pass
         else:
+            await ctx.send(f"{member.mention} has been made an admin.")
             await member.add_roles(administrator)
             await ctx.tick()
